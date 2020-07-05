@@ -14,7 +14,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Resources' => 'App\Policies\Policy',
+        'App\Models\Countries' => 'App\Policies\CountriesPolicy',
+        'App\Models\Provinces' => 'App\Policies\ProvincesPolicy',
+        'App\Models\Cities' => 'App\Policies\CitiesPolicy',
     ];
 
     /**
@@ -27,5 +30,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 }
