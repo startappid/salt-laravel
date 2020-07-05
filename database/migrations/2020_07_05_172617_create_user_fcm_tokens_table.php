@@ -15,9 +15,8 @@ class CreateUserFcmTokensTable extends Migration
     {
         Schema::create('user_fcm_tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
-            $table->string('token', 255);
             $table->foreignId('user_id')->constrained('users');
+            $table->string('token', 255);
             $table->timestamps();
             $table->softDeletes();
         });
