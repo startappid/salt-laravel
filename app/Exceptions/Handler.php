@@ -43,13 +43,18 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Exception $exception )
     {
+        if ($exception instanceof AuthenticationException) {
+            $responder = resolve(\App\Services\ResponseService::class);
+            $responder->set('message', 'You do not have required authorization.');
+            $responder->setStatus(403, 'Forbidden');
+            return $responder->response();
+        }
+
         return parent::render($request, $exception);
     }
 }
