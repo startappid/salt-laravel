@@ -44,7 +44,6 @@ class CountriesPolicy extends Policy
     public function create(?User $user, ?Countries $model = null)
     {
         // FIXME: open on production
-        // dd($user);
         return optional($user);
         // $table_name = $model->getTable();
         // $permissions = $model->getPermissions('create');
@@ -60,13 +59,14 @@ class CountriesPolicy extends Policy
      * @param  \App\Models\Countries  $models\Countries
      * @return mixed
      */
-    public function update(User $user, Countries $model = null)
+    public function update(?User $user, Countries $model = null)
     {
-        $table_name = $model->getTable();
-        $permissions = $model->getPermissions('update');
-        $permissions[] = $table_name.'@update';
-        $permissions[] = $table_name.'@*';
-        return $user->hasAnyPermission($permissions);
+        return optional($user);
+        // $table_name = $model->getTable();
+        // $permissions = $model->getPermissions('update');
+        // $permissions[] = $table_name.'@update';
+        // $permissions[] = $table_name.'@*';
+        // return $user->hasAnyPermission($permissions);
     }
 
     /**
@@ -76,13 +76,14 @@ class CountriesPolicy extends Policy
      * @param  \App\Models\Countries  $models\Countries
      * @return mixed
      */
-    public function delete(User $user, Countries $model = null)
+    public function delete(?User $user, Countries $model = null)
     {
-        $table_name = $model->getTable();
-        $permissions = $model->getPermissions('delete');
-        $permissions[] = $table_name.'@delete';
-        $permissions[] = $table_name.'@*';
-        return $user->hasAnyPermission($permissions);
+        return optional($user);
+        // $table_name = $model->getTable();
+        // $permissions = $model->getPermissions('delete');
+        // $permissions[] = $table_name.'@delete';
+        // $permissions[] = $table_name.'@*';
+        // return $user->hasAnyPermission($permissions);
     }
 
     /**
@@ -92,13 +93,14 @@ class CountriesPolicy extends Policy
      * @param  \App\Models\Countries  $models\Countries
      * @return mixed
      */
-    public function restore(User $user, Countries $model = null)
+    public function restore(?User $user, Countries $model = null)
     {
-        $table_name = $model->getTable();
-        $permissions = $model->getPermissions('restore');
-        $permissions[] = $table_name.'@restore';
-        $permissions[] = $table_name.'@*';
-        return $user->hasAnyPermission($permissions);
+        return optional($user);
+        // $table_name = $model->getTable();
+        // $permissions = $model->getPermissions('restore');
+        // $permissions[] = $table_name.'@restore';
+        // $permissions[] = $table_name.'@*';
+        // return $user->hasAnyPermission($permissions);
     }
 
     /**
