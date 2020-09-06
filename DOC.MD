@@ -237,6 +237,9 @@ $ php artisan make:observer [ObserverName]Observer
 * restoring : before a soft-deleted record is going to be restored.
 * restored : after a soft-deleted record has been restored.
 
+*Built-in Observer*
+* Observer (default)
+* Actorable
 
 default observer example:
 `app/Observers/Observer.php`
