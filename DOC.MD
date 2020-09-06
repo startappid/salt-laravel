@@ -205,3 +205,9 @@ class ModelName extends Resources {
 
 
 ```
+
+## OBSERVER
+run command
+```bash
+$ php artisan make:observer [ObserverName]Observer
+```
