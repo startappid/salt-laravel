@@ -85,3 +85,123 @@ GOOGLE_CLOUD_CLIENT_CERT_URL=
 PASSPORT_PERSONAL_ACCESS_CLIENT_ID=client-id-value
 PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=unhashed-client-secret-value
 ```
+
+## CREATE MIGRATION/MODEL
+```bash
+$ php artisan make:migration create_[TABLE_NAME]_table
+```
+
+## MIGRATE
+```bash
+$ php artisan migrate
+```
+## MODEL STRUCTURE
+
+Create new Model
+```bash
+$ php artisan make:model Models/ModelName
+```
+
+`Models\ModelName.php`
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Model;
+use DB;
+use Illuminate\Support\Facades\Schema;
+class ModelName extends Resources {
+
+    protected $table = 'person';
+
+    protected $rules = array();
+
+    protected $structures = array(
+        "id" => [
+            'name' => 'id',
+            'label' => 'ID',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => true,
+            'type' => 'integer',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
+
+        "field_name" => [
+            'name' => 'field_name',
+            'label' => 'Field Name',
+            'display' => false,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null
+        ],
+        ...
+        "created_at" => [
+            'name' => 'created_at',
+            'label' => 'Created At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
+        "updated_at" => [
+            'name' => 'updated_at',
+            'label' => 'Updated At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
+        "deleted_at" => [
+            'name' => 'deleted_at',
+            'label' => 'Deleted At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ]
+    );
+
+    protected $searchable = array('first_name', 'last_name', 'phone', 'gender');
+
+}
+
+
+```
