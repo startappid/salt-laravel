@@ -111,6 +111,15 @@ class Resources extends Model {
     //  OBSERVER
     protected static function boot() {
         parent::boot();
+        $isApi = request()->segment(1);
+        if($isApi == 'api') {
+            $table = request()->segment(3);
+            if(file_exists(app_path('Observers/'.studly_case($table)).'Observer.php')) {
+                $observer = app("App\Observers\\".studly_case($table).'Observer');
+                static::observe($observer);
+                return;
+            }
+        }
         static::observe(Observer::class);
     }
 
