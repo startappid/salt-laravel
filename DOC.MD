@@ -1,6 +1,18 @@
 # BASE REPO PROJECT
 [Laravel Sagara - Framework](https://gitlab.com/sagara-xinix/framework/laravel-sagara)
 
+## REQUIREMENT
+* PHP >= 7.2.5
+* BCMath PHP Extension
+* Ctype PHP Extension
+* Fileinfo PHP extension
+* JSON PHP Extension
+* Mbstring PHP Extension
+* OpenSSL PHP Extension
+* PDO PHP Extension
+* Tokenizer PHP Extension
+* XML PHP Extension
+
 ## New project
 ```bash
 $ git clone git@gitlab.com:sagara-xinix/framework/laravel-sagara.git
