@@ -28,6 +28,9 @@ class Resources extends Model {
         'in'      => 'The :attribute must be one of the following types: :values',
     ];
 
+    protected $observers = [];
+    // actorable observer
+
     // NOTE: 'index' and 'show' set as default for public consumption
     protected $auths = array ('edit','create','store','update','patch','destroy','import','export','report','trash','trashed','restore','delete','empty','restoreAll');
 
