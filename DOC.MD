@@ -239,7 +239,7 @@ $ php artisan make:observer [ObserverName]Observer
 
 *Built-in Observer*
 * Observer (default)
-* Actorable
+* Actorable (Trait)
 
 default observer example:
 `app/Observers/Observer.php`
@@ -316,3 +316,24 @@ class Observer
 }
 
 ```
+
+Use all of the bootable traits on the model.
+Example: Actorable
+
+`Models\ModelName.php`
+
+```php
+<?php
+
+namespace App\Models;
+
+...
+use App\Observers\Traits\Actorable;
+
+class ModelName extends Resources {
+
+    use Actorable;
+    ...
+}
+```
+
