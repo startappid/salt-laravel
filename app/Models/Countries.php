@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Observers\CountriesObserver as Observer;
 use Illuminate\Support\Facades\Schema;
 
 class Countries extends Resources {
@@ -129,12 +128,6 @@ class Countries extends Resources {
 
     // FIXME: remove thi line below on production
     protected $auths = array ();
-
-    //  OBSERVER
-    protected static function boot() {
-        parent::boot();
-        static::observe(Observer::class);
-    }
 
     public function provinces() {
         return $this->hasMany('App\Models\Provinces', 'country_id', 'id');
