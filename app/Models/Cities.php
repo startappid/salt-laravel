@@ -74,21 +74,6 @@ class Cities extends Resources {
             'nullable' => false,
             'note' => null
         ],
-        "country" => [
-            'name' => 'country',
-            'label' => 'Country',
-            'display' => false,
-            'validation' => [
-                'create' => 'nullable|json',
-                'update' => 'nullable|json',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'json',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
         "province_id" => [
             'name' => 'province_id',
             'label' => 'Province',
@@ -104,21 +89,21 @@ class Cities extends Resources {
             'nullable' => false,
             'note' => null
         ],
-        "province" => [
-            'name' => 'province',
-            'label' => 'Province',
-            'display' => false,
-            'validation' => [
-                'create' => 'nullable|json',
-                'update' => 'nullable|json',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'json',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
+        // "province" => [
+        //     'name' => 'province',
+        //     'label' => 'Province',
+        //     'display' => false,
+        //     'validation' => [
+        //         'create' => 'nullable|json',
+        //         'update' => 'nullable|json',
+        //         'delete' => null,
+        //     ],
+        //     'primary' => false,
+        //     'type' => 'json',
+        //     'validated' => true,
+        //     'nullable' => false,
+        //     'note' => null
+        // ],
         "created_at" => [
             'name' => 'created_at',
             'label' => 'Created At',
