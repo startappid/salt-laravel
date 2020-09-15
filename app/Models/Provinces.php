@@ -14,8 +14,7 @@ class Provinces extends Resources {
     protected $rules = array(
         'country_id' => 'required|integer',
         'name' => 'required|string',
-        'isocode' => 'nullable|string|max:5',
-        'country' => 'nullable|json'
+        'isocode' => 'nullable|string|max:5'
     );
 
     protected $structures = array(
@@ -75,21 +74,6 @@ class Provinces extends Resources {
             ],
             'primary' => false,
             'type' => 'integer',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-        "country" => [
-            'name' => 'country',
-            'label' => 'Country',
-            'display' => false,
-            'validation' => [
-                'create' => 'nullable|json',
-                'update' => 'nullable|json',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'json',
             'validated' => true,
             'nullable' => false,
             'note' => null
