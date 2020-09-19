@@ -21,7 +21,7 @@ $ git clone git@gitlab.com:sagara-xinix/framework/laravel-sagara.git
 Starting project
 ```bash
 $ composer install
-$ composer require laravel/passport
+$ php artisan migrate
 $ php artisan passport:install --uuids
 $ php artisan passport:client --personal
 ```
