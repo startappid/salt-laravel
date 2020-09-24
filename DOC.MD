@@ -17,12 +17,16 @@
 ```bash
 $ git clone git@gitlab.com:sagara-xinix/framework/laravel-sagara.git
 ```
+NOTE: Don't forget to remove git from root project
+```bash
+laravel-project
+$ rm -rf .git
+```
 
 Starting project
 ```bash
 $ composer install
 $ php artisan migrate
-$ php artisan passport:install --uuids
 $ php artisan passport:client --personal
 ```
 
