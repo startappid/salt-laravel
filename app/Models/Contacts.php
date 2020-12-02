@@ -8,12 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 
-class Countries extends Resources {
+class Contacts extends Resources {
 
     protected $rules = array(
-        'name' => 'required|string',
-        'isocode' => 'required|string|max:2|unique:countries',
-        'phonecode' => 'required|integer|unique:countries'
+        'contact' => 'required|string|max:100',
+        'type' => 'required|string'
     );
 
     protected $structures = array(
@@ -32,12 +31,27 @@ class Countries extends Resources {
             'nullable' => false,
             'note' => null
         ],
-        "name" => [
-            'name' => 'name',
-            'label' => 'Name',
+        "contact" => [
+            'name' => 'contact',
+            'label' => 'Contact',
             'display' => false,
             'validation' => [
-                'create' => 'required|string',
+                'create' => 'required|string|max:100',
+                'update' => 'required|string|max:100',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null
+        ],
+        "type" => [
+            'name' => 'type',
+            'label' => 'Type',
+            'display' => false,
+            'validation' => [
+                'create' => 'required|string|max:100',
                 'update' => 'required|string',
                 'delete' => null,
             ],
@@ -47,36 +61,7 @@ class Countries extends Resources {
             'nullable' => false,
             'note' => null
         ],
-        "isocode" => [
-            'name' => 'isocode',
-            'label' => 'ISO Code',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|string|max:2|unique:countries',
-                'update' => 'required|string|max:2|unique:countries,isocode,{id}',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-        "phonecode" => [
-            'name' => 'phonecode',
-            'label' => 'Phone Code',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|integer|unique:countries',
-                'update' => 'required|integer|unique:countries,isocode,{id}',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
+
         "created_at" => [
             'name' => 'created_at',
             'label' => 'Created At',
@@ -124,13 +109,5 @@ class Countries extends Resources {
         ]
     );
 
-    protected $searchable = array('name', 'isocode', 'phonecode');
-
-    public function provinces() {
-        return $this->hasMany('App\Models\Provinces', 'country_id', 'id');
-    }
-
-    public function cities() {
-        return $this->hasMany('App\Models\Cities', 'country_id', 'id');
-    }
+    protected $searchable = array('contact', 'type');
 }
