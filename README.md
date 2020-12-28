@@ -1,30 +1,42 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# BASE REPO PROJECT
+[Sagara Laravel - Framework](https://gitlab.com/sagara-xinix/framework/sagara-laravel)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## REQUIREMENT
+* PHP >= 7.3
+* BCMath PHP Extension
+* Ctype PHP Extension
+* Fileinfo PHP extension
+* JSON PHP Extension
+* Mbstring PHP Extension
+* OpenSSL PHP Extension
+* PDO PHP Extension
+* Tokenizer PHP Extension
+* XML PHP Extension
 
-## Hi Salt
-Laravel Project Skeleton
+## New project
+```bash
+$ git clone git@gitlab.com:sagara-xinix/framework/sagara-laravel.git
+```
+NOTE: Don't forget to remove git from root project
+```bash
+laravel-project
+$ rm -rf .git
+```
 
 Starting project
 ```bash
 $ composer install
-$ composer require laravel/passport
-$ php artisan passport:install --uuids
-$ php artisan passport:client --personal
+$ php artisan migrate
+$ php artisan passport:install
 ```
 
-.env configuration
+`.env configuration`
 ```
-APP_NAME=Spacebear
+APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:xMxGUm+W8F+5wk8MiExpcX/BYHyMes0cxOCpHVybxws=
 APP_DEBUG=true
-APP_URL=http://localhost
+APP_URL=http://localhost:8000
 
 LOG_CHANNEL=stack
 
@@ -52,7 +64,7 @@ MAIL_PORT=587
 MAIL_USERNAME=appsemiling@gmail.com
 MAIL_PASSWORD=Y4L+[?>94:Wry:fa
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=no-reply@spacebear.id
+MAIL_FROM_ADDRESS=no-reply@sagara.id
 MAIL_FROM_NAME="${APP_NAME}"
 
 AWS_ACCESS_KEY_ID=
@@ -90,73 +102,242 @@ PASSPORT_PERSONAL_ACCESS_CLIENT_ID=client-id-value
 PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=unhashed-client-secret-value
 ```
 
-## About Laravel
+## CREATE MIGRATION/MODEL
+```bash
+$ php artisan make:migration create_[TABLE_NAME]_table
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## MIGRATE
+```bash
+$ php artisan migrate
+```
+## MODEL STRUCTURE
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Create new Model
+```bash
+$ php artisan make:model Models/ModelName
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`Models\ModelName.php`
+```php
+<?php
 
-## Learning Laravel
+namespace App\Models;
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Model;
+use DB;
+use Illuminate\Support\Facades\Schema;
+class ModelName extends Resources {
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    protected $table = 'person';
 
-## Laravel Sponsors
+    protected $rules = array();
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    protected $structures = array(
+        "id" => [
+            'name' => 'id',
+            'label' => 'ID',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => true,
+            'type' => 'integer',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-- [云软科技](http://www.yunruan.ltd/)
+        "field_name" => [
+            'name' => 'field_name',
+            'label' => 'Field Name',
+            'display' => false,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null
+        ],
+        ...
+        "created_at" => [
+            'name' => 'created_at',
+            'label' => 'Created At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
+        "updated_at" => [
+            'name' => 'updated_at',
+            'label' => 'Updated At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ],
+        "deleted_at" => [
+            'name' => 'deleted_at',
+            'label' => 'Deleted At',
+            'display' => false,
+            'validation' => [
+                'create' => null,
+                'update' => null,
+                'delete' => null,
+            ],
+            'primary' => false,
+            'type' => 'datetime',
+            'validated' => false,
+            'nullable' => false,
+            'note' => null
+        ]
+    );
 
-## Contributing
+    protected $searchable = array('first_name', 'last_name', 'phone', 'gender');
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+}
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
 
-## Security Vulnerabilities
+## OBSERVER
+run command
+```bash
+$ php artisan make:observer [ObserverName]Observer
+```
+## OBSERVER LIFECYCLE
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* retrieved : after a record has been retrieved.
+* creating : before a record has been created.
+* created : after a record has been created.
+* updating : before a record is updated.
+* updated : after a record has been updated.
+* saving : before a record is saved (either created or updated).
+* saved : after a record has been saved (either created or updated).
+* deleting : before a record is deleted or soft-deleted.
+* deleted : after a record has been deleted or soft-deleted.
+* restoring : before a soft-deleted record is going to be restored.
+* restored : after a soft-deleted record has been restored.
 
-## License
+*Built-in Observer*
+* Observer (default)
+* Actorable (Trait)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+default observer example:
+`app/Observers/Observer.php`
+```php
+<?php
+
+namespace App\Observers;
+use Illuminate\Support\Facades\Storage;
+class Observer
+{
+
+    public function retrieved($model) {
+
+    }
+
+    public function creating($model) {
+
+    }
+
+    public function created($model) {
+
+    }
+
+    public function updating($model) {
+
+    }
+
+    public function updated($model) {
+
+    }
+
+    public function saving($model) {
+      foreach ($model->getAttributes() as $key => $value) {
+        // Check attributes if file type then stored to disk
+        if(request()->hasFile($key)) {
+          $file = request()->file($key);
+          $filename = uniqid().'-'.time().'.'.$file->getClientOriginalExtension();
+          if(env('FILESYSTEM_DRIVER', 'local') == 'gcs') {
+            $disk = Storage::disk('gcs');
+            $path = $disk->put($model->getTable().'/'.$key, $file);
+            $imgurl = ['https://storage.googleapis.com', env('GOOGLE_CLOUD_STORAGE_BUCKET'), $path];
+            $model->setAttribute($key, implode('/', $imgurl));
+          } else { // local
+            $path = $file->storeAs($model->getTable().'/'.$key, $filename);
+            $model->setAttribute($key, url('storage/app/'.$path));
+          }
+        }
+      }
+    }
+
+    public function saved($model) {
+
+    }
+
+    public function restoring($model) {
+
+    }
+
+    public function restored($model) {
+
+    }
+
+    public function deleting($model) {
+
+    }
+
+    public function deleted($model) {
+
+    }
+
+    public function forceDeleted($model) {
+
+    }
+}
+
+```
+
+Use all of the bootable traits on the model.
+Example: Actorable
+
+`Models\ModelName.php`
+
+```php
+<?php
+
+namespace App\Models;
+
+...
+use App\Observers\Traits\Actorable;
+
+class ModelName extends Resources {
+
+    use Actorable;
+    ...
+}
+```
+
