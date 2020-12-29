@@ -173,19 +173,11 @@ class Resources extends Model {
     public function getStructure() {
         $not_displayed = array_merge(array("id", "created_at", "updated_at", "deleted_at"), $this->getHidden());
         $structures = Schema::getColumnListing($this->getTable());
-
         $fields = array();
-        foreach ($structures as $col) {
-            $field = array();
-            $field['field'] = $col;
-            $field['null'] = null;
-            $field['key'] = null;
-            $field['default'] = null;
-            $field['extra'] = null;
-            $field['display'] = !in_array($col, $not_displayed);
-            $fields[] = $field;
+        foreach ($this->structures as $key => $field) {
+            $this->structures[$key]['display'] = !in_array($field['name'], $not_displayed);
         }
-        return $fields;
+        return $this->structures;
     }
 
     public function getValidationOf($event = 'create', $id = null) {
