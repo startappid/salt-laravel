@@ -1,29 +1,32 @@
 @extends('layouts.metronic.app')
 @section('css')
 @endsection
-@section('content')
-<div class="content-header row">
-  <div class="breadcrumb-wrapper col-8">
-    <ol class="breadcrumb">
-      @foreach($breadcrumbs as $breadcrumb)
-      @if($breadcrumb['active'])
-      <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-      @else
-      <li class="breadcrumb-item"><a href="{{url($breadcrumb['link'])}}">{{$breadcrumb['title']}}</a></li>
-      @endif
-      @endforeach
-    </ol>
-  </div>
-  <div class="content-header-right text-md-right col-4">
-    <div class="btn-group">
-      <button class="btn btn-round"><a href="{{url(Request::segment(1))}}/create" class="text-dark"><i class="fa fa-plus"></i> New</a></button>
-      <button class="btn btn-round"><a href="{{url(Request::segment(1))}}/import" class="text-dark"><i class="fa fa-download"></i> Import</a></button>
-      <button class="btn btn-round"><a href="{{url(Request::segment(1))}}/export" class="text-dark"><i class="fa fa-upload"></i> Export</a></button>
-      <button class="btn btn-round"><a href="{{url(Request::segment(1))}}/trash" class="text-danger"><i class="fa fa-trash"></i> Trash</a></button>
-    </div>
-  </div>
-</div>
+<!-- SUBHEADER::TITLE -->
+@section('subheader-title'){{$title}}@endsection
 
+<!-- SUBHEADER::TOOLBAR -->
+@section('subheader-toolbar')
+<a href="{{url(Request::segment(1))}}/create" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-plus"></i> New</a>
+<a href="{{url(Request::segment(1))}}/import" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-download"></i> Import</a>
+<a href="{{url(Request::segment(1))}}/export" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-upload"></i> Export</a>
+<a href="{{url(Request::segment(1))}}/trash" class="btn btn-clean btn-sm font-size-base mr-1 text-danger"><i class="fa fa-trash"></i> Trash</a>
+@endsection
+<!-- SUBHEADER::ACTIONS -->
+@section('subheader-actions')
+<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+@foreach($breadcrumbs as $breadcrumb)
+    @if($breadcrumb['active'])
+    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+    @else
+    <li class="breadcrumb-item">
+        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+    </li>
+    @endif
+@endforeach
+</ul>
+@endsection
+
+@section('content')
 <!-- Default ordering table -->
 <section>
   <div class="row">
@@ -51,7 +54,7 @@
                 <tr>
                   @foreach($structures as $field)
                   @if($field['display'])
-                  <th>{{title_case($field['field'])}}</th>
+                  <th>{{Str::title($field['field'])}}</th>
                   @endif
                   @endforeach
                   <th class="sorting_disabled"> </th>
