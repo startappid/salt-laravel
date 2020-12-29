@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Resources;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 // EXCEPTIONS
 use Illuminate\Auth\AuthenticationException;
@@ -45,8 +46,8 @@ class ResourcesController extends Controller {
 
     try {
       $this->segment = $request->segment(1);
-      if(file_exists(app_path('Models/'.studly_case($this->segment)).'.php')) {
-        $this->model = app("App\Models\\".studly_case($this->segment));
+      if(file_exists(app_path('Models/'.Str::studly($this->segment)).'.php')) {
+        $this->model = app("App\Models\\".Str::studly($this->segment));
       } else {
         if($model->checkTableExists($this->segment)) {
           $this->model = $model;
@@ -120,7 +121,7 @@ class ResourcesController extends Controller {
    */
   public function create(Request $request) {
     try {
-      $this->setTitle(title_case($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
+      $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
 
       if(file_exists(resource_path('views/'.$this->table_name.'/create.blade.php'))) {
         $this->view = view($this->table_name.'.create');
@@ -156,10 +157,10 @@ class ResourcesController extends Controller {
       }
       $this->model->save();
       if($request->ajax()) {
-        $this->response['message'] = title_case(str_singular($this->table_name)).' created!';
+        $this->response['message'] = Str::title(str_singular($this->table_name)).' created!';
         return response()->json($this->response);
       }
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' created!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' created!');
     } catch (Exception $e) {
       if($request->ajax()) {
         $this->response['code'] = $e->getCode();
@@ -179,7 +180,7 @@ class ResourcesController extends Controller {
   public function show(Request $request, $id) {
     try {
       $data = $this->model->findOrFail($id);
-      $this->setTitle(title_case(str_singular($this->table_name)));
+      $this->setTitle(Str::title(str_singular($this->table_name)));
 
       if(file_exists(resource_path('views/'.$this->table_name.'/show.blade.php'))) {
         $this->view = view($this->table_name.'.show');
@@ -209,7 +210,7 @@ class ResourcesController extends Controller {
   public function trashed(Request $request, $id) {
     try {
       $data = $this->model->onlyTrashed()->findOrFail($id);
-      $this->setTitle(title_case(str_singular($this->table_name)));
+      $this->setTitle(Str::title(str_singular($this->table_name)));
 
       if(file_exists(resource_path('views/'.$this->table_name.'/trashed.blade.php'))) {
         $this->view = view($this->table_name.'.trashed');
@@ -238,7 +239,7 @@ class ResourcesController extends Controller {
   public function edit(Request $request, $id) {
     try {
       $data = $this->model->findOrFail($id);
-      $this->setTitle(title_case(str_singular($this->table_name)));
+      $this->setTitle(Str::title(str_singular($this->table_name)));
 
       if(file_exists(resource_path('views/'.$this->table_name.'/edit.blade.php'))) {
         $this->view = view($this->table_name.'.edit');
@@ -284,7 +285,7 @@ class ResourcesController extends Controller {
         $model->setAttribute($key, $value);
       }
       $model->save();
-      return redirect($this->table_name.'/'.$id.'/edit')->with('success', title_case(str_singular($this->table_name)).' updated!');
+      return redirect($this->table_name.'/'.$id.'/edit')->with('success', Str::title(str_singular($this->table_name)).' updated!');
     } catch (Exception $e) {
       return redirect($this->table_name.'/'.$id.'/edit')->with('error', $e->getMessage());
     }
@@ -300,7 +301,7 @@ class ResourcesController extends Controller {
     try {
       $model = $this->model::findOrFail($id);
       $model->delete();
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' deleted!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' deleted!');
     } catch (ModelNotFoundException $e) {
       abort(404);
     } catch (Exception $e) {
@@ -315,10 +316,10 @@ class ResourcesController extends Controller {
         $hirarcies[] = $segment;
         $this->breadcrumbs[] = array(
           'link' => implode("/", $hirarcies),
-          'title' => title_case(str_replace('_', ' ', $segment)),
+          'title' => Str::title(str_replace('_', ' ', $segment)),
           'active' => isset($segments[$key +1])? false: true
         );
-        if(!isset($segments[$key +1])) $this->setTitle(title_case(str_replace('_', ' ', $segment)));
+        if(!isset($segments[$key +1])) $this->setTitle(Str::title(str_replace('_', ' ', $segment)));
       }
     }
   }
@@ -347,7 +348,7 @@ class ResourcesController extends Controller {
    */
   public function import(Request $request) {
     try {
-      $this->setTitle(title_case($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
+      $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
       $this->view = view($this->table_name.'.import');
     } catch (Exception $e) {
 
@@ -364,7 +365,7 @@ class ResourcesController extends Controller {
    */
   public function doImport(Request $request) {
     try {
-      $this->setTitle(title_case($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
+      $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
       $this->view = view($this->table_name.'.import');
     } catch (Exception $e) {
 
@@ -382,7 +383,7 @@ class ResourcesController extends Controller {
   public function export(Request $request) {
     try {
 
-      $this->setTitle(title_case($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
+      $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
       $this->view = view($this->table_name.'.export');
     } catch (Exception $e) {
 
@@ -401,7 +402,7 @@ class ResourcesController extends Controller {
   public function doExport(Request $request) {
     try {
 
-      $this->setTitle(title_case($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
+      $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', str_singular($this->table_name))));
       $this->view = view($this->table_name.'.export');
     } catch (Exception $e) {
 
@@ -450,10 +451,10 @@ class ResourcesController extends Controller {
       $model = $this->model->onlyTrashed()->findOrFail($id);
       $model->restore();
       if($request->ajax()) {
-        $this->response['message'] = title_case(str_singular($this->table_name)).' restored!';
+        $this->response['message'] = Str::title(str_singular($this->table_name)).' restored!';
         return response()->json($this->response);
       }
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' restored!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' restored!');
     } catch (Exception $e) {
       if($request->ajax()) {
         $this->response['code'] = $e->getCode();
@@ -473,10 +474,10 @@ class ResourcesController extends Controller {
     try {
       $model = $this->model->onlyTrashed()->restore();
       if($request->ajax()) {
-        $this->response['message'] = title_case(str_singular($this->table_name)).' restored!';
+        $this->response['message'] = Str::title(str_singular($this->table_name)).' restored!';
         return response()->json($this->response);
       }
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' restored!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' restored!');
     } catch (Exception $e) {
       if($request->ajax()) {
         $this->response['code'] = $e->getCode();
@@ -497,10 +498,10 @@ class ResourcesController extends Controller {
       $model = $this->model->onlyTrashed()->findOrFail($id);
       $model->forceDelete();
       if($request->ajax()) {
-        $this->response['message'] = title_case(str_singular($this->table_name)).' permanent deleted!';
+        $this->response['message'] = Str::title(str_singular($this->table_name)).' permanent deleted!';
         return response()->json($this->response);
       }
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' permanent deleted!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' permanent deleted!');
     } catch (Exception $e) {
       if($request->ajax()) {
         $this->response['code'] = $e->getCode();
@@ -520,10 +521,10 @@ class ResourcesController extends Controller {
     try {
       $model = $this->model->onlyTrashed()->forceDelete();
       if($request->ajax()) {
-        $this->response['message'] = title_case(str_singular($this->table_name)).' empty trash!';
+        $this->response['message'] = Str::title(str_singular($this->table_name)).' empty trash!';
         return response()->json($this->response);
       }
-      return redirect($this->table_name)->with('success', title_case(str_singular($this->table_name)).' empty trash!');
+      return redirect($this->table_name)->with('success', Str::title(str_singular($this->table_name)).' empty trash!');
     } catch (Exception $e) {
       if($request->ajax()) {
         $this->response['code'] = $e->getCode();
