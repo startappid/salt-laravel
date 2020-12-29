@@ -21,4 +21,25 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// DEFAULT: RESOURCES
+Route::get("{collection}", 'ResourcesController@index');
+Route::get("{collection}/create", 'ResourcesController@create');
+Route::post("{collection}", 'ResourcesController@store');
+Route::get("{collection}/{id}", 'ResourcesController@show')->where('id', '[0-9]+');
+Route::get("{collection}/{id}/edit", 'ResourcesController@edit')->where('id', '[0-9]+');
+Route::put("{collection}/{id}", 'ResourcesController@update')->where('id', '[0-9]+');
+Route::delete("{collection}/{id}", 'ResourcesController@destroy')->where('id', '[0-9]+');
+
+Route::get("{collection}/import", 'ResourcesController@import');
+Route::post("{collection}/import", 'ResourcesController@doImport');
+Route::get("{collection}/export", 'ResourcesController@export');
+Route::post("{collection}/export", 'ResourcesController@doExport');
+
+Route::get("{collection}/trash", 'ResourcesController@trash');
+Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed')->where('id', '[0-9]+');
+Route::put("{collection}/{id}/restore", 'ResourcesController@restore')->where('id', '[0-9]+');
+Route::delete("{collection}/{id}/delete", 'ResourcesController@delete')->where('id', '[0-9]+'); // hard delete item
+Route::delete("{collection}/trash/empty", 'ResourcesController@empty'); // empty all trashed
+Route::put("{collection}/trash/restore", 'ResourcesController@putBack'); // empty all trashed
+
 require __DIR__.'/auth.php';
