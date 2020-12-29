@@ -98,6 +98,8 @@
 		<script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
 		<script src="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
 		<script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
+        <script src="{{asset('assets/js/pages/features/miscellaneous/toastr.js')}}"></script>
+        <script src="{{asset('assets/js/pages/features/miscellaneous/sweetalert2.js')}}"></script>
 		<!--end::Global Theme Bundle-->
 		<!--begin::Javascript-->
         @yield('js')
