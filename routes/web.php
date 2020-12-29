@@ -21,9 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+require __DIR__.'/auth.php';
+
 // DEFAULT: RESOURCES
 // ->namespace($this->namespace)
-Route::namespace('App\Http\Controllers')->group(function () {
+Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function () {
 
     Route::get("{collection}", 'ResourcesController@index');
     Route::get("{collection}/create", 'ResourcesController@create');
@@ -45,6 +47,3 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::delete("{collection}/trash/empty", 'ResourcesController@empty'); // empty all trashed
     Route::put("{collection}/trash/restore", 'ResourcesController@putBack'); // empty all trashed
 });
-
-
-require __DIR__.'/auth.php';
