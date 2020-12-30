@@ -32,29 +32,14 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">{{$title}}</h4>
-          <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-          <div class="heading-elements">
-            <ul class="list-inline mb-0">
-              <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-              <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-              <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-              <li><a data-action="close"><i class="ft-x"></i></a></li>
-            </ul>
-          </div>
-        </div>
         <div class="card-content collapse show">
           <div class="card-body card-dashboard">
-            @if($description)
-            <p class="card-text">{{$description}}</p>
-            @endif
             <table class="table table-striped default-ordering" style="width:100%">
               <thead>
                 <tr>
                   @foreach($structures as $field)
                   @if($field['display'])
-                  <th>{{Str::title($field['field'])}}</th>
+                  <th>{{Str::title($field['name'])}}</th>
                   @endif
                   @endforeach
                   <th class="sorting_disabled"> </th>
