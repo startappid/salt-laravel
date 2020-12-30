@@ -92,7 +92,8 @@ class ApiResourcesController extends Controller
             $search = null;
             if($format == 'datatable') {
                 $limit = intval($request->get('length', $limit));
-                $page = intval($request->get('start', $limit));
+                $p = intval($request->get('start', 0));
+                $page = ($p > 0 ? $p - 1: $p);
                 $search_params = $request->get('search');
                 $search = $search_params['value'];
                 unset($request['search']);
@@ -491,10 +492,28 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            if($request->get('search')) {
+            $search = null;
+            if($format == 'datatable') {
+                $limit = intval($request->get('length', $limit));
+                $p = intval($request->get('start', 0));
+                $page = ($p > 0 ? $p - 1: $p);
+                $search_params = $request->get('search');
+                $search = $search_params['value'];
+                unset($request['search']);
+                unset($request['draw']);
+                unset($request['start']);
+                unset($request['length']);
+                unset($request['columns']);
+                unset($request['format']);
+                unset($request['_token']);
+                unset($request['_']);
+            }
+            $search = $request->get('search', $search);
+
+            if($search) {
                 $searchable = $this->model->getSearchable();
                 foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($request->get('search')) . '%');
+                    $model->orWhere($field, 'LIKE', '%' . trim($search) . '%');
                 }
             }
 
