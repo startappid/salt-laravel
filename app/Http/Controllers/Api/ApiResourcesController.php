@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Resources;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use App\Services\ResponseService;
+use Illuminate\Support\Str;
 
 class ApiResourcesController extends Controller
 {
@@ -30,8 +31,8 @@ class ApiResourcesController extends Controller
         try {
             $this->responder = $responder;
             $this->segment = $request->segment(3);
-            if(file_exists(app_path('Models/'.studly_case($this->segment)).'.php')) {
-                $this->model = app("App\Models\\".studly_case($this->segment));
+            if(file_exists(app_path('Models/'.Str::studly($this->segment)).'.php')) {
+                $this->model = app("App\Models\\".Str::studly($this->segment));
             } else {
                 if($model->checkTableExists($this->segment)) {
                     $this->model = $model;
@@ -78,6 +79,7 @@ class ApiResourcesController extends Controller
         try {
 
             $model = $this->model->newQuery();
+            $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
             if($limit > 100) {
@@ -87,10 +89,27 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            if($request->get('search')) {
+            $search = null;
+            if($format == 'datatable') {
+                $limit = intval($request->get('length', $limit));
+                $page = intval($request->get('start', $limit));
+                $search_params = $request->get('search');
+                $search = $search_params['value'];
+                unset($request['search']);
+                unset($request['draw']);
+                unset($request['start']);
+                unset($request['length']);
+                unset($request['columns']);
+                unset($request['format']);
+                unset($request['_token']);
+                unset($request['_']);
+            }
+            $search = $request->get('search', $search);
+
+            if($search) {
                 $searchable = $this->model->getSearchable();
                 foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($request->get('search')) . '%');
+                    $model->orWhere($field, 'LIKE', '%' . trim($search) . '%');
                 }
             }
 

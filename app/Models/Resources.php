@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Observers\Observer as Observer;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class Resources extends Model {
 
@@ -114,8 +115,8 @@ class Resources extends Model {
         $isApi = request()->segment(1);
         if($isApi == 'api') {
             $table = request()->segment(3);
-            if(file_exists(app_path('Observers/'.studly_case($table)).'Observer.php')) {
-                $observer = app("App\Observers\\".studly_case($table).'Observer');
+            if(file_exists(app_path('Observers/'.Str::studly($table)).'Observer.php')) {
+                $observer = app("App\Observers\\".Str::studly($table).'Observer');
                 static::observe($observer);
                 return;
             }
