@@ -155,7 +155,7 @@ class ResourcesController extends Controller {
 
         $validator->validate();
         foreach ($request->all() as $key => $value) {
-            if(starts_with($key, '_')) continue;
+            if(Str::startsWith($key, '_')) continue;
             $this->model->setAttribute($key, $value);
         }
         $this->model->save();
@@ -284,7 +284,7 @@ class ResourcesController extends Controller {
         $this->model->validator($request)->validate();
         $model = $this->model::find($id);
         foreach ($request->all() as $key => $value) {
-            if(starts_with($key, '_')) continue;
+            if(Str::startsWith($key, '_')) continue;
             $model->setAttribute($key, $value);
         }
         $model->save();
