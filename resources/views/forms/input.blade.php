@@ -7,7 +7,7 @@
   <input
     type="text"
     class="form-control"
-    value="{{$field['default']?: @old($field['name'])}}"
+    value="{{isset($field['value'])? $field['value']: @old($field['name'])}}"
     name="{{$field['name']}}"
     id="form-{{$field['name']}}"
     aria-describedby="form-help-{{$field['name']}}"

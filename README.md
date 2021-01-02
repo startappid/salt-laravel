@@ -345,7 +345,7 @@ class ModelName extends Resources {
 # TASKS
 * [X] Resources(List): List data with datatables
 * [X] Resources(Create): Create new data
-* [ ] Resources(Read): View detail data
+* [X] Resources(Read): View detail data
 * [ ] Resources(Update): Update detail data
 * [ ] Resources(Destroy): Destroy (softdelete)
 * [ ] Resources(Trash): Trash (list trashes)

@@ -180,25 +180,25 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id) {
+    public function show(Request $request, $collection, $id) {
         try {
-        $data = $this->model->findOrFail($id);
-        $this->setTitle(Str::title(Str::singular($this->table_name)));
+            $data = $this->model->findOrFail($id);
+            $this->setTitle(Str::title(Str::singular($this->table_name)));
 
-        if(file_exists(resource_path('views/'.$this->table_name.'/show.blade.php'))) {
-            $this->view = view($this->table_name.'.show');
-        } else {
-            $this->view = view('resources.show');
-        }
-
-        if(isset($data)) {
-            foreach($this->structures as $key => $item) {
-            $this->structures[$key]['value'] = $data->{$item['field']};
+            if(file_exists(resource_path('views/'.$this->table_name.'/show.blade.php'))) {
+                $this->view = view($this->table_name.'.show');
+            } else {
+                $this->view = view('resources.show');
             }
-        }
-        return $this->view->with($this->respondWithData(array('data' => $data)));
+
+            if(isset($data)) {
+                foreach($this->structures as $key => $item) {
+                    $this->structures[$key]['value'] = $data->{$item['name']};
+                }
+            }
+            return $this->view->with($this->respondWithData(array('data' => $data)));
         } catch (ModelNotFoundException $e) {
-        abort(404);
+            abort(404);
         } catch (Exception $e) {
 
         }
@@ -223,7 +223,7 @@ class ResourcesController extends Controller {
 
         if(isset($data)) {
             foreach($this->structures as $key => $item) {
-            $this->structures[$key]['value'] = $data->{$item['field']};
+            $this->structures[$key]['value'] = $data->{$item['name']};
             }
         }
         return $this->view->with($this->respondWithData(array('data' => $data)));
@@ -251,7 +251,7 @@ class ResourcesController extends Controller {
         }
 
         foreach($this->structures as $key => $item) {
-            $this->structures[$key]['value'] = $data->{$item['field']};
+            $this->structures[$key]['value'] = $data->{$item['name']};
         }
         return $this->view->with($this->respondWithData(array('data' => $data)));
 

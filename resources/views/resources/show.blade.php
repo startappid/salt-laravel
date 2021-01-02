@@ -1,51 +1,28 @@
-@extends('layouts.robust')
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/extensions/sweetalert.css')}}">
+@extends('layouts.metronic.app')
+<!-- SUBHEADER::TITLE -->
+@section('subheader-title'){{$title}}@endsection
+
+<!-- SUBHEADER::ACTIONS -->
+@section('subheader-actions')
+<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+@foreach($breadcrumbs as $breadcrumb)
+    @if($breadcrumb['active'])
+    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+    @else
+    <li class="breadcrumb-item">
+        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+    </li>
+    @endif
+@endforeach
+</ul>
 @endsection
 @section('content')
-<div class="content-header row">
-  <div class="breadcrumb-wrapper col-8">
-    <ol class="breadcrumb">
-      @foreach($breadcrumbs as $breadcrumb)
-      @if($breadcrumb['active'])
-      <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-      @else
-      <li class="breadcrumb-item"><a href="{{url($breadcrumb['link'])}}">{{$breadcrumb['title']}}</a></li>
-      @endif
-      @endforeach
-    </ol>
-  </div>
-
-  <div class="content-header-right text-md-right col-4">
-    <div class="btn-group">
-      <button class="btn btn-round"><a href="{{url(Request::segment(1).'/'.Request::segment(2).'/edit')}}" class="text-dark"><i class="fa fa-edit"></i> Edit</a></button>
-      <button class="btn btn-round" class="text-danger"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete</a></button>
-    </div>
-  </div>
-</div>
-
 <section>
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">{{$title}}</h4>
-          <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-          <div class="heading-elements">
-            <ul class="list-inline mb-0">
-              <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-              <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-              <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-              <li><a data-action="close"><i class="ft-x"></i></a></li>
-            </ul>
-          </div>
-        </div>
         <div class="card-content collapse show">
           <div class="card-body card-dashboard">
-            @if($description)
-            <p class="card-text">{{$description}}</p>
-            @endif
-
             <form method="GET" action="{{url($segments[0])}}" enctype="multipart/form-data" >
               @method('GET')
               @csrf
@@ -56,6 +33,11 @@
                   @endcomponent
                 @endif
               @endforeach
+              <div class="btn-group">
+                <a class="btn btn-round btn-light" href="{{url($segments[0])}}" role="button"><i class="fa fa-close"></i> Cancel</a>
+                <button class="btn btn-round text-dark"><a href="{{url(Request::segment(1).'/'.Request::segment(2).'/edit')}}"><i class="fa fa-edit"></i> Edit</a></button>
+                <button class="btn btn-round text-delete"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete</a></button>
+              </div>
             </form>
           </div>
         </div>
