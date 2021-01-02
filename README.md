@@ -343,7 +343,7 @@ class ModelName extends Resources {
 
 
 # TASKS
-* [ ] Resources(List): List data with datatables
+* [X] Resources(List): List data with datatables
 * [ ] Resources(Create): Create new data
 * [ ] Resources(Read): View detail data
 * [ ] Resources(Update): Update detail data
