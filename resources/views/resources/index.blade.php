@@ -37,7 +37,7 @@
       <div class="card">
         <div class="card-content collapse show">
           <div class="card-body card-dashboard">
-            <table class="table table-striped default-ordering" style="width:100%">
+            <table class="table table-striped datatable" style="width:100%">
               <thead>
                 <tr>
                   @foreach($structures as $field)
@@ -110,12 +110,12 @@ $(document).ready(function() {
     data: '',
     defaultContent: ''
   });
-  var datatable = $('.default-ordering').DataTable( {
+  var datatable = $('.datatable').DataTable( {
     order: [],
     "scrollX": true,
     columnDefs: [{ orderable: false, targets: -1 }],
     "processing": true,
-    "serverSide": true,
+    "serverSide": false,
     "ajax": {
       "url": "{{url('/api/v1/'.Request::segment(1))}}",
       "data": {
