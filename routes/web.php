@@ -28,6 +28,7 @@ require __DIR__.'/auth.php';
 Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function () {
 
     Route::get("{collection}", 'ResourcesController@index');
+    Route::get("{collection}/trash", 'ResourcesController@trash');
     Route::get("{collection}/create", 'ResourcesController@create');
     Route::post("{collection}", 'ResourcesController@store');
     Route::get("{collection}/{id}", 'ResourcesController@show');
@@ -40,7 +41,6 @@ Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function (
     Route::get("{collection}/export", 'ResourcesController@export');
     Route::post("{collection}/export", 'ResourcesController@doExport');
 
-    Route::get("{collection}/trash", 'ResourcesController@trash');
     Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed');
     Route::put("{collection}/{id}/restore", 'ResourcesController@restore');
     Route::delete("{collection}/{id}/delete", 'ResourcesController@delete'); // hard delete item
