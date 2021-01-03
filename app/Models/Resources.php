@@ -30,20 +30,33 @@ class Resources extends Model {
     ];
 
     // NOTE: 'index' and 'show' set as default for public consumption
-    protected $auths = array ('edit','create','store','update','patch','destroy','import','export','report','trash','trashed','restore','delete','empty','restoreAll');
+    protected $auths = array (
+                            '*.*',
+                            '*.create',
+                            '*.read',
+                            '*.update',
+                            '*.restore',
+                            '*.destroy',
+                            '*.trash',
+                            '*.delete',
+                            '*.empty',
+                            '*.import',
+                            '*.export',
+                            '*.report'
+                        );
 
     protected $pemissions = array(
-        'create' => ['*', '*@create'],
-        'read' => ['*', '*@read'],
-        'update' => ['*', '*@update'],
-        'restore' => ['*', '*@restore'],
-        'destroy' => ['*', '*@destroy'],
-        'trash' => ['*', '*@trash'],
-        'delete' => ['*', '*@delete'],
-        'empty' => ['*', '*@empty'],
-        'import' => ['*', '*@import'],
-        'export' => ['*', '*@export'],
-        'report' => ['*', '*@report'],
+        'create' => ['*.*', '*.create'],
+        'read' => ['*.*', '*.read'],
+        'update' => ['*.*', '*.update'],
+        'restore' => ['*.*', '*.restore'],
+        'destroy' => ['*.*', '*.destroy'],
+        'trash' => ['*.*', '*.trash'],
+        'delete' => ['*.*', '*.delete'],
+        'empty' => ['*.*', '*.empty'],
+        'import' => ['*.*', '*.import'],
+        'export' => ['*.*', '*.export'],
+        'report' => ['*.*', '*.report'],
     );
 
     protected $structures = array(
