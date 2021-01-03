@@ -94,7 +94,7 @@ class Countries extends Resources {
             'display' => true,
             'validation' => [
                 'create' => 'required|integer|unique:countries',
-                'update' => 'required|integer|unique:countries,isocode,{id}',
+                'update' => 'required|integer|unique:countries,phonecode,{id}',
                 'delete' => null,
             ],
             'primary' => false,

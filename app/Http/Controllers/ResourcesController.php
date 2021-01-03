@@ -239,7 +239,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $collection, $id) {
         try {
         $data = $this->model->findOrFail($id);
         $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -267,30 +267,22 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $collection, $id) {
         try {
-        // Change rules of unique column
-        $rules = $this->model->getRules();
-        foreach ($rules as $key => $value) {
-            if(str_contains($value, 'unique')) {
-            $terms = explode('|', $value);
-            foreach ($terms as $index => $term) {
-                if(str_contains($term, 'unique')) $terms[$index] = $term .",$key,".$id;
+            // Change rules of unique column
+            $validator = $this->model->validator($request, 'update', $id);
+            if ($validator->fails()) {
+                return redirect($this->table_name.'/'.$id.'/edit')->with('error', $validator->errors()->first());
             }
-            $rules[$key] = implode('|', $terms);
+            $model = $this->model::find($id);
+            foreach ($request->all() as $key => $value) {
+                if(Str::startsWith($key, '_')) continue;
+                $model->setAttribute($key, $value);
             }
-        }
-        $this->model->setRules($rules);
-        $this->model->validator($request)->validate();
-        $model = $this->model::find($id);
-        foreach ($request->all() as $key => $value) {
-            if(Str::startsWith($key, '_')) continue;
-            $model->setAttribute($key, $value);
-        }
-        $model->save();
-        return redirect($this->table_name.'/'.$id.'/edit')->with('success', Str::title(Str::singular($this->table_name)).' updated!');
+            $model->save();
+            return redirect($this->table_name.'/'.$id.'/edit')->with('success', Str::title(Str::singular($this->table_name)).' updated!');
         } catch (Exception $e) {
-        return redirect($this->table_name.'/'.$id.'/edit')->with('error', $e->getMessage());
+            return redirect($this->table_name.'/'.$id.'/edit')->with('error', $e->getMessage());
         }
     }
 

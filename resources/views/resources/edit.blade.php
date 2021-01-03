@@ -1,47 +1,27 @@
-@extends('layouts.robust')
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/extensions/sweetalert.css')}}">
-@endsection
-@section('content')
-<div class="content-header row">
-  <div class="breadcrumb-wrapper col-8">
-    <ol class="breadcrumb">
-      @foreach($breadcrumbs as $breadcrumb)
-      @if($breadcrumb['active'])
-      <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-      @else
-      <li class="breadcrumb-item"><a href="{{url($breadcrumb['link'])}}">{{$breadcrumb['title']}}</a></li>
-      @endif
-      @endforeach
-    </ol>
-  </div>
-  <!--
-  <div class="content-header-right text-md-right col-4">
-    <div class="btn-group">
-      <button class="btn btn-round"><i class="fa fa-plus"></i> New</button>
-      <button class="btn btn-round"><i class="fa fa-trash"></i> Trash</button>
-    </div>
-  </div>
-  -->
-</div>
+@extends('layouts.metronic.app')
+<!-- SUBHEADER::TITLE -->
+@section('subheader-title')Edit {{$title}}@endsection
 
-<!-- Default ordering table -->
+<!-- SUBHEADER::ACTIONS -->
+@section('subheader-actions')
+<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+@foreach($breadcrumbs as $breadcrumb)
+    @if($breadcrumb['active'])
+    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+    @else
+    <li class="breadcrumb-item">
+        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+    </li>
+    @endif
+@endforeach
+</ul>
+@endsection
+
+@section('content')
 <section>
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">Edit {{$title}}</h4>
-          <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-          <div class="heading-elements">
-            <ul class="list-inline mb-0">
-              <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-              <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-              <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-              <li><a data-action="close"><i class="ft-x"></i></a></li>
-            </ul>
-          </div>
-        </div>
         <div class="card-content collapse show">
           <div class="card-body card-dashboard">
             @if($description)
@@ -83,7 +63,6 @@
 @endsection
 
 @section('js')
-<script src="{{asset('app-assets/vendors/js/extensions/sweetalert.min.js')}}" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 
@@ -92,15 +71,16 @@ $(document).ready(function() {
     var id = $(this).data('id');
     if(!id) return;
 
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "Are you sure want to delete this data?",
       icon: "warning",
       buttons: true,
+      showCancelButton: true,
       dangerMode: true,
     })
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.isConfirmed) {
         $('#form-delete').attr('action', '{{url($segments[0])}}/'+id);
         $('#form-delete').submit();
       }
@@ -108,19 +88,19 @@ $(document).ready(function() {
   });
 
   @if (session('success'))
-    swal("Success!", "{{session('success')}}", "success");
+    Swal.fire("Success!", "{{session('success')}}", "success");
   @endif
 
   @if (session('info'))
-    swal("Info!", "{{session('info')}}", "info");
+    Swal.fire("Info!", "{{session('info')}}", "info");
   @endif
 
   @if (session('warning'))
-    swal("Warning!", "{{session('warning')}}", "warning");
+    Swal.fire("Warning!", "{{session('warning')}}", "warning");
   @endif
 
   @if (session('error'))
-    swal("Error!", "{{session('error')}}", "error");
+    Swal.fire("Error!", "{{session('error')}}", "error");
   @endif
 
 });
