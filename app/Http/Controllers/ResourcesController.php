@@ -292,15 +292,15 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $collection, $id) {
         try {
-        $model = $this->model::findOrFail($id);
-        $model->delete();
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' deleted!');
+            $model = $this->model::findOrFail($id);
+            $model->delete();
+            return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' deleted!');
         } catch (ModelNotFoundException $e) {
-        abort(404);
+            abort(404);
         } catch (Exception $e) {
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
 
@@ -441,7 +441,7 @@ class ResourcesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function restore(Request $request, $id) {
+    public function restore(Request $request, $collection, $id) {
         try {
         $model = $this->model->onlyTrashed()->findOrFail($id);
         $model->restore();
@@ -488,7 +488,7 @@ class ResourcesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, $id) {
+    public function delete(Request $request, $collection, $id) {
         try {
         $model = $this->model->onlyTrashed()->findOrFail($id);
         $model->forceDelete();

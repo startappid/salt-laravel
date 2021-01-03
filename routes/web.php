@@ -30,10 +30,10 @@ Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function (
     Route::get("{collection}", 'ResourcesController@index');
     Route::get("{collection}/create", 'ResourcesController@create');
     Route::post("{collection}", 'ResourcesController@store');
-    Route::get("{collection}/{id}", 'ResourcesController@show')->where('id', '[0-9]+');
-    Route::get("{collection}/{id}/edit", 'ResourcesController@edit')->where('id', '[0-9]+');
-    Route::put("{collection}/{id}", 'ResourcesController@update')->where('id', '[0-9]+');
-    Route::delete("{collection}/{id}", 'ResourcesController@destroy')->where('id', '[0-9]+');
+    Route::get("{collection}/{id}", 'ResourcesController@show');
+    Route::get("{collection}/{id}/edit", 'ResourcesController@edit');
+    Route::put("{collection}/{id}", 'ResourcesController@update');
+    Route::delete("{collection}/{id}", 'ResourcesController@destroy');
 
     Route::get("{collection}/import", 'ResourcesController@import');
     Route::post("{collection}/import", 'ResourcesController@doImport');
@@ -41,9 +41,9 @@ Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function (
     Route::post("{collection}/export", 'ResourcesController@doExport');
 
     Route::get("{collection}/trash", 'ResourcesController@trash');
-    Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed')->where('id', '[0-9]+');
-    Route::put("{collection}/{id}/restore", 'ResourcesController@restore')->where('id', '[0-9]+');
-    Route::delete("{collection}/{id}/delete", 'ResourcesController@delete')->where('id', '[0-9]+'); // hard delete item
+    Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed');
+    Route::put("{collection}/{id}/restore", 'ResourcesController@restore');
+    Route::delete("{collection}/{id}/delete", 'ResourcesController@delete'); // hard delete item
     Route::delete("{collection}/trash/empty", 'ResourcesController@empty'); // empty all trashed
     Route::put("{collection}/trash/restore", 'ResourcesController@putBack'); // empty all trashed
 });

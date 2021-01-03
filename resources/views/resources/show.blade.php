@@ -53,7 +53,6 @@
 @endsection
 
 @section('js')
-<script src="{{asset('app-assets/vendors/js/extensions/sweetalert.min.js')}}" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 
@@ -62,15 +61,16 @@ $(document).ready(function() {
     var id = $(this).data('id');
     if(!id) return;
 
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "Are you sure want to delete this data?",
       icon: "warning",
       buttons: true,
+      showCancelButton: true,
       dangerMode: true,
     })
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.isConfirmed) {
         $('#form-delete').attr('action', '{{url($segments[0])}}/'+id);
         $('#form-delete').submit();
       }
