@@ -1,45 +1,34 @@
-@extends('layouts.robust')
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/extensions/sweetalert.css')}}">
+@extends('layouts.metronic.app')
+<!-- SUBHEADER::TITLE -->
+@section('subheader-title'){{$title}}@endsection
+
+<!-- SUBHEADER::ACTIONS -->
+@section('subheader-actions')
+<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+@foreach($breadcrumbs as $breadcrumb)
+    @if($breadcrumb['active'])
+    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+    @else
+    <li class="breadcrumb-item">
+        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+    </li>
+    @endif
+@endforeach
+</ul>
 @endsection
-@section('content')
-<div class="content-header row">
-  <div class="breadcrumb-wrapper col-8">
-    <ol class="breadcrumb">
-      @foreach($breadcrumbs as $breadcrumb)
-      @if($breadcrumb['active'])
-      <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-      @else
-      <li class="breadcrumb-item"><a href="{{url($breadcrumb['link'])}}">{{$breadcrumb['title']}}</a></li>
-      @endif
-      @endforeach
-    </ol>
-  </div>
-
-  <div class="content-header-right text-md-right col-4">
-    <div class="btn-group">
-      <button class="btn btn-round"><a href="#" class="text-dark form-restore" data-id="{{Request::segment(2)}}"><i class="fa fa-trash-restore"></i> Restore</a></button>
-      <button class="btn btn-round" class="text-danger"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete Forever</a></button>
-    </div>
-  </div>
+<!-- SUBHEADER::TOOLBAR -->
+@section('subheader-toolbar')
+<div class="btn-group">
+  <button class="btn btn-round"><a href="#" class="text-dark form-restore" data-id="{{Request::segment(2)}}"><i class="fa fa-trash-restore"></i> Restore</a></button>
+  <button class="btn btn-round" class="text-danger"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete Forever</a></button>
 </div>
+@endsection
 
+@section('content')
 <section>
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">{{$title}}</h4>
-          <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-          <div class="heading-elements">
-            <ul class="list-inline mb-0">
-              <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-              <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-              <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-              <li><a data-action="close"><i class="ft-x"></i></a></li>
-            </ul>
-          </div>
-        </div>
         <div class="card-content collapse show">
           <div class="card-body card-dashboard">
             @if($description)
@@ -75,7 +64,6 @@
 @endsection
 
 @section('js')
-<script src="{{asset('app-assets/vendors/js/extensions/sweetalert.min.js')}}" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 
@@ -83,15 +71,16 @@ $(document).ready(function() {
 
     var id = $(this).data('id');
     if(!id) return;
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "Are you sure want to restore this data?",
       icon: "info",
       buttons: true,
+      showCancelButton: true,
       dangerMode: false,
     })
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.isConfirmed) {
         $('#form-restore').attr('action', '{{url($segments[0])}}/'+id+'/restore');
         $('#form-restore').submit();
       }
@@ -102,15 +91,16 @@ $(document).ready(function() {
 
     var id = $(this).data('id');
     if(!id) return;
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "Are you sure want to delete permanent this data?",
       icon: "warning",
       buttons: true,
+      showCancelButton: true,
       dangerMode: true,
     })
     .then((willDelete) => {
-      if (willDelete) {
+      if (willDelete.isConfirmed) {
         $('#form-delete').attr('action', '{{url($segments[0])}}/'+id+'/delete');
         $('#form-delete').submit();
       }

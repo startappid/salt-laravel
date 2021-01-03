@@ -5,7 +5,7 @@
 <!--end::Page Vendors Styles-->
 @endsection
 <!-- SUBHEADER::TITLE -->
-@section('subheader-title')Trash of {{$title}}@endsection
+@section('subheader-title'){{$title}}@endsection
 
 <!-- SUBHEADER::TOOLBAR -->
 @section('subheader-toolbar')

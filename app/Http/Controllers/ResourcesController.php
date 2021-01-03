@@ -210,26 +210,25 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function trashed(Request $request, $id) {
+    public function trashed(Request $request, $collection, $id) {
         try {
-        $data = $this->model->onlyTrashed()->findOrFail($id);
-        $this->setTitle(Str::title(Str::singular($this->table_name)));
+            $data = $this->model->onlyTrashed()->findOrFail($id);
+            $this->setTitle(Str::title(Str::singular($this->table_name)));
 
-        if(file_exists(resource_path('views/'.$this->table_name.'/trashed.blade.php'))) {
-            $this->view = view($this->table_name.'.trashed');
-        } else {
-            $this->view = view('resources.trashed');
-        }
-
-        if(isset($data)) {
-            foreach($this->structures as $key => $item) {
-            $this->structures[$key]['value'] = $data->{$item['name']};
+            if(file_exists(resource_path('views/'.$this->table_name.'/trashed.blade.php'))) {
+                $this->view = view($this->table_name.'.trashed');
+            } else {
+                $this->view = view('resources.trashed');
             }
-        }
-        return $this->view->with($this->respondWithData(array('data' => $data)));
 
+            if(isset($data)) {
+                foreach($this->structures as $key => $item) {
+                $this->structures[$key]['value'] = $data->{$item['name']};
+                }
+            }
+            return $this->view->with($this->respondWithData(array('data' => $data)));
         } catch (ModelNotFoundException $e) {
-        abort(404);
+            abort(404);
         } catch (Exception $e) { }
     }
 
