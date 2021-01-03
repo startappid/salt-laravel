@@ -16,25 +16,6 @@ class Countries extends Resources {
         'phonecode' => 'required|integer|unique:countries'
     );
 
-    // "type" => "bigint"
-    // "length" => 20
-    // "spec_in_brackets" => "20"
-    // "enum_set_values" => []
-    // "print_type" => "bigint(20)"
-    // "binary" => false
-    // "unsigned" => true
-    // "zerofill" => false
-    // "attribute" => "UNSIGNED"
-    // "can_contain_collation" => false
-    // "displayed_type" => "bigint(20)"
-    // "value" => null
-    // "field" => "id"
-    // "null" => "NO"
-    // "key" => "PRI"
-    // "default" => null
-    // "extra" => "auto_increment"
-    // "display" => false
-
     protected $structures = array(
         "id" => [
             'name' => 'id',

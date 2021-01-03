@@ -2,7 +2,7 @@
 @section('css')
 <!--begin::Page Vendors Styles(used by this page)-->
 <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-		<!--end::Page Vendors Styles-->
+<!--end::Page Vendors Styles-->
 @endsection
 <!-- SUBHEADER::TITLE -->
 @section('subheader-title'){{$title}}@endsection

@@ -413,27 +413,25 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function trash(Request $request) {
+        if(!$this->model) abort(404);
         try {
-        $columns = array();
-        foreach ($this->structures as $field) {
-            if($field['display']) $columns[] = array(
-            "data" => $field['field']
-            );
-        }
+            $columns = array();
+            foreach ($this->structures as $field) {
+                if($field['display']) $columns[] = array(
+                "data" => $field['name']
+                );
+            }
 
-        if(!$request->ajax()) {
-            $data = $this->model->get();
-            $this->view = view($this->table_name.'.trash');
-        }
-        } catch(Exception $e) {
-        $this->view = view('resources.trash');
-        } finally {
-        if($request->ajax()) {
-            $data = null;
-            return response()->json($data);
-        }
-        return $this->view->with($this->respondWithData(array('data' => $data, 'columns' => $columns)));
-        }
+            if(file_exists(resource_path('views/'.$this->table_name.'/trash.blade.php'))) {
+                $this->view = view($this->table_name.'.trash');
+            } else {
+                $this->view = view('resources.trash');
+            }
+            return $this->view->with($this->respondWithData(array(
+                                                'data' => array(),
+                                                'columns' => $columns
+                                            )));
+        } catch(Exception $e) { }
     }
 
     /**
@@ -529,6 +527,5 @@ class ResourcesController extends Controller {
         return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
-
 
 }

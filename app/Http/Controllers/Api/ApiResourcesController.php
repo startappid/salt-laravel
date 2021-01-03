@@ -488,6 +488,7 @@ class ApiResourcesController extends Controller
 
         try {
             $model = $this->model->onlyTrashed();
+            $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
             if($limit > 100) {
@@ -568,6 +569,11 @@ class ApiResourcesController extends Controller
             $this->responder->set('message', 'Data retrieved.');
             $this->responder->set('meta', $meta);
             $this->responder->set('data', $data);
+            if($format == 'datatable') {
+                $this->responder->set('draw', 1);
+                $this->responder->set('totalFilteredRecords', $meta['totalFilteredRecords']);
+                $this->responder->set('totalRecords', $meta['totalRecords']);
+            }
             return $this->responder->response();
         } catch(\Exception $e) {
             $this->responder->set('message', $e->getMessage());
