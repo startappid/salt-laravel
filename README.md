@@ -348,7 +348,7 @@ class ModelName extends Resources {
 * [X] Resources(Read): View detail data
 * [X] Resources(Update): Update detail data
 * [X] Resources(Destroy): Destroy (softdelete)
-* [ ] Resources(Trash): Trash (list trashes)
+* [X] Resources(Trash): Trash (list trashes)
 * [ ] Resources(Delete): Delete (Hard Delete)
 * [ ] Resources(Restore): Restore deleted data
 * [ ] Resources(Export): Export data from DB
