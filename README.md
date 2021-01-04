@@ -351,5 +351,5 @@ class ModelName extends Resources {
 * [X] Resources(Trash): Trash (list trashes)
 * [X] Resources(Delete): Delete (Hard Delete)
 * [X] Resources(Restore): Restore deleted data
-* [ ] Resources(Export): Export data from DB
+* [X] Resources(Export): Export data from DB
 * [ ] Resources(Import): Import data to DB
