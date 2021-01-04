@@ -31,15 +31,17 @@ Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function (
     Route::get("{collection}/trash", 'ResourcesController@trash');
     Route::get("{collection}/create", 'ResourcesController@create');
     Route::post("{collection}", 'ResourcesController@store');
-    Route::get("{collection}/{id}", 'ResourcesController@show');
-    Route::get("{collection}/{id}/edit", 'ResourcesController@edit');
-    Route::put("{collection}/{id}", 'ResourcesController@update');
-    Route::delete("{collection}/{id}", 'ResourcesController@destroy');
 
     Route::get("{collection}/import", 'ResourcesController@import');
     Route::post("{collection}/import", 'ResourcesController@doImport');
     Route::get("{collection}/export", 'ResourcesController@export');
     Route::post("{collection}/export", 'ResourcesController@doExport');
+
+    Route::get("{collection}/{id}", 'ResourcesController@show');
+    Route::get("{collection}/{id}/edit", 'ResourcesController@edit');
+    Route::put("{collection}/{id}", 'ResourcesController@update');
+    Route::delete("{collection}/{id}", 'ResourcesController@destroy');
+
 
     Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed');
     Route::put("{collection}/{id}/restore", 'ResourcesController@restore');

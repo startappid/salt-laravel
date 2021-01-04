@@ -240,19 +240,19 @@ class ResourcesController extends Controller {
      */
     public function edit(Request $request, $collection, $id) {
         try {
-        $data = $this->model->findOrFail($id);
-        $this->setTitle(Str::title(Str::singular($this->table_name)));
+            $data = $this->model->findOrFail($id);
+            $this->setTitle(Str::title(Str::singular($this->table_name)));
 
-        if(file_exists(resource_path('views/'.$this->table_name.'/edit.blade.php'))) {
-            $this->view = view($this->table_name.'.edit');
-        } else {
-            $this->view = view('resources.edit');
-        }
+            if(file_exists(resource_path('views/'.$this->table_name.'/edit.blade.php'))) {
+                $this->view = view($this->table_name.'.edit');
+            } else {
+                $this->view = view('resources.edit');
+            }
 
-        foreach($this->structures as $key => $item) {
-            $this->structures[$key]['value'] = $data->{$item['name']};
-        }
-        return $this->view->with($this->respondWithData(array('data' => $data)));
+            foreach($this->structures as $key => $item) {
+                $this->structures[$key]['value'] = $data->{$item['name']};
+            }
+            return $this->view->with($this->respondWithData(array('data' => $data)));
 
         } catch (Exception $e) {
 
@@ -375,15 +375,16 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function export(Request $request) {
-        try {
+        if(!$this->model) abort(404);
 
-        $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
-        $this->view = view($this->table_name.'.export');
+        try {
+            $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
+            $this->view = view($this->table_name.'.export');
         } catch (Exception $e) {
 
         } finally {
-        if(is_null($this->view)) $this->view = view('resources.export');
-        return $this->view->with($this->respondWithData());
+            if(is_null($this->view)) $this->view = view('resources.export');
+            return $this->view->with($this->respondWithData());
         }
     }
 
@@ -394,17 +395,45 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function doExport(Request $request) {
+        if(!$this->model) abort(404);
         try {
-
-        $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
-        $this->view = view($this->table_name.'.export');
+            $filename = $this->table_name;
+            $data = $this->model->all();
+            $columns = array_keys($this->structures);
+            return $this->exportCsv($filename, $data, $columns);
         } catch (Exception $e) {
-
-        } finally {
-        if(is_null($this->view)) $this->view = view('resources.export');
-        return $this->view->with($this->respondWithData());
+            return redirect($this->table_name.'/export')->with('error', $e->getMessage());
         }
     }
+
+    public function exportCsv($filename, $data, $columns)
+    {
+        $filename = $filename.'.csv';
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $callback = function() use($data, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($data as $item) {
+                $row = [];
+                foreach ($columns as $value) {
+                    $row[] = $item[$value];
+                }
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
+
 
     /**
      * Display a listing of the resource.

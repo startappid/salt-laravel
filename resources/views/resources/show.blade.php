@@ -65,9 +65,7 @@ $(document).ready(function() {
       title: "Are you sure?",
       text: "Are you sure want to delete this data?",
       icon: "warning",
-      buttons: true,
       showCancelButton: true,
-      dangerMode: true,
     })
     .then((willDelete) => {
       if (willDelete.isConfirmed) {
