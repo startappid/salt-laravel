@@ -352,4 +352,4 @@ class ModelName extends Resources {
 * [X] Resources(Delete): Delete (Hard Delete)
 * [X] Resources(Restore): Restore deleted data
 * [X] Resources(Export): Export data from DB
-* [ ] Resources(Import): Import data to DB
+* [X] Resources(Import): Import data to DB

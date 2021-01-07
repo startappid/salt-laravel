@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Container\EntryNotFoundException;
+use Illuminate\Validation\Rule;
 use ReflectionException;
 use Exception;
 use NotFoundHttpException;
@@ -145,32 +146,32 @@ class ResourcesController extends Controller {
      */
     public function store(Request $request) {
         try {
-        $validator = $this->model->validator($request);
-        if ($validator->fails() && $request->ajax()) {
-            $this->response['errors'] = $validator->errors();
-            $this->response['code'] = 403;
-            $this->response['message'] = $validator->errors()->first();
-            return response()->json($this->response);
-        }
+            $validator = $this->model->validator($request);
+            if ($validator->fails() && $request->ajax()) {
+                $this->response['errors'] = $validator->errors();
+                $this->response['code'] = 403;
+                $this->response['message'] = $validator->errors()->first();
+                return response()->json($this->response);
+            }
 
-        $validator->validate();
-        foreach ($request->all() as $key => $value) {
-            if(Str::startsWith($key, '_')) continue;
-            $this->model->setAttribute($key, $value);
-        }
-        $this->model->save();
-        if($request->ajax()) {
-            $this->response['message'] = Str::title(Str::singular($this->table_name)).' created!';
-            return response()->json($this->response);
-        }
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' created!');
+            $validator->validate();
+            foreach ($request->all() as $key => $value) {
+                if(Str::startsWith($key, '_')) continue;
+                $this->model->setAttribute($key, $value);
+            }
+            $this->model->save();
+            if($request->ajax()) {
+                $this->response['message'] = Str::title(Str::singular($this->table_name)).' created!';
+                return response()->json($this->response);
+            }
+            return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' created!');
         } catch (Exception $e) {
-        if($request->ajax()) {
-            $this->response['code'] = $e->getCode();
-            $this->response['message'] = $e->getMessage();
-            return response()->json($this->response, $e->getCode());
-        }
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            if($request->ajax()) {
+                $this->response['code'] = $e->getCode();
+                $this->response['message'] = $e->getMessage();
+                return response()->json($this->response, $e->getCode());
+            }
+            return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
 
@@ -341,14 +342,15 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function import(Request $request) {
+        if(!$this->model) abort(404);
         try {
-        $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
-        $this->view = view($this->table_name.'.import');
+            $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
+            $this->view = view($this->table_name.'.import');
         } catch (Exception $e) {
 
         } finally {
-        if(is_null($this->view)) $this->view = view('resources.import');
-        return $this->view->with($this->respondWithData());
+            if(is_null($this->view)) $this->view = view('resources.import');
+            return $this->view->with($this->respondWithData());
         }
     }
 
@@ -358,16 +360,40 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function doImport(Request $request) {
+        if(!$this->model) abort(404);
         try {
-        $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
-        $this->view = view($this->table_name.'.import');
-        } catch (Exception $e) {
+            $validator = Validator::make($request->all(), [
+                'file' => 'required|file|mimes:csv,txt'
+            ]);
 
-        } finally {
-        if(is_null($this->view)) $this->view = view('resources.import');
-        return $this->view->with($this->respondWithData());
+            if ($validator->fails()) {
+                return redirect($this->table_name.'/import')->with('error', $validator->errors()->first());
+            }
+            $filename = $this->table_name;
+            $data = $this->csv_to_array($request->file);
+
+            $this->model->insert($data);
+            return redirect($this->table_name.'/import')->with('success', Str::title(Str::singular($this->table_name)).' imported!');
+        } catch (Exception $e) {
+            return redirect($this->table_name.'/import')->with('error', $e->getMessage());
         }
     }
+
+    private function csv_to_array($file, $delimiter = ',') {
+
+		$header = NULL;
+		$data = array();
+		if (($handle = fopen($file, 'r')) !== FALSE) {
+			while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
+				if (!$header)
+					$header = $row;
+				else
+					$data[] = array_combine($header, $row);
+			}
+			fclose($handle);
+		}
+		return $data;
+	}
 
     /**
      * Show the form for creating a new resource.
