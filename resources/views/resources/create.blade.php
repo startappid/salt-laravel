@@ -34,7 +34,17 @@
 
               @foreach($structures as $field)
                 @if($field['display'])
-                  @component('forms.input', ['field' => $field])@endcomponent
+                  @switch($field['type'])
+                    @case(1)
+                        First case...
+                        @break
+                    @case(2)
+                        Second case...
+                        @break
+                    @default
+                      <!-- Default: TEXT -->
+                      @component('forms.text', ['field' => $field])@endcomponent
+                  @endswitch
                 @endif
               @endforeach
               <div class="btn-group">

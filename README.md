@@ -353,3 +353,28 @@ class ModelName extends Resources {
 * [X] Resources(Restore): Restore deleted data
 * [X] Resources(Export): Export data from DB
 * [X] Resources(Import): Import data to DB
+
+
+## QUERY STRING
+
+## FORMS Component
+* [ ] Text
+* [ ] Number
+* [ ] Email
+* [ ] Checkbox
+* [ ] Color
+* [ ] Date
+* [ ] Datetime
+* [ ] File
+* [ ] Hidden
+* [ ] Image
+* [ ] Month
+* [ ] Password
+* [ ] Radio
+* [ ] Range
+* [ ] Tel
+* [ ] Time
+* [ ] Url
+* [ ] Select
+* [ ] Reference (Select2)
+* [ ] Slider

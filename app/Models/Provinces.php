@@ -20,6 +20,7 @@ class Provinces extends Resources {
     protected $structures = array(
         "id" => [
             'name' => 'id',
+            'default' => null,
             'label' => 'ID',
             'display' => false,
             'validation' => [
@@ -28,58 +29,82 @@ class Provinces extends Resources {
                 'delete' => null,
             ],
             'primary' => true,
+            'required' => true,
             'type' => 'integer',
             'validated' => false,
             'nullable' => false,
             'note' => null
         ],
-        "name" => [
-            'name' => 'name',
-            'label' => 'Name',
-            'display' => false,
+
+
+        "fullname" => [
+            'name' => 'fullname',
+            'default' => null,
+            'label' => 'Your full name label',
+            'display' => true,
             'validation' => [
                 'create' => 'required|string',
                 'update' => 'required|string',
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => true,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => 'Help text run here',
+            'placeholder' => 'Insert your full name',
         ],
-        "isocode" => [
-            'name' => 'isocode',
-            'label' => 'ISO Code',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|string|max:5|unique:provinces',
-                'update' => 'required|string|max:5|unique:provinces,isocode,{id}',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-        "country_id" => [
-            'name' => 'country_id',
-            'label' => 'Country',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|integer',
-                'update' => 'required|integer',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'integer',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
+
+        // "name" => [
+        //     'name' => 'name',
+        //     'label' => 'Name',
+        //     'display' => false,
+        //     'validation' => [
+        //         'create' => 'required|string',
+        //         'update' => 'required|string',
+        //         'delete' => null,
+        //     ],
+        //     'primary' => false,
+        //     'type' => 'text',
+        //     'validated' => true,
+        //     'nullable' => false,
+        //     'note' => null
+        // ],
+        // "isocode" => [
+        //     'name' => 'isocode',
+        //     'label' => 'ISO Code',
+        //     'display' => false,
+        //     'validation' => [
+        //         'create' => 'required|string|max:5|unique:provinces',
+        //         'update' => 'required|string|max:5|unique:provinces,isocode,{id}',
+        //         'delete' => null,
+        //     ],
+        //     'primary' => false,
+        //     'type' => 'text',
+        //     'validated' => true,
+        //     'nullable' => false,
+        //     'note' => null
+        // ],
+        // "country_id" => [
+        //     'name' => 'country_id',
+        //     'label' => 'Country',
+        //     'display' => false,
+        //     'validation' => [
+        //         'create' => 'required|integer',
+        //         'update' => 'required|integer',
+        //         'delete' => null,
+        //     ],
+        //     'primary' => false,
+        //     'type' => 'integer',
+        //     'validated' => true,
+        //     'nullable' => false,
+        //     'note' => null
+        // ],
+
         "created_at" => [
             'name' => 'created_at',
+            'default' => null,
             'label' => 'Created At',
             'display' => false,
             'validation' => [
@@ -88,6 +113,7 @@ class Provinces extends Resources {
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => false,
             'type' => 'datetime',
             'validated' => false,
             'nullable' => false,
@@ -95,6 +121,7 @@ class Provinces extends Resources {
         ],
         "updated_at" => [
             'name' => 'updated_at',
+            'default' => null,
             'label' => 'Updated At',
             'display' => false,
             'validation' => [
@@ -103,6 +130,7 @@ class Provinces extends Resources {
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => false,
             'type' => 'datetime',
             'validated' => false,
             'nullable' => false,
@@ -110,6 +138,7 @@ class Provinces extends Resources {
         ],
         "deleted_at" => [
             'name' => 'deleted_at',
+            'default' => null,
             'label' => 'Deleted At',
             'display' => false,
             'validation' => [
@@ -118,6 +147,7 @@ class Provinces extends Resources {
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => false,
             'type' => 'datetime',
             'validated' => false,
             'nullable' => false,
