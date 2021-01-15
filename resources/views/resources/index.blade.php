@@ -81,8 +81,22 @@ $(document).ready(function() {
     })
     .then((willDelete) => {
       if (willDelete.isConfirmed) {
-        $('#form-delete').attr('action', '{{url($segments[0])}}'+id);
-        $('#form-delete').submit();
+        $.ajax({
+          url: "{{url('/api/v1/'.Request::segment(1))}}"+id,
+          type: "POST",
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "_method": "delete"
+          }
+        }).done((response) => {
+          toastr.success('Data deleted successfully.', 'Success!');
+          datatable.ajax.reload();
+        }).catch(err => {
+          toastr.error('Error happened!', 'Error!');
+        });
       }
     });
   });
