@@ -39,7 +39,6 @@ class ApiResourcesController extends Controller
                     $this->model->setTable($this->segment);
                 }
             }
-
             if($this->model) {
                 $this->structures = $this->model->getStructure();
                 // SET default permissions
@@ -107,19 +106,21 @@ class ApiResourcesController extends Controller
             }
             $search = $request->get('search', $search);
 
-            if($search) {
-                $searchable = $this->model->getSearchable();
-                foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($search) . '%');
-                }
-            }
-
             // FIXME: this line below not running
             $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
             if(count($fields)) {
                 foreach ($fields as $field => $value) {
                     $model->where($field, $value);
                 }
+            }
+
+            if($search) {
+                $searchable = $this->model->getSearchable();
+                $model->where(function($query) use ($searchable, $search) {
+                    foreach ($searchable as $field) {
+                        $query->orWhere($field, 'LIKE', '%' . trim($search) . '%');
+                    }
+                });
             }
 
             if($request->has('with')) {
@@ -516,19 +517,21 @@ class ApiResourcesController extends Controller
             }
             $search = $request->get('search', $search);
 
-            if($search) {
-                $searchable = $this->model->getSearchable();
-                foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($search) . '%');
-                }
-            }
-
             // FIXME: this line below not running
             $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
             if(count($fields)) {
                 foreach ($fields as $field => $value) {
                     $model->where($field, $value);
                 }
+            }
+
+            if($search) {
+                $searchable = $this->model->getSearchable();
+                $model->where(function($query) use ($searchable, $search) {
+                    foreach ($searchable as $field) {
+                        $query->orWhere($field, 'LIKE', '%' . trim($search) . '%');
+                    }
+                });
             }
 
             if($request->has('with')) {
