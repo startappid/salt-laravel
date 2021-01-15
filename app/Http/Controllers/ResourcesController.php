@@ -81,10 +81,10 @@ class ResourcesController extends Controller {
      * @return void
      */
     protected function registerPermissions(Request $request) {
-        $this->middleware('permission:'.$this->segment.'@read|'.$this->segment.'@*|*@read|*', ['only' => ['index', 'show']]);
-        $this->middleware('permission:'.$this->segment.'@create|'.$this->segment.'@*|*@create|*', ['only' => ['create','store']]);
-        $this->middleware('permission:'.$this->segment.'@update|'.$this->segment.'@*|*@update|*', ['only' => ['edit','update']]);
-        $this->middleware('permission:'.$this->segment.'@delete|'.$this->segment.'@*|*@delete|*', ['only' => ['destroy']]);
+        $this->middleware('permission:'.$this->segment.'.read.*|'.$this->segment.'.*.*|*.read.*|*.*.*', ['only' => ['index', 'show']]);
+        $this->middleware('permission:'.$this->segment.'.create.*|'.$this->segment.'.*.*|*.create.*|*.*.*', ['only' => ['create','store']]);
+        $this->middleware('permission:'.$this->segment.'.update.*|'.$this->segment.'.*.*|*.update.*|*.*.*', ['only' => ['edit','update']]);
+        $this->middleware('permission:'.$this->segment.'.delete.*|'.$this->segment.'.*.*|*.delete.*|*.*.*', ['only' => ['destroy']]);
     }
 
     /**
@@ -101,7 +101,7 @@ class ResourcesController extends Controller {
 
             foreach ($this->structures as $field) {
                 if($field['display']) $columns[] = array(
-                "data" => $field['name']
+                    "data" => $field['name']
                 );
             }
 
@@ -114,7 +114,6 @@ class ResourcesController extends Controller {
                                                 'data' => array(),
                                                 'columns' => $columns
                                             )));
-
         } catch(Exception $e) { }
     }
 
@@ -125,15 +124,15 @@ class ResourcesController extends Controller {
      */
     public function create(Request $request) {
         try {
-        $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
+            $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
 
-        if(file_exists(resource_path('views/'.$this->table_name.'/create.blade.php'))) {
-            $this->view = view($this->table_name.'.create');
-        } else {
-            $this->view = view('resources.create');
-        }
+            if(file_exists(resource_path('views/'.$this->table_name.'/create.blade.php'))) {
+                $this->view = view($this->table_name.'.create');
+            } else {
+                $this->view = view('resources.create');
+            }
 
-        return $this->view->with($this->respondWithData());
+            return $this->view->with($this->respondWithData());
 
         } catch (Exception $e) { }
     }
@@ -224,7 +223,7 @@ class ResourcesController extends Controller {
 
             if(isset($data)) {
                 foreach($this->structures as $key => $item) {
-                $this->structures[$key]['value'] = $data->{$item['name']};
+                    $this->structures[$key]['value'] = $data->{$item['name']};
                 }
             }
             return $this->view->with($this->respondWithData(array('data' => $data)));
@@ -307,15 +306,17 @@ class ResourcesController extends Controller {
     public function generateBreadcrumbs($segments = array()) {
         $hirarcies = array();
         if(count($segments) > 0) {
-        foreach ($segments as $key => $segment) {
-            $hirarcies[] = $segment;
-            $this->breadcrumbs[] = array(
-            'link' => implode("/", $hirarcies),
-            'title' => Str::title(str_replace('_', ' ', $segment)),
-            'active' => isset($segments[$key +1])? false: true
-            );
-            if(!isset($segments[$key +1])) $this->setTitle(Str::title(str_replace('_', ' ', $segment)));
-        }
+            foreach ($segments as $key => $segment) {
+                $hirarcies[] = $segment;
+                $this->breadcrumbs[] = array(
+                    'link' => implode("/", $hirarcies),
+                    'title' => Str::title(str_replace('_', ' ', $segment)),
+                    'active' => isset($segments[$key +1])? false: true
+                );
+                if(!isset($segments[$key +1])) {
+                    $this->setTitle(Str::title(str_replace('_', ' ', $segment)));
+                }
+            }
         }
     }
 
@@ -472,7 +473,7 @@ class ResourcesController extends Controller {
             $columns = array();
             foreach ($this->structures as $field) {
                 if($field['display']) $columns[] = array(
-                "data" => $field['name']
+                    "data" => $field['name']
                 );
             }
 
@@ -495,20 +496,22 @@ class ResourcesController extends Controller {
      */
     public function restore(Request $request, $collection, $id) {
         try {
-        $model = $this->model->onlyTrashed()->findOrFail($id);
-        $model->restore();
-        if($request->ajax()) {
-            $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
-            return response()->json($this->response);
-        }
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' restored!');
+            $model = $this->model->onlyTrashed()->findOrFail($id);
+            $model->restore();
+            if($request->ajax()) {
+                $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
+                return response()->json($this->response);
+            }
+            return redirect($this->table_name)
+                    ->with('success', Str::title(Str::singular($this->table_name)).' restored!');
         } catch (Exception $e) {
-        if($request->ajax()) {
-            $this->response['code'] = $e->getCode();
-            $this->response['message'] = $e->getMessage();
-            return response()->json($this->response, $e->getCode());
-        }
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            if($request->ajax()) {
+                $this->response['code'] = $e->getCode();
+                $this->response['message'] = $e->getMessage();
+                return response()->json($this->response, $e->getCode());
+            }
+            return redirect($this->table_name)
+                    ->with('error', $e->getMessage());
         }
     }
 
@@ -519,19 +522,20 @@ class ResourcesController extends Controller {
      */
     public function putBack(Request $request) {
         try {
-        $model = $this->model->onlyTrashed()->restore();
-        if($request->ajax()) {
-            $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
-            return response()->json($this->response);
-        }
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' restored!');
+            $model = $this->model->onlyTrashed()->restore();
+            if($request->ajax()) {
+                $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
+                return response()->json($this->response);
+            }
+            return redirect($this->table_name)
+                    ->with('success', Str::title(Str::singular($this->table_name)).' restored!');
         } catch (Exception $e) {
-        if($request->ajax()) {
-            $this->response['code'] = $e->getCode();
-            $this->response['message'] = $e->getMessage();
-            return response()->json($this->response, $e->getCode());
-        }
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            if($request->ajax()) {
+                $this->response['code'] = $e->getCode();
+                $this->response['message'] = $e->getMessage();
+                return response()->json($this->response, $e->getCode());
+            }
+            return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
 
@@ -542,20 +546,21 @@ class ResourcesController extends Controller {
      */
     public function delete(Request $request, $collection, $id) {
         try {
-        $model = $this->model->onlyTrashed()->findOrFail($id);
-        $model->forceDelete();
-        if($request->ajax()) {
-            $this->response['message'] = Str::title(Str::singular($this->table_name)).' permanent deleted!';
-            return response()->json($this->response);
-        }
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' permanent deleted!');
+            $model = $this->model->onlyTrashed()->findOrFail($id);
+            $model->forceDelete();
+            if($request->ajax()) {
+                $this->response['message'] = Str::title(Str::singular($this->table_name)).' permanent deleted!';
+                return response()->json($this->response);
+            }
+            return redirect($this->table_name)
+                    ->with('success', Str::title(Str::singular($this->table_name)).' permanent deleted!');
         } catch (Exception $e) {
-        if($request->ajax()) {
-            $this->response['code'] = $e->getCode();
-            $this->response['message'] = $e->getMessage();
-            return response()->json($this->response, $e->getCode());
-        }
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            if($request->ajax()) {
+                $this->response['code'] = $e->getCode();
+                $this->response['message'] = $e->getMessage();
+                return response()->json($this->response, $e->getCode());
+            }
+            return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
 
@@ -566,19 +571,20 @@ class ResourcesController extends Controller {
      */
     public function empty(Request $request) {
         try {
-        $model = $this->model->onlyTrashed()->forceDelete();
-        if($request->ajax()) {
-            $this->response['message'] = Str::title(Str::singular($this->table_name)).' empty trash!';
-            return response()->json($this->response);
-        }
-        return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' empty trash!');
+            $model = $this->model->onlyTrashed()->forceDelete();
+            if($request->ajax()) {
+                $this->response['message'] = Str::title(Str::singular($this->table_name)).' empty trash!';
+                return response()->json($this->response);
+            }
+            return redirect($this->table_name)
+                    ->with('success', Str::title(Str::singular($this->table_name)).' empty trash!');
         } catch (Exception $e) {
-        if($request->ajax()) {
-            $this->response['code'] = $e->getCode();
-            $this->response['message'] = $e->getMessage();
-            return response()->json($this->response, $e->getCode());
-        }
-        return redirect($this->table_name)->with('error', $e->getMessage());
+            if($request->ajax()) {
+                $this->response['code'] = $e->getCode();
+                $this->response['message'] = $e->getMessage();
+                return response()->json($this->response, $e->getCode());
+            }
+            return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
 
