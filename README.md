@@ -358,7 +358,7 @@ class ModelName extends Resources {
 ## QUERY STRING
 
 ## FORMS Component
-* [ ] Text
+* [X] Text
 * [ ] Number
 * [ ] Email
 * [ ] Checkbox
@@ -378,3 +378,6 @@ class ModelName extends Resources {
 * [ ] Select
 * [ ] Reference (Select2)
 * [ ] Slider
+* [ ] Datepicker
+* [ ] Datetimepicker
+* [ ] Timepicker

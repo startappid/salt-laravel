@@ -35,12 +35,72 @@
               @foreach($structures as $field)
                 @if($field['display'])
                   @switch($field['type'])
-                    @case(1)
-                        First case...
-                        @break
-                    @case(2)
-                        Second case...
-                        @break
+                    @case('number')
+                      number
+                      @break
+                    @case('email')
+                      email
+                      @break
+                    @case('checkbox')
+                      checkbox
+                      @break
+                    @case('color')
+                      color
+                      @break
+                    @case('date')
+                      date
+                      @break
+                    @case('datetime')
+                      datetime
+                      @break
+                    @case('file')
+                      file
+                      @break
+                    @case('hidden')
+                      hidden
+                      @break
+                    @case('image')
+                      image
+                      @break
+                    @case('month')
+                      month
+                      @break
+                    @case('password')
+                      password
+                      @break
+                    @case('radio')
+                      radio
+                      @break
+                    @case('range')
+                      range
+                      @break
+                    @case('tel')
+                      tel
+                      @break
+                    @case('time')
+                      time
+                      @break
+                    @case('url')
+                      url
+                      @break
+                    @case('select')
+                      select
+                      @break
+                    @case('reference')
+                      reference (select2)
+                      @break
+                    @case('slider')
+                      slider
+                      @break
+                    @case('datepicker')
+                      datepicker
+                      @break
+                    @case('datetimepicker')
+                      datetimepicker
+                      @break
+                    @case('timepicker')
+                      timepicker
+                      @break
                     @default
                       <!-- Default: TEXT -->
                       @component('forms.text', ['field' => $field])@endcomponent
