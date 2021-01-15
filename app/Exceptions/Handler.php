@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception )
     {
-        if ($exception instanceof AuthenticationException) {
+        if ($exception instanceof AuthenticationException && request()->wantsJson()) {
             $responder = resolve(\App\Services\ResponseService::class);
             $responder->set('message', 'You do not have required authorization.');
             $responder->setStatus(403, 'Forbidden');
