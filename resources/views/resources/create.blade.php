@@ -40,7 +40,8 @@
                       @component('forms.number', ['field' => $field])@endcomponent
                       @break
                     @case('email')
-                      email
+                      <!-- Default: EMAIL -->
+                      @component('forms.email', ['field' => $field])@endcomponent
                       @break
                     @case('checkbox')
                       checkbox

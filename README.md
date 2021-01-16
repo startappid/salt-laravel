@@ -359,8 +359,8 @@ class ModelName extends Resources {
 
 ## FORMS Component
 * [X] Text
-* [ ] Number
-* [ ] Email
+* [X] Number
+* [X] Email
 * [ ] Checkbox
 * [ ] Color
 * [ ] Date

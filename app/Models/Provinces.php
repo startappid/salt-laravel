@@ -72,7 +72,26 @@ class Provinces extends Resources {
             'validated' => true,
             'nullable' => false,
             'note' => 'Help text run here',
-            'placeholder' => 'Insert your full name',
+            'placeholder' => 'Insert your number',
+        ],
+
+        "email" => [
+            'name' => 'email',
+            'default' => null,
+            'label' => 'Your email label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|email',
+                'update' => 'required|email',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'email',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Insert your email',
         ],
 
         // "name" => [
