@@ -365,7 +365,7 @@ class ModelName extends Resources {
 * [X] Color
 * [X] Date
 * [X] Datetime
-* [ ] File
+* [X] File
 * [X] Hidden
 * [ ] Image
 * [X] Password
@@ -374,7 +374,7 @@ class ModelName extends Resources {
 * [X] Tel
 * [X] Time
 * [X] Url
-* [ ] Select
+* [X] Select
 * [ ] Reference (Select2)
 * [ ] Slider
 * [ ] Datepicker

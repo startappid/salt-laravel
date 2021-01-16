@@ -456,6 +456,26 @@ class Provinces extends Resources {
             // Options disabled according to value
             'options_disabled' => [2]
         ],
+
+        "file" => [
+            'name' => 'file',
+            'default' => null,
+            'label' => 'Your file label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|file',
+                'update' => 'required|file',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'file',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'pick your file',
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',
