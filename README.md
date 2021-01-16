@@ -364,7 +364,7 @@ class ModelName extends Resources {
 * [X] Checkbox
 * [X] Color
 * [X] Date
-* [ ] Datetime
+* [X] Datetime
 * [ ] File
 * [ ] Hidden
 * [ ] Image

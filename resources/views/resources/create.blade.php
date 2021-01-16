@@ -56,7 +56,8 @@
                       @component('forms.date', ['field' => $field])@endcomponent
                       @break
                     @case('datetime')
-                      datetime
+                      <!-- Default: DATETIME -->
+                      @component('forms.datetime', ['field' => $field])@endcomponent
                       @break
                     @case('file')
                       file
