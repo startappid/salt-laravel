@@ -366,14 +366,14 @@ class ModelName extends Resources {
 * [X] Date
 * [X] Datetime
 * [ ] File
-* [ ] Hidden
+* [X] Hidden
 * [ ] Image
 * [ ] Month
 * [ ] Password
 * [X] Radio
 * [ ] Range
 * [ ] Tel
-* [ ] Time
+* [X] Time
 * [ ] Url
 * [ ] Select
 * [ ] Reference (Select2)

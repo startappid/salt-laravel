@@ -63,7 +63,8 @@
                       file
                       @break
                     @case('hidden')
-                      hidden
+                      <!-- Default: HIDDEN -->
+                      @component('forms.hidden', ['field' => $field])@endcomponent
                       @break
                     @case('image')
                       image
