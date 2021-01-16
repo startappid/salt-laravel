@@ -94,7 +94,8 @@
                       @component('forms.url', ['field' => $field])@endcomponent
                       @break
                     @case('select')
-                      select
+                      <!-- Default: SELECT -->
+                      @component('forms.select', ['field' => $field])@endcomponent
                       @break
                     @case('reference')
                       reference (select2)

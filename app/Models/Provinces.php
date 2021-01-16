@@ -415,6 +415,47 @@ class Provinces extends Resources {
             'note' => 'Help text run here',
             'placeholder' => 'Insert your telephone',
         ],
+
+        "select" => [
+            'name' => 'select',
+            'default' => null,
+            'label' => 'Your select label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'select',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => '-- Select --',
+            // Options checkbox
+            'inline' => false,
+            'options' => [
+                [
+                    'value' => 1,
+                    'label' => 'Option 1'
+                ],
+                [
+                    'value' => 2,
+                    'label' => 'Option 2'
+                ],
+                [
+                    'value' => 3,
+                    'label' => 'Option 3'
+                ],
+                [
+                    'value' => 4,
+                    'label' => 'Option 3'
+                ],
+            ],
+            // Options disabled according to value
+            'options_disabled' => [2]
+        ],
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',
