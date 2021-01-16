@@ -44,7 +44,8 @@
                       @component('forms.email', ['field' => $field])@endcomponent
                       @break
                     @case('checkbox')
-                      checkbox
+                      <!-- Default: CHECKBOX -->
+                      @component('forms.checkbox', ['field' => $field])@endcomponent
                       @break
                     @case('color')
                       color
