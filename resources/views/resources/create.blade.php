@@ -82,7 +82,8 @@
                       @component('forms.range', ['field' => $field])@endcomponent
                       @break
                     @case('tel')
-                      tel
+                      <!-- Default: TELEPHONE -->
+                      @component('forms.tel', ['field' => $field])@endcomponent
                       @break
                     @case('time')
                       <!-- Default: TIME -->

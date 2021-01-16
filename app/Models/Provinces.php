@@ -378,6 +378,24 @@ class Provinces extends Resources {
             'max' => 10
         ],
 
+        "telephone" => [
+            'name' => 'telephone',
+            'default' => null,
+            'label' => 'Your telephone label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'tel',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Insert your telephone',
+        ],
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

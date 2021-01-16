@@ -371,7 +371,7 @@ class ModelName extends Resources {
 * [X] Password
 * [X] Radio
 * [X] Range
-* [ ] Tel
+* [X] Tel
 * [X] Time
 * [ ] Url
 * [ ] Select
