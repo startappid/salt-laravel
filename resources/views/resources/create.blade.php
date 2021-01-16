@@ -36,7 +36,8 @@
                 @if($field['display'])
                   @switch($field['type'])
                     @case('number')
-                      number
+                      <!-- Default: NUMBER -->
+                      @component('forms.number', ['field' => $field])@endcomponent
                       @break
                     @case('email')
                       email

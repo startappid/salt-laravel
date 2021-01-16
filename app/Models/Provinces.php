@@ -56,6 +56,25 @@ class Provinces extends Resources {
             'placeholder' => 'Insert your full name',
         ],
 
+        "number" => [
+            'name' => 'number',
+            'default' => null,
+            'label' => 'Your number label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'number',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Insert your full name',
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

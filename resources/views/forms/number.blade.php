@@ -10,7 +10,7 @@
     @endif
   </label>
   <input
-    type="text"
+    type="number"
     class="form-control"
     value="{{isset($field['value'])? $field['value']: @old($field['name'])}}"
     name="{{$field['name']}}"
