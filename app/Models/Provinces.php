@@ -36,7 +36,6 @@ class Provinces extends Resources {
             'note' => null
         ],
 
-
         "fullname" => [
             'name' => 'fullname',
             'default' => null,
@@ -240,6 +239,25 @@ class Provinces extends Resources {
             ],
             // Options disabled according to value
             'options_disabled' => [2]
+        ],
+
+        "color" => [
+            'name' => 'color',
+            'default' => null,
+            'label' => 'Your color label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'color',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Pick your color',
         ],
 
         // "name" => [

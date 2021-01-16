@@ -48,7 +48,8 @@
                       @component('forms.checkbox', ['field' => $field])@endcomponent
                       @break
                     @case('color')
-                      color
+                      <!-- Default: COLOR -->
+                      @component('forms.color', ['field' => $field])@endcomponent
                       @break
                     @case('date')
                       date

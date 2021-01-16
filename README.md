@@ -362,7 +362,7 @@ class ModelName extends Resources {
 * [X] Number
 * [X] Email
 * [X] Checkbox
-* [ ] Color
+* [X] Color
 * [ ] Date
 * [ ] Datetime
 * [ ] File
