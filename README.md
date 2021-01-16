@@ -373,7 +373,7 @@ class ModelName extends Resources {
 * [X] Range
 * [X] Tel
 * [X] Time
-* [ ] Url
+* [X] Url
 * [ ] Select
 * [ ] Reference (Select2)
 * [ ] Slider

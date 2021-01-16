@@ -396,6 +396,25 @@ class Provinces extends Resources {
             'note' => 'Help text run here',
             'placeholder' => 'Insert your telephone',
         ],
+
+        "url" => [
+            'name' => 'url',
+            'default' => null,
+            'label' => 'Your url label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'url',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Insert your telephone',
+        ],
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

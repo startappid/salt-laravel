@@ -90,7 +90,8 @@
                       @component('forms.time', ['field' => $field])@endcomponent
                       @break
                     @case('url')
-                      url
+                      <!-- Default: URL -->
+                      @component('forms.url', ['field' => $field])@endcomponent
                       @break
                     @case('select')
                       select
