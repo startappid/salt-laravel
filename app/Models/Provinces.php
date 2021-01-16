@@ -355,6 +355,29 @@ class Provinces extends Resources {
             'placeholder' => null,
         ],
 
+        "range" => [
+            'name' => 'range',
+            'default' => null,
+            'label' => 'Your range label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'range',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => null,
+            // RANGE OPTION
+            'step' => 1,
+            'min' => 0,
+            'max' => 10
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

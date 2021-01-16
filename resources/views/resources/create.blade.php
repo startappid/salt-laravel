@@ -78,7 +78,8 @@
                       @component('forms.radio', ['field' => $field])@endcomponent
                       @break
                     @case('range')
-                      range
+                      <!-- Default: RANGE -->
+                      @component('forms.range', ['field' => $field])@endcomponent
                       @break
                     @case('tel')
                       tel
