@@ -84,7 +84,8 @@
                       tel
                       @break
                     @case('time')
-                      time
+                      <!-- Default: TIME -->
+                      @component('forms.time', ['field' => $field])@endcomponent
                       @break
                     @case('url')
                       url
