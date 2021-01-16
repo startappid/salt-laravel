@@ -336,6 +336,25 @@ class Provinces extends Resources {
             'placeholder' => null,
         ],
 
+        "password" => [
+            'name' => 'password',
+            'default' => null,
+            'label' => 'Your password label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'password',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

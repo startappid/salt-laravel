@@ -368,7 +368,6 @@ class ModelName extends Resources {
 * [ ] File
 * [X] Hidden
 * [ ] Image
-* [ ] Month
 * [ ] Password
 * [X] Radio
 * [ ] Range

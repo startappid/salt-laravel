@@ -69,11 +69,9 @@
                     @case('image')
                       image
                       @break
-                    @case('month')
-                      month
-                      @break
                     @case('password')
-                      password
+                      <!-- Default: PASSWORD -->
+                      @component('forms.password', ['field' => $field])@endcomponent
                       @break
                     @case('radio')
                       <!-- Default: RADIO -->
