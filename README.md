@@ -361,7 +361,7 @@ class ModelName extends Resources {
 * [X] Text
 * [X] Number
 * [X] Email
-* [ ] Checkbox
+* [X] Checkbox
 * [ ] Color
 * [ ] Date
 * [ ] Datetime
@@ -370,7 +370,7 @@ class ModelName extends Resources {
 * [ ] Image
 * [ ] Month
 * [ ] Password
-* [ ] Radio
+* [X] Radio
 * [ ] Range
 * [ ] Tel
 * [ ] Time

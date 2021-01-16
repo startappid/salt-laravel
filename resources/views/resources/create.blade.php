@@ -72,7 +72,8 @@
                       password
                       @break
                     @case('radio')
-                      radio
+                      <!-- Default: RADIO -->
+                      @component('forms.radio', ['field' => $field])@endcomponent
                       @break
                     @case('range')
                       range

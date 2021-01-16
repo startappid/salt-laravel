@@ -168,6 +168,80 @@ class Provinces extends Resources {
             'options_disabled' => [2]
         ],
 
+        "radio" => [
+            'name' => 'radio',
+            'default' => null,
+            'label' => 'Your radio label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'radio',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => null,
+            // Options checkbox
+            'inline' => false,
+            'options' => [
+                [
+                    'value' => 1,
+                    'label' => 'Option 1'
+                ],
+                [
+                    'value' => 2,
+                    'label' => 'Option 2'
+                ],
+                [
+                    'value' => 3,
+                    'label' => 'Option 3'
+                ],
+            ],
+            // Options disabled according to value
+            'options_disabled' => [2]
+        ],
+
+        "radio_inline" => [
+            'name' => 'radio_inline',
+            'default' => 1,
+            'label' => 'Your radio label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'radio',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => null,
+            // Options checkbox
+            'inline' => true,
+            'options' => [
+                [
+                    'value' => 1,
+                    'label' => 'Option 1'
+                ],
+                [
+                    'value' => 2,
+                    'label' => 'Option 2'
+                ],
+                [
+                    'value' => 3,
+                    'label' => 'Option 3'
+                ],
+            ],
+            // Options disabled according to value
+            'options_disabled' => [2]
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',

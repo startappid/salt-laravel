@@ -9,13 +9,13 @@
     <small class="text-muted">&mdash; Optional</small>
     @endif
   </label>
-  <div class="checkbox-{{$field['inline']? 'inline': 'list'}}">
+  <div class="radio-{{$field['inline']? 'inline': 'list'}}">
     @foreach($field['options'] as $option)
-    <label class="checkbox @if(in_array($option['value'], $field['options_disabled'])) checkbox-disabled @endif">
+    <label class="radio @if(in_array($option['value'], $field['options_disabled'])) radio-disabled @endif">
       <input
         name="{{$field['name']}}"
         value="{{$option['value']}}"
-        type="checkbox"
+        type="radio"
         @if(in_array($option['value'], $field['options_disabled'])) disabled="disabled" @endif
         @if(in_array($option['value'], [$field['default']])) checked="checked" @endif
       />
