@@ -52,7 +52,8 @@
                       @component('forms.color', ['field' => $field])@endcomponent
                       @break
                     @case('date')
-                      date
+                      <!-- Default: DATE -->
+                      @component('forms.date', ['field' => $field])@endcomponent
                       @break
                     @case('datetime')
                       datetime

@@ -260,6 +260,25 @@ class Provinces extends Resources {
             'placeholder' => 'Pick your color',
         ],
 
+        "date" => [
+            'name' => 'date',
+            'default' => null,
+            'label' => 'Your date label',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => false,
+            'type' => 'date',
+            'validated' => true,
+            'nullable' => false,
+            'note' => 'Help text run here',
+            'placeholder' => 'Pick your color',
+        ],
+
         // "name" => [
         //     'name' => 'name',
         //     'label' => 'Name',
