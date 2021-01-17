@@ -768,6 +768,19 @@ class ModelName extends Resources {
 ```
 
 
+## ROLE AND PERMISSIONS
+[Spatie - Laravel Permission](https://github.com/spatie/laravel-permission)
+Permissions Patterns
+--- *.*.* ---
+first * it means table or page name
+second * it means event
+last * optional as detail information
+
+Example:
+users.create.role:user
+the permission pattern above, user only has permission on *users* table
+on event *create* or *insert* new data, with detail type *role is user*
+
 # TODO:
 * [X] Resources(List): List data with datatables
 * [X] Resources(Create): Create new data
