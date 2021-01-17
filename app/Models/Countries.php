@@ -49,7 +49,8 @@ class Countries extends Resources {
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Placeholder...',
         ],
         "isocode" => [
             'name' => 'isocode',
@@ -66,7 +67,8 @@ class Countries extends Resources {
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "phonecode" => [
             'name' => 'phonecode',
@@ -83,7 +85,8 @@ class Countries extends Resources {
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "created_at" => [
             'name' => 'created_at',

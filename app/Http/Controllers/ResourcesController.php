@@ -170,7 +170,7 @@ class ResourcesController extends Controller {
                 $this->response['message'] = $e->getMessage();
                 return response()->json($this->response, $e->getCode());
             }
-            return redirect($this->table_name)->with('error', $e->getMessage());
+            return redirect($this->table_name.'/create')->with('error', $e->getMessage());
         }
     }
 
