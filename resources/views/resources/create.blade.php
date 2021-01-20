@@ -99,7 +99,8 @@
                       @component('forms.select', ['field' => $field])@endcomponent
                       @break
                     @case('reference')
-                      reference (select2)
+                      <!-- Default: REFERENCE -->
+                      @component('forms.reference', ['field' => $field])@endcomponent
                       @break
                     @case('slider')
                       slider
