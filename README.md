@@ -593,6 +593,33 @@ class ModelName extends Resources {
             'placeholder' => 'pick your file',
         ],
 
+        // TYPE: Reference
+        "country_id" => [
+            'name' => 'country_id',
+            'default' => null,
+            'label' => 'Country',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|integer',
+                'update' => 'required|integer',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'reference',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => 'Country',
+            // Options reference
+            'reference' => "countries", // Select2 API endpoint => /api/v1/countries
+            'relationship' => 'country', // relationship request datatable
+            'option' => [
+                'value' => 'id',
+                'label' => 'name'
+            ]
+        ],
+
         ...
         "created_at" => [
             'name' => 'created_at',
