@@ -124,6 +124,7 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request) {
+        if(!$this->model) abort(404);
         try {
             $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
 
@@ -146,9 +147,7 @@ class ResourcesController extends Controller {
      */
     public function store(Request $request) {
 
-        if(is_null($this->model)) {
-            abort(404);
-        }
+        if(!$this->model) abort(404);
 
         try {
 
@@ -175,6 +174,8 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
+
         try {
             $data = $this->model->findOrFail($id);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -205,6 +206,7 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function trashed(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             $data = $this->model->onlyTrashed()->findOrFail($id);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -233,6 +235,7 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             $data = $this->model->findOrFail($id);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -261,6 +264,7 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             // Change rules of unique column
             $validator = $this->model->validator($request, 'update', $id);
@@ -286,6 +290,7 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             $model = $this->model::findOrFail($id);
             $model->delete();
@@ -489,21 +494,13 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function restore(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);
             $model->restore();
-            if($request->ajax()) {
-                $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
-                return response()->json($this->response);
-            }
             return redirect($this->table_name)
                     ->with('success', Str::title(Str::singular($this->table_name)).' restored!');
         } catch (Exception $e) {
-            if($request->ajax()) {
-                $this->response['code'] = $e->getCode();
-                $this->response['message'] = $e->getMessage();
-                return response()->json($this->response, $e->getCode());
-            }
             return redirect($this->table_name)
                     ->with('error', $e->getMessage());
         }
@@ -515,20 +512,12 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function putBack(Request $request) {
+        if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->restore();
-            if($request->ajax()) {
-                $this->response['message'] = Str::title(Str::singular($this->table_name)).' restored!';
-                return response()->json($this->response);
-            }
             return redirect($this->table_name)
                     ->with('success', Str::title(Str::singular($this->table_name)).' restored!');
         } catch (Exception $e) {
-            if($request->ajax()) {
-                $this->response['code'] = $e->getCode();
-                $this->response['message'] = $e->getMessage();
-                return response()->json($this->response, $e->getCode());
-            }
             return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
@@ -539,21 +528,13 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request, $collection, $id) {
+        if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);
             $model->forceDelete();
-            if($request->ajax()) {
-                $this->response['message'] = Str::title(Str::singular($this->table_name)).' permanent deleted!';
-                return response()->json($this->response);
-            }
             return redirect($this->table_name)
                     ->with('success', Str::title(Str::singular($this->table_name)).' permanent deleted!');
         } catch (Exception $e) {
-            if($request->ajax()) {
-                $this->response['code'] = $e->getCode();
-                $this->response['message'] = $e->getMessage();
-                return response()->json($this->response, $e->getCode());
-            }
             return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
@@ -564,20 +545,12 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function empty(Request $request) {
+        if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->forceDelete();
-            if($request->ajax()) {
-                $this->response['message'] = Str::title(Str::singular($this->table_name)).' empty trash!';
-                return response()->json($this->response);
-            }
             return redirect($this->table_name)
                     ->with('success', Str::title(Str::singular($this->table_name)).' empty trash!');
         } catch (Exception $e) {
-            if($request->ajax()) {
-                $this->response['code'] = $e->getCode();
-                $this->response['message'] = $e->getMessage();
-                return response()->json($this->response, $e->getCode());
-            }
             return redirect($this->table_name)->with('error', $e->getMessage());
         }
     }
