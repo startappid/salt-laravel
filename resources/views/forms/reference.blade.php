@@ -12,6 +12,7 @@
 
   <select
     id="form-{{$field['name']}}"
+    name="{{$field['name']}}"
     class="custom-select form-control"
     placeholder="{{$field['placeholder']? Str::title($field['placeholder']) : Str::title(str_replace('_', ' ', $field['name']))}}"
   >
@@ -59,7 +60,6 @@ $(function() {
           item.id = item[id]
           item.text = item[label]
         });
-        console.log(data)
         return {
           results: data
         };
