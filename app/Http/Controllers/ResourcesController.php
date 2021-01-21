@@ -101,7 +101,8 @@ class ResourcesController extends Controller {
 
             foreach ($this->structures as $field) {
                 if($field['display']) $columns[] = array(
-                    "data" => $field['name']
+                    "data" => $field['name'],
+                    "label" => $field['label']?: $field['name']
                 );
             }
 
@@ -144,32 +145,25 @@ class ResourcesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+
+        if(is_null($this->model)) {
+            abort(404);
+        }
+
         try {
+
             $validator = $this->model->validator($request);
-            if ($validator->fails() && $request->ajax()) {
-                $this->response['errors'] = $validator->errors();
-                $this->response['code'] = 403;
-                $this->response['message'] = $validator->errors()->first();
-                return response()->json($this->response);
+            if ($validator->fails()) {
+                return redirect($this->table_name.'/create')->with('error', $validator->errors()->first());
             }
 
-            $validator->validate();
             foreach ($request->all() as $key => $value) {
                 if(Str::startsWith($key, '_')) continue;
                 $this->model->setAttribute($key, $value);
             }
             $this->model->save();
-            if($request->ajax()) {
-                $this->response['message'] = Str::title(Str::singular($this->table_name)).' created!';
-                return response()->json($this->response);
-            }
             return redirect($this->table_name)->with('success', Str::title(Str::singular($this->table_name)).' created!');
         } catch (Exception $e) {
-            if($request->ajax()) {
-                $this->response['code'] = $e->getCode();
-                $this->response['message'] = $e->getMessage();
-                return response()->json($this->response, $e->getCode());
-            }
             return redirect($this->table_name.'/create')->with('error', $e->getMessage());
         }
     }
