@@ -123,7 +123,7 @@ class ApiResourcesController extends Controller
                 });
             }
 
-            if($request->has('with')) {
+            if($request->has('with') && $request->get('with')) {
                 $relations = explode(',', $request->get('with'));
                 // $model->with($relations);
                 foreach ($relations as $relation) {
@@ -244,7 +244,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            if($request->has('with')) {
+            if($request->has('with') && $request->get('with')) {
                 $relations = explode(',', $request->get('with'));
                 if($request->has('withtrashed')) {
                     $data = $this->model->with($relations)->withTrashed()->find($id);
@@ -534,7 +534,7 @@ class ApiResourcesController extends Controller
                 });
             }
 
-            if($request->has('with')) {
+            if($request->has('with') && $request->get('with')) {
                 $relations = explode(',', $request->get('with'));
                 // $model->with($relations);
                 foreach ($relations as $relation) {

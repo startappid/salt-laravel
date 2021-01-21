@@ -29,8 +29,90 @@
 
               @foreach($structures as $field)
                 @if($field['display'])
-                  @component('forms.input', ['field' => $field, 'readonly' => true])
-                  @endcomponent
+                  @switch($field['type'])
+                    @case('number')
+                      <!-- Default: NUMBER -->
+                      @component('forms.number', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('email')
+                      <!-- Default: EMAIL -->
+                      @component('forms.email', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('checkbox')
+                      <!-- Default: CHECKBOX -->
+                      @component('forms.checkbox', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('color')
+                      <!-- Default: COLOR -->
+                      @component('forms.color', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('date')
+                      <!-- Default: DATE -->
+                      @component('forms.date', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('datetime')
+                      <!-- Default: DATETIME -->
+                      @component('forms.datetime', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('file')
+                      <!-- Default: FILE -->
+                      @component('forms.file', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('hidden')
+                      <!-- Default: HIDDEN -->
+                      @component('forms.hidden', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('image')
+                      image
+                      @break
+                    @case('password')
+                      <!-- Default: PASSWORD -->
+                      @component('forms.password', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('radio')
+                      <!-- Default: RADIO -->
+                      @component('forms.radio', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('range')
+                      <!-- Default: RANGE -->
+                      @component('forms.range', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('tel')
+                      <!-- Default: TELEPHONE -->
+                      @component('forms.tel', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('time')
+                      <!-- Default: TIME -->
+                      @component('forms.time', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('url')
+                      <!-- Default: URL -->
+                      @component('forms.url', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('select')
+                      <!-- Default: SELECT -->
+                      @component('forms.select', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('reference')
+                      <!-- Default: REFERENCE -->
+                      @component('forms.reference', ['field' => $field, 'readonly' => true])@endcomponent
+                      @break
+                    @case('slider')
+                      slider
+                      @break
+                    @case('datepicker')
+                      datepicker
+                      @break
+                    @case('datetimepicker')
+                      datetimepicker
+                      @break
+                    @case('timepicker')
+                      timepicker
+                      @break
+                    @default
+                      <!-- Default: TEXT -->
+                      @component('forms.text', ['field' => $field, 'readonly' => true])@endcomponent
+                  @endswitch
                 @endif
               @endforeach
               <div class="btn-group">

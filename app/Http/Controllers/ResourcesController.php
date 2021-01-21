@@ -97,13 +97,27 @@ class ResourcesController extends Controller {
         if(!$this->model) abort(404);
 
         try {
+            $references = [];
+            $reference = '';
             $columns = array();
 
             foreach ($this->structures as $field) {
-                if($field['display']) $columns[] = array(
-                    "data" => $field['name'],
-                    "label" => $field['label']?: $field['name']
-                );
+                if($field['display']) {
+                    if($field['type'] == 'reference') {
+                        $references[] =  $field['relationship'];
+                    }
+                    $columns[] = array(
+                        "data" => $field['name'],
+                        "label" => $field['label']?: $field['name'],
+                        "reference" => ($field['type'] == 'reference'),
+                        "relationship" => isset($field['relationship'])? $field['relationship']: null,
+                        "option" => isset($field['option'])? $field['option']: null,
+                    );
+                }
+            }
+
+            if(count($references) > 0) {
+                $reference = implode(',', $references);
             }
 
             if(file_exists(resource_path('views/'.$this->table_name.'/index.blade.php'))) {
@@ -113,7 +127,8 @@ class ResourcesController extends Controller {
             }
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
-                                                'columns' => $columns
+                                                'columns' => $columns,
+                                                'reference' => $reference
                                             )));
         } catch(Exception $e) { }
     }
@@ -469,11 +484,28 @@ class ResourcesController extends Controller {
     public function trash(Request $request) {
         if(!$this->model) abort(404);
         try {
+
+            $references = [];
+            $reference = '';
             $columns = array();
+
             foreach ($this->structures as $field) {
-                if($field['display']) $columns[] = array(
-                    "data" => $field['name']
-                );
+                if($field['display']) {
+                    if($field['type'] == 'reference') {
+                        $references[] =  $field['relationship'];
+                    }
+                    $columns[] = array(
+                        "data" => $field['name'],
+                        "label" => $field['label']?: $field['name'],
+                        "reference" => ($field['type'] == 'reference'),
+                        "relationship" => isset($field['relationship'])? $field['relationship']: null,
+                        "option" => isset($field['option'])? $field['option']: null,
+                    );
+                }
+            }
+
+            if(count($references) > 0) {
+                $reference = implode(',', $references);
             }
 
             if(file_exists(resource_path('views/'.$this->table_name.'/trash.blade.php'))) {
@@ -483,7 +515,8 @@ class ResourcesController extends Controller {
             }
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
-                                                'columns' => $columns
+                                                'columns' => $columns,
+                                                'reference' => $reference
                                             )));
         } catch(Exception $e) { }
     }

@@ -119,6 +119,18 @@ $(document).ready(function() {
 
   // DATATABLE
   var columns = <?=json_encode($columns)?>;
+  const columnDefs = [{ orderable: false, targets: -1 }]
+  for (const key in columns) {
+    const item = columns[key]
+    if(!item.reference) continue;
+    columnDefs.push({
+      "render": function ( data, type, row ) {
+        return row[item['relationship']][item['option']['label']];
+      },
+      "targets": parseInt(key)
+    });
+  }
+
   columns.push({
     data: '',
     defaultContent: ''
@@ -126,14 +138,17 @@ $(document).ready(function() {
   var datatable = $('.datatable').DataTable( {
     order: [],
     "scrollX": true,
-    columnDefs: [{ orderable: false, targets: -1 }],
+    columnDefs: columnDefs,
     "processing": true,
     "serverSide": false,
     "ajax": {
       "url": "{{url('/api/v1/'.Request::segment(1))}}",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
       "data": {
-        "_token": "{{csrf_token()}}",
-        "format": "datatable"
+        "format": "datatable",
+        "with": "{{$reference}}"
       }
     },
     createdRow: function ( row, data, index ) {

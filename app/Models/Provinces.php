@@ -91,8 +91,8 @@ class Provinces extends Resources {
             'note' => null,
             'placeholder' => 'Country',
             // Options reference
-            'inline' => false,
-            'reference' => "countries",
+            'reference' => "countries", // Select2 API endpoint => /api/v1/countries
+            'relationship' => 'country', // relationship request datatable
             'option' => [
                 'value' => 'id',
                 'label' => 'name'
