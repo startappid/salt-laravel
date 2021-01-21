@@ -13,6 +13,7 @@
   <select
     class="custom-select form-control"
     placeholder="{{$field['placeholder']? Str::title($field['placeholder']) : Str::title(str_replace('_', ' ', $field['name']))}}"
+    name="{{ $field['name'] }}"
   >
     <option value="" readonly> -- Select -- </option>
     @foreach($field['options'] as $option)
