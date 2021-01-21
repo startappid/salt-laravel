@@ -42,7 +42,7 @@
                 <tr>
                   @foreach($structures as $field)
                   @if($field['display'])
-                  <th>{{Str::title($field['name'])}}</th>
+                  <th>{{$field['label']}}</th>
                   @endif
                   @endforeach
                   <th class="sorting_disabled"> </th>
