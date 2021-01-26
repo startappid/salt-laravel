@@ -191,7 +191,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $collection, $id) {
+    public function show(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
 
         try {
@@ -228,7 +228,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function trashed(Request $request, $collection, $id) {
+    public function trashed(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             $data = $this->model->onlyTrashed()->findOrFail($id);
@@ -261,7 +261,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $collection, $id) {
+    public function edit(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             $data = $this->model->findOrFail($id);
@@ -294,7 +294,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $collection, $id) {
+    public function update(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             // Change rules of unique column
@@ -320,7 +320,7 @@ class ResourcesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $collection, $id) {
+    public function destroy(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             $model = $this->model::findOrFail($id);
@@ -542,7 +542,7 @@ class ResourcesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function restore(Request $request, $collection, $id) {
+    public function restore(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);
@@ -576,7 +576,7 @@ class ResourcesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, $collection, $id) {
+    public function delete(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);

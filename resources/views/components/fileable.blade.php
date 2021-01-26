@@ -1,33 +1,23 @@
+@php ($readonly = isset($readonly)? true: false)
 <div class="form-group row">
+  @if(count($items))
   <div class="col-12">
     <div id="carousel-files" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
-        <li data-target="#carousel-files" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-files" data-slide-to="1"></li>
-        <li data-target="#carousel-files" data-slide-to="2"></li>
+        @foreach($items as $key => $item)
+        <li data-target="#carousel-files" data-slide-to="0" class="{{$key == 0? 'active': ''}}"></li>
+        @endforeach
       </ol>
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="https://dummyimage.com/600x400/000/fff" class="d-block w-100" alt="...">
+        @foreach($items as $key => $item)
+        <div class="carousel-item {{$key == 0? 'active': ''}}">
+          <img src="{{$item['fullpath']}}" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
             <h5>First slide label</h5>
             <p>Some representative placeholder content for the first slide.</p>
           </div>
         </div>
-        <div class="carousel-item">
-          <img src="https://dummyimage.com/300x400/000/fff" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Second slide label</h5>
-            <p>Some representative placeholder content for the second slide.</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="https://dummyimage.com/600x400/000/fff" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Third slide label</h5>
-            <p>Some representative placeholder content for the third slide.</p>
-          </div>
-        </div>
+        @endforeach
       </div>
       <a class="carousel-control-prev" href="#carousel-files" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -39,6 +29,8 @@
       </a>
     </div>
   </div>
+  @endif
+  @if(!$readonly)
   <div class="col-6 mt-4">
     <div class="form-group">
       <label>File Browser</label>
@@ -49,6 +41,7 @@
       </div>
     </div>
   </div>
+  @endif
 </div>
 
 @section('js')

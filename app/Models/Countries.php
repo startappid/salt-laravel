@@ -169,6 +169,6 @@ class Countries extends Resources {
     }
 
     public function files() {
-        return $this->hasMany('App\Models\Files', 'foreign_id', 'id')->wherePivot('foreign_table', 'countries');
+        return $this->hasMany('App\Models\Files', 'foreign_id', 'id')->where('foreign_table', 'countries');
     }
 }
