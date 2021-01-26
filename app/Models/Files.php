@@ -21,7 +21,28 @@ class Files extends Resources {
         'ext' => 'nullable|string|max:20',
         'type' => 'required|string'
     );
-
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'file'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'type'
+            ]
+        ],
+        [
+            [
+                'class' => 'col-4',
+                'field' => 'title'
+            ],
+            [
+                'class' => 'col-8',
+                'field' => 'description'
+            ]
+        ]
+    );
     protected $structures = array(
         "id" => [
             'name' => 'id',
@@ -40,18 +61,20 @@ class Files extends Resources {
         ],
         "file" => [
             'name' => 'file',
-            'label' => 'Image',
+            'label' => 'Pick your file',
             'display' => false,
             'validation' => [
                 'create' => 'required|file',
                 'update' => 'nullable|file',
                 'delete' => null,
             ],
+            'required' => true,
             'primary' => false,
-            'type' => 'text',
+            'type' => 'file',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "fullpath" => [
             'name' => 'fullpath',
@@ -62,11 +85,13 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "path" => [
             'name' => 'path',
@@ -77,56 +102,64 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "filename" => [
             'name' => 'filename',
             'label' => 'Filename',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:255',
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "title" => [
             'name' => 'title',
             'label' => 'Title',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:255',
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "description" => [
             'name' => 'description',
             'label' => 'Description',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:1024',
                 'update' => 'nullable|string|max:1024',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "ext" => [
             'name' => 'ext',
@@ -137,11 +170,13 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:20',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "size" => [
             'name' => 'size',
@@ -152,26 +187,53 @@ class Files extends Resources {
                 'update' => 'nullable|integer',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "type" => [
             'name' => 'type',
             'label' => 'Type',
-            'display' => false,
+            'display' => true,
             'validation' => [
-                'create' => 'required|string|max:100',
-                'update' => 'required|string',
+                'create' => 'nullable|string|max:100',
+                'update' => 'nullable|string',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
-            'type' => 'text',
+            'type' => 'select',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
+            // Options
+            'default' => 'image',
+            'inline' => false,
+            'options' => [
+                [
+                    'value' => 'compress',
+                    'label' => 'Compress'
+                ],
+                [
+                    'value' => 'document',
+                    'label' => 'Docs'
+                ],
+                [
+                    'value' => 'image',
+                    'label' => 'Image'
+                ],
+                [
+                    'value' => 'other',
+                    'label' => 'Other'
+                ],
+            ],
+            // Options disabled according to value
+            'options_disabled' => []
         ],
         "created_at" => [
             'name' => 'created_at',

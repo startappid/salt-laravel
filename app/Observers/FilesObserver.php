@@ -26,6 +26,7 @@ class FilesObserver extends Observer
             }
         }
         request()->request->remove($field);
+        unset(request()[$field]);
         unset($model[$field]);
     }
 
@@ -52,6 +53,7 @@ class FilesObserver extends Observer
             }
         }
         request()->request->remove($field);
+        unset(request()[$field]);
         unset($model[$field]);
     }
 }
