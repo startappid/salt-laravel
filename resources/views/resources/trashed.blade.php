@@ -34,16 +34,18 @@
             @if($description)
             <p class="card-text">{{$description}}</p>
             @endif
-
             <form method="GET" action="{{url($segments[0])}}" enctype="multipart/form-data" >
               @method('GET')
               @csrf
-
-              @foreach($structures as $field)
-                @if($field['display'])
-                  @component('forms.input', ['field' => $field, 'readonly' => true])
-                  @endcomponent
-                @endif
+              @foreach($forms as $fields)
+              <div class="form-group row">
+                @foreach($fields as $item)
+                <div class="{{$item['class']}}">
+                  @php ($field = $structures[$item['field']])
+                  @component('forms.forms', ['field' => $field, 'readonly' => true])@endcomponent
+                </div>
+                @endforeach
+              </div>
               @endforeach
             </form>
           </div>

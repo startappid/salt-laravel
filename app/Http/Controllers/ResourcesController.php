@@ -245,7 +245,11 @@ class ResourcesController extends Controller {
                     $this->structures[$key]['value'] = $data->{$item['name']};
                 }
             }
-            return $this->view->with($this->respondWithData(array('data' => $data)));
+            $forms = $this->model->getForms();
+            return $this->view->with($this->respondWithData(array(
+                'data' => $data,
+                'forms' => $forms
+            )));
         } catch (ModelNotFoundException $e) {
             abort(404);
         } catch (Exception $e) { }

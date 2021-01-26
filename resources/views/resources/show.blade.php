@@ -31,7 +31,7 @@
                 @foreach($fields as $item)
                 <div class="{{$item['class']}}">
                   @php ($field = $structures[$item['field']])
-                  @component('forms.forms', ['field' => $field])@endcomponent
+                  @component('forms.forms', ['field' => $field, 'readonly' => true])@endcomponent
                 </div>
                 @endforeach
               </div>
