@@ -141,6 +141,23 @@ class Countries extends Resources {
         ]
     );
 
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'name'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'isocode'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'phonecode'
+            ]
+        ],
+    );
+
     protected $searchable = array('name', 'isocode', 'phonecode');
 
     public function provinces() {

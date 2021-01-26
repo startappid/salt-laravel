@@ -59,6 +59,7 @@ class Resources extends Model {
         'report' => ['*.*.*', '*.report.*'],
     );
 
+    protected $forms = array();
     protected $structures = array(
         "id" => [
             'name' => 'id',
@@ -161,6 +162,10 @@ class Resources extends Model {
         return $this->messages;
     }
 
+    public function getForms() {
+        return $this->forms;
+    }
+
     public function validator($request, $event = 'create', $id = null) {
         $rules = $this->getValidationOf($event, $id);
         if($event == 'patch') {
@@ -189,7 +194,10 @@ class Resources extends Model {
         $structures = Schema::getColumnListing($this->getTable());
         $fields = array();
         foreach ($this->structures as $key => $field) {
-            $this->structures[$key]['display'] = !in_array($field['name'], $not_displayed);
+            // FIXME: how about field hide on show data and displayed on create/update
+            if(in_array($field['name'], $not_displayed)) {
+                $this->structures[$key]['display'] = false;
+            }
         }
         return $this->structures;
     }
