@@ -26,8 +26,6 @@ class Users extends Resources {
         'password_confirmation' => 'required_with:password|same:password|min:6',
         'gender' => 'integer|nullable',
         'phone' => 'nullable|string',
-        'driver_id' => 'nullable|integer',
-        'device_id' => 'nullable|integer',
         'photo' => 'mimes:jpeg,jpg,png|max:1024|nullable',
         'is_active' => 'integer|nullable'
     );
@@ -168,38 +166,6 @@ class Users extends Resources {
             'validation' => [
                 'create' => 'nullable|string',
                 'update' => 'nullable|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-
-        "driver_id" => [
-            'name' => 'driver_id',
-            'label' => 'Driver',
-            'display' => false,
-            'validation' => [
-                'create' => 'nullable|integer',
-                'update' => 'nullable|integer',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-
-        "device_id" => [
-            'name' => 'device_id',
-            'label' => 'Device',
-            'display' => false,
-            'validation' => [
-                'create' => 'nullable|integer',
-                'update' => 'nullable|integer',
                 'delete' => null,
             ],
             'primary' => false,
