@@ -1,73 +1,87 @@
-<div class="form-group">
-  <label for="form-{{$field['name']}}">
-    @if($field['label'])
-      {{Str::title($field['label'])}}
-    @else
-      {{Str::title(str_replace('_', ' ', $field['name']))}}
-    @endif
-    @if(!$field['required'])
-    <small class="text-muted">&mdash; Optional</small>
-    @endif
-  </label>
-
-  <select
-    id="form-{{$field['name']}}"
-    name="{{$field['name']}}"
-    class="custom-select form-control"
-    placeholder="{{$field['placeholder']? Str::title($field['placeholder']) : Str::title(str_replace('_', ' ', $field['name']))}}"
-  >
-  </select>
-
-  @if(isset($field['note']) && $field['note'])
-  <small id="form-help-{{$field['name']}}" class="form-text text-muted">{{$field['note']}}</small>
-  @endif
-  @if ($errors->has($field['name']))
-  <small id="form-error-{{$field['name']}}" class="form-text text-danger">
-    {{ $errors->first($field['name']) }}
-  </small>
-  @endif
+<div class="form-group row">
+  <div class="col-12">
+    <div id="carousel-files" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carousel-files" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-files" data-slide-to="1"></li>
+        <li data-target="#carousel-files" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://dummyimage.com/600x400/000/fff" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>First slide label</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://dummyimage.com/300x400/000/fff" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Second slide label</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://dummyimage.com/600x400/000/fff" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carousel-files" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carousel-files" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+  <div class="col-6 mt-4">
+    <div class="form-group">
+      <label>File Browser</label>
+      <div></div>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="form-files-input"/>
+        <label class="custom-file-label" for="form-files-input">Choose file</label>
+      </div>
+    </div>
+  </div>
 </div>
 
 @section('js')
 @parent
 <script>
 $(function() {
+  $('input#form-files-input').on('change', function() {
+    var formData = new FormData();
+    var file = $(this)[0].files[0];
+    formData.append('file', file);
+    formData.append('foreign_table', '{{$segments[0]}}');
+    formData.append('foreign_id', '{{$segments[1]}}');
 
-  $("#form-{{$field['name']}}").select2({
-    placeholder: "{{$field['placeholder']? Str::title($field['placeholder']) : '--Select--'}}",
-    allowClear: true,
-    ajax: {
-      url: "{{url('/api/v1/'.$field['reference'])}}",
-      dataType: 'json',
-      delay: 250,
+    $.ajax({
+      url: "{{url('/api/v1/files')}}",
+      type: "POST",
       headers: {
-        "X-CSRF-TOKEN" : "{{csrf_token()}}",
-        "Content-Type" : "application/json",
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      data: function(params) {
-        return {
-          search: params.term, // search term
-          page: 1
-        };
-      },
-      processResults: function(response, params) {
-        const { data } = response
-        const id = "{{$field['option']['value']}}"
-        const label = "{{$field['option']['label']}}"
-
-        params.page = params.page || 1;
-        data.filter((item) => {
-          item.id = item[id]
-          item.text = item[label]
-        });
-        return {
-          results: data
-        };
-      },
-      cache: true
-    },
-    minimumInputLength: 1
+      enctype: 'multipart/form-data',
+      data: formData,
+      processData: false,
+      contentType: false,
+    }).done((response) => {
+      toastr.success('File uploaded.', 'Success!');
+      setTimeout(() => {
+        location.reload();
+      }, 1600);
+    }).catch(err => {
+      var response = err.responseJSON;
+      toastr.error(response.message, 'Error!');
+    });
   });
-})
+});
 </script>
 @stop
