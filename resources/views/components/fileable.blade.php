@@ -59,8 +59,8 @@ $(function() {
     var formData = new FormData();
     var file = $(this)[0].files[0];
     formData.append('file', file);
-    formData.append('foreign_table', '{{$segments[0]}}');
-    formData.append('foreign_id', '{{$segments[1]}}');
+    formData.append('foreign_table', '{{$table}}');
+    formData.append('foreign_id', '{{$id}}');
 
     $.ajax({
       url: "{{url('/api/v1/files')}}",

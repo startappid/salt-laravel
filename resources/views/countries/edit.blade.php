@@ -41,7 +41,7 @@
                 @endforeach
               </div>
               @endforeach
-
+              @component('components.fileable', ['table' => $segments[0], 'id' => $segments[1]])@endcomponent
               <div class="btn-group">
                 <a class="btn btn-round btn-light" href="{{url(Request::segment(1).'/'.Request::segment(2))}}" role="button"><i class="fa fa-close"></i> Cancel</a>
                 <button type="button" class="btn btn-round btn-danger">
