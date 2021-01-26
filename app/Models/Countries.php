@@ -167,4 +167,8 @@ class Countries extends Resources {
     public function cities() {
         return $this->hasMany('App\Models\Cities', 'country_id', 'id');
     }
+
+    public function files() {
+        return $this->hasMany('App\Models\Files', 'foreign_id', 'id')->wherePivot('foreign_table', 'countries');
+    }
 }
