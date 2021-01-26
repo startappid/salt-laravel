@@ -168,6 +168,9 @@ $(function() {
     var formData = new FormData();
     var file = $(this)[0].files[0];
     formData.append('file', file);
+    formData.append('foreign_table', '{{$segments[0]}}');
+    formData.append('foreign_id', '{{$segments[1]}}');
+
     $.ajax({
       url: "{{url('/api/v1/files')}}",
       type: "POST",
@@ -180,6 +183,9 @@ $(function() {
       contentType: false,
     }).done((response) => {
       toastr.success('File uploaded.', 'Success!');
+      setTimeout(() => {
+        location.reload();
+      }, 1600);
     }).catch(err => {
       var response = err.responseJSON;
       toastr.error(response.message, 'Error!');
