@@ -67,6 +67,10 @@
     <!-- Default: REFERENCE -->
     @component('forms.reference', ['field' => $field, 'readonly' => $readonly])@endcomponent
     @break
+  @case('textarea')
+    <!-- Default: textarea -->
+    @component('forms.textarea', ['field' => $field, 'readonly' => $readonly])@endcomponent
+    @break
   @case('slider')
     slider
     @break

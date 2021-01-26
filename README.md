@@ -620,6 +620,30 @@ class ModelName extends Resources {
             ]
         ],
 
+        "textarea" => [
+            'name' => 'textarea',
+            'default' => null,
+            'label' => 'Textarea',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string',
+                'update' => 'required|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'textarea',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => 'Textarea',
+            // Options textarea
+            'option' => [
+                'rows' => 3,
+                // 'cols' => 2
+            ]
+        ],
+
         ...
         "created_at" => [
             'name' => 'created_at',
