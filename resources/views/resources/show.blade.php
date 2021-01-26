@@ -26,99 +26,28 @@
             <form method="GET" action="{{url($segments[0])}}" enctype="multipart/form-data" >
               @method('GET')
               @csrf
-
-              @foreach($structures as $field)
-                @if($field['display'])
-                  @switch($field['type'])
-                    @case('number')
-                      <!-- Default: NUMBER -->
-                      @component('forms.number', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('email')
-                      <!-- Default: EMAIL -->
-                      @component('forms.email', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('checkbox')
-                      <!-- Default: CHECKBOX -->
-                      @component('forms.checkbox', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('color')
-                      <!-- Default: COLOR -->
-                      @component('forms.color', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('date')
-                      <!-- Default: DATE -->
-                      @component('forms.date', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('datetime')
-                      <!-- Default: DATETIME -->
-                      @component('forms.datetime', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('file')
-                      <!-- Default: FILE -->
-                      @component('forms.file', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('hidden')
-                      <!-- Default: HIDDEN -->
-                      @component('forms.hidden', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('image')
-                      image
-                      @break
-                    @case('password')
-                      <!-- Default: PASSWORD -->
-                      @component('forms.password', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('radio')
-                      <!-- Default: RADIO -->
-                      @component('forms.radio', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('range')
-                      <!-- Default: RANGE -->
-                      @component('forms.range', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('tel')
-                      <!-- Default: TELEPHONE -->
-                      @component('forms.tel', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('time')
-                      <!-- Default: TIME -->
-                      @component('forms.time', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('url')
-                      <!-- Default: URL -->
-                      @component('forms.url', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('select')
-                      <!-- Default: SELECT -->
-                      @component('forms.select', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('reference')
-                      <!-- Default: REFERENCE -->
-                      @component('forms.reference', ['field' => $field, 'readonly' => true])@endcomponent
-                      @break
-                    @case('slider')
-                      slider
-                      @break
-                    @case('datepicker')
-                      datepicker
-                      @break
-                    @case('datetimepicker')
-                      datetimepicker
-                      @break
-                    @case('timepicker')
-                      timepicker
-                      @break
-                    @default
-                      <!-- Default: TEXT -->
-                      @component('forms.text', ['field' => $field, 'readonly' => true])@endcomponent
-                  @endswitch
-                @endif
+              @foreach($forms as $fields)
+              <div class="form-group row">
+                @foreach($fields as $item)
+                <div class="{{$item['class']}}">
+                  @php ($field = $structures[$item['field']])
+                  @component('forms.forms', ['field' => $field])@endcomponent
+                </div>
+                @endforeach
+              </div>
               @endforeach
               <div class="btn-group">
                 <a class="btn btn-round btn-light" href="{{url($segments[0])}}" role="button"><i class="fa fa-close"></i> Cancel</a>
-                <button class="btn btn-round text-dark"><a href="{{url(Request::segment(1).'/'.Request::segment(2).'/edit')}}"><i class="fa fa-edit"></i> Edit</a></button>
-                <button class="btn btn-round text-delete"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete</a></button>
+                <button type="button" class="btn btn-round btn-danger">
+                  <a href="#" class="text-light form-delete" data-id="{{Request::segment(2)}}">
+                    <i class="fa fa-trash"></i> Delete
+                  </a>
+                </button>
+                <button type="button" class="btn btn-round btn-success">
+                  <a href="{{url(Request::segment(1).'/'.Request::segment(2).'/edit')}}" class="text-light">
+                    <i class="fa fa-edit"></i> Edit
+                  </a>
+                </button>
               </div>
             </form>
           </div>
