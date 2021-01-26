@@ -149,11 +149,11 @@ class Cities extends Resources {
     }
 
     public function country() {
-        return $this->belongsTo('App\Models\Countries', 'country_id', 'id');
+        return $this->belongsTo('App\Models\Countries', 'country_id', 'id')->withTrashed();
     }
 
     public function province() {
-        return $this->belongsTo('App\Models\Provinces', 'province_id', 'id');
+        return $this->belongsTo('App\Models\Provinces', 'province_id', 'id')->withTrashed();
     }
 
 }

@@ -164,11 +164,11 @@ class Provinces extends Resources {
     }
 
     public function country() {
-        return $this->belongsTo('App\Models\Countries', 'country_id', 'id');
+        return $this->belongsTo('App\Models\Countries', 'country_id', 'id')->withTrashed();
     }
 
     public function cities() {
-        return $this->hasMany('App\Models\Cities', 'province_id', 'id');
+        return $this->hasMany('App\Models\Cities', 'province_id', 'id')->withTrashed();
     }
 
 }
