@@ -126,11 +126,11 @@ class Resources extends Model {
     //  OBSERVER
     protected static function boot() {
         parent::boot();
-        if(request()->wantsJson()) {
-            $table = request()->segment(3);
-        } else {
-            $table = request()->segment(1);
-        }
+
+        $isApi = request()->segment(1);
+        if($isApi == 'api') $table = request()->segment(3);
+        else $table = request()->segment(1);
+
         if(file_exists(app_path('Observers/'.Str::studly($table)).'Observer.php')) {
             $observer = app("App\Observers\\".Str::studly($table).'Observer');
             static::observe($observer);

@@ -206,11 +206,11 @@ class ApiResourcesController extends Controller
                 return $this->responder->response();
             }
             foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+                if(Str::startsWith($key, '_')) continue;
                 $this->model->setAttribute($key, $value);
             }
             $this->model->save();
-            $this->responder->set('message', title_case(str_singular($this->table_name)).' created!');
+            $this->responder->set('message', Str::title(Str::singular($this->table_name)).' created!');
             $this->responder->set('data', $this->model);
             $this->responder->setStatus(201, 'Created.');
             return $this->responder->response();
@@ -314,7 +314,7 @@ class ApiResourcesController extends Controller
             }
 
             foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+                if(Str::startsWith($key, '_')) continue;
                 $model->setAttribute($key, $value);
             }
 
@@ -371,7 +371,7 @@ class ApiResourcesController extends Controller
             }
 
             foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+                if(Str::startsWith($key, '_')) continue;
                 $model->setAttribute($key, $value);
             }
 
