@@ -66,7 +66,7 @@ $(function() {
       },
       cache: true
     },
-    minimumInputLength: 1
+    minimumInputLength: 0
   });
 })
 </script>
