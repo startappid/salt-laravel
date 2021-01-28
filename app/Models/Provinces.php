@@ -17,6 +17,22 @@ class Provinces extends Resources {
         'isocode' => 'nullable|string|max:5'
     );
 
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-2',
+                'field' => 'country_id'
+            ],
+            [
+                'class' => 'col-6',
+                'field' => 'name'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'isocode'
+            ]
+        ],
+    );
     protected $structures = array(
         "id" => [
             'name' => 'id',
