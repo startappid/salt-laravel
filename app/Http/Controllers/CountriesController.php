@@ -44,7 +44,6 @@ class CountriesController extends ResourcesController {
 
         try {
             $data = $this->model->with('files')->findOrFail($id);
-            dd($data->files);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
             if(file_exists(resource_path('views/'.$this->table_name.'/show.blade.php'))) {
                 $this->view = view($this->table_name.'.show');
