@@ -33,6 +33,9 @@
 <script>
 $(function() {
 
+  const id = "{{$field['option']['value']}}"
+  const label = "{{$field['option']['label']}}"
+
   $("#form-{{$field['name']}}").select2({
     placeholder: "{{$field['placeholder']? Str::title($field['placeholder']) : '--Select--'}}",
     allowClear: true,
@@ -52,9 +55,6 @@ $(function() {
       },
       processResults: function(response, params) {
         const { data } = response
-        const id = "{{$field['option']['value']}}"
-        const label = "{{$field['option']['label']}}"
-
         params.page = params.page || 1;
         data.filter((item) => {
           item.id = item[id]
@@ -67,7 +67,19 @@ $(function() {
       cache: true
     },
     minimumInputLength: 0
-  });
+  })
+  .select2('val', 1);
+
+  @if(isset($field['value']) && $field['value'])
+  console.log('#form-{{$field['name']}}');
+  $.get("{{url('/api/v1/'.$field['reference'])}}/{{$field['value']}}")
+    .done((response) => {
+      const { data } = response
+      const option = new Option(data[label], data[id], false, false);
+      $("#form-{{$field['name']}}").append(option).trigger('change');
+    })
+  @endif
+
 })
 </script>
 @stop
