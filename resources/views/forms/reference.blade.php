@@ -71,7 +71,6 @@ $(function() {
   .select2('val', 1);
 
   @if(isset($field['value']) && $field['value'])
-  console.log('#form-{{$field['name']}}');
   $.get("{{url('/api/v1/'.$field['reference'])}}/{{$field['value']}}")
     .done((response) => {
       const { data } = response

@@ -33,6 +33,7 @@ class Provinces extends Resources {
             ]
         ],
     );
+
     protected $structures = array(
         "id" => [
             'name' => 'id',
