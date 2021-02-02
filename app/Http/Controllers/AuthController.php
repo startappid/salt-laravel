@@ -126,8 +126,6 @@ class AuthController extends Controller {
                 $this->responder->set('message', 'Your account is not active!');
                 return $this->responder->response();
             }
-
-            dd($user);
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             if ($request->get('remember_me')) {
