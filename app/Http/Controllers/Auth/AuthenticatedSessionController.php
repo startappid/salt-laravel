@@ -32,6 +32,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = Auth::user();
+        $tokenResult = $user->createToken('Personal Access Token');
+        session(['bearer_token' => $tokenResult->accessToken]);
+
         return redirect(RouteServiceProvider::HOME);
     }
 
