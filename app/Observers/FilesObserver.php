@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use Illuminate\Support\Facades\Storage;
+
 class FilesObserver extends Observer
 {
     public function creating($model) {
