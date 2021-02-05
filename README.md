@@ -872,3 +872,6 @@ on event *create* or *insert* new data, with detail type *role is user*
 * [ ] Datepicker
 * [ ] Datetimepicker
 * [ ] Timepicker
+
+## BUGS
+* [ ] Api request from datatable only show 25 data
