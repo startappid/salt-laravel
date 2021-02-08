@@ -31,7 +31,6 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
         $user = Auth::user();
         $tokenResult = $user->createToken('Personal Access Token');
         session(['bearer_token' => $tokenResult->accessToken]);

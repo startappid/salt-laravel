@@ -31,19 +31,20 @@ class Resources extends Model {
 
     // NOTE: 'index' and 'show' set as default for public consumption
     protected $auths = array (
-                            '*.*.*',
-                            '*.create.*',
-                            '*.read.*',
-                            '*.update.*',
-                            '*.restore.*',
-                            '*.destroy.*',
-                            '*.trash.*',
-                            '*.delete.*',
-                            '*.empty.*',
-                            '*.import.*',
-                            '*.export.*',
-                            '*.report.*'
-                        );
+        'index',
+        'store',
+        'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
+    );
 
     protected $pemissions = array(
         'create' => ['*.*.*', '*.create.*'],

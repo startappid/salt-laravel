@@ -9,6 +9,7 @@ use App\Models\Resources;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use App\Services\ResponseService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ApiResourcesController extends Controller
 {
@@ -41,7 +42,7 @@ class ApiResourcesController extends Controller
             }
             if($this->model) {
                 $this->structures = $this->model->getStructure();
-                // SET default permissions
+                // SET default Authentication
                 $this->middleware('auth:api', ['only' => $this->model->getAuthenticatedRoutes()]);
             }
 
@@ -51,6 +52,19 @@ class ApiResourcesController extends Controller
             $this->responder->set('message', $e->getMessage());
             $this->responder->setStatus(500, 'Internal server error.');
             return $this->responder->response();
+        }
+    }
+
+    private function checkPermissions($authenticatedRoute, $authorize) {
+        if(in_array($authenticatedRoute, $this->model->getAuthenticatedRoutes())) {
+            $table = $this->model->getTable();
+            $generatedPermissions = [$table.'.*.*', $table.'.'.$authorize.'.*'];
+            $defaultPermissions = $this->model->getPermissions($authorize);
+            $permissions = array_merge($generatedPermissions, $defaultPermissions);
+            $user = Auth::user();
+            if(!$user->hasAnyPermission($permissions)) {
+                throw new \Exception('You do not have authorization.');
+            }
         }
     }
 
@@ -68,7 +82,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('viewAny', $this->model);
+            $this->checkPermissions('index', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -190,7 +204,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('create', $this->model);
+            $this->checkPermissions('store', 'create');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -236,7 +250,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('view', $this->model);
+            $this->checkPermissions('show', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -289,7 +303,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('update', $this->model);
+            $this->checkPermissions('update', 'update');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -346,7 +360,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('update', $this->model);
+            $this->checkPermissions('patch', 'update');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -402,7 +416,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('destroy', 'destroy');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -480,7 +494,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('trash', 'trash');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -600,7 +614,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('trashed', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -639,7 +653,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('restore', $this->model);
+            $this->checkPermissions('restore', 'restore');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -717,7 +731,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('delete', 'delete');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
