@@ -85,7 +85,7 @@ $(document).ready(function() {
           url: "{{url('/api/v1/'.Request::segment(1))}}"+id,
           type: "POST",
           headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'Authorization': 'Bearer {{session('bearer_token')}}'
           },
           data: {
             "_token": "{{ csrf_token() }}",
@@ -144,7 +144,7 @@ $(document).ready(function() {
     "ajax": {
       "url": "{{url('/api/v1/'.Request::segment(1))}}",
       headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'Authorization': 'Bearer {{session('bearer_token')}}'
       },
       "data": {
         "format": "datatable",

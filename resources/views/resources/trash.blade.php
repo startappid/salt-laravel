@@ -200,7 +200,7 @@ $(document).ready(function() {
     "ajax": {
       "url": "{{url('/api/v1/'.Request::segment(1))}}/trash",
       "headers": {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'Authorization': 'Bearer {{session('bearer_token')}}'
       },
       "data": {
         "format": "datatable",
