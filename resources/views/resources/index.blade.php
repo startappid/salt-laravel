@@ -140,7 +140,7 @@ $(document).ready(function() {
     "scrollX": true,
     columnDefs: columnDefs,
     "processing": true,
-    "serverSide": false,
+    "serverSide": true,
     "ajax": {
       "url": "{{url('/api/v1/'.Request::segment(1))}}",
       headers: {

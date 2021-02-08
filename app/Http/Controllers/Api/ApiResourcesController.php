@@ -105,10 +105,11 @@ class ApiResourcesController extends Controller
             $search = null;
             if($format == 'datatable') {
                 $limit = intval($request->get('length', $limit));
-                $p = intval($request->get('start', 0));
-                $page = ($p > 0 ? $p - 1: $p);
+                $p = intval($request->get('start', 0)) / $limit;
+                $page = $p;
                 $search_params = $request->get('search');
                 $search = $search_params['value'];
+                $draw = $request['draw'];
                 unset($request['search']);
                 unset($request['draw']);
                 unset($request['start']);
@@ -161,10 +162,10 @@ class ApiResourcesController extends Controller
             }
 
             $modelCount = clone $model;
-            $count = $model->count();
+            $count = $modelCount->count();
             $meta = array(
-                'totalRecords' => $count,
-                'totalFilteredRecords' => $count
+                'recordsTotal' => $this->model->count(),
+                'recordsFiltered' => $count
             );
 
             $data = $model
@@ -176,9 +177,9 @@ class ApiResourcesController extends Controller
             $this->responder->set('meta', $meta);
             $this->responder->set('data', $data);
             if($format == 'datatable') {
-                $this->responder->set('draw', 1);
-                $this->responder->set('totalFilteredRecords', $meta['totalFilteredRecords']);
-                $this->responder->set('totalRecords', $meta['totalRecords']);
+                $this->responder->set('draw', $draw);
+                $this->responder->set('recordsFiltered', $meta['recordsFiltered']);
+                $this->responder->set('recordsTotal', $meta['recordsTotal']);
             }
             return $this->responder->response();
         } catch(\Exception $e) {
@@ -516,10 +517,11 @@ class ApiResourcesController extends Controller
             $search = null;
             if($format == 'datatable') {
                 $limit = intval($request->get('length', $limit));
-                $p = intval($request->get('start', 0));
-                $page = ($p > 0 ? $p - 1: $p);
+                $p = intval($request->get('start', 0)) / $limit;
+                $page = $p;
                 $search_params = $request->get('search');
                 $search = $search_params['value'];
+                $draw = $request['draw'];
                 unset($request['search']);
                 unset($request['draw']);
                 unset($request['start']);
@@ -572,10 +574,10 @@ class ApiResourcesController extends Controller
             }
 
             $modelCount = clone $model;
-            $count = $model->count();
+            $count = $modelCount->count();
             $meta = array(
-                'totalRecords' => $count,
-                'totalFilteredRecords' => $count
+                'recordsTotal' => $this->model->count(),
+                'recordsFiltered' => $count
             );
 
             $data = $model
@@ -587,9 +589,9 @@ class ApiResourcesController extends Controller
             $this->responder->set('meta', $meta);
             $this->responder->set('data', $data);
             if($format == 'datatable') {
-                $this->responder->set('draw', 1);
-                $this->responder->set('totalFilteredRecords', $meta['totalFilteredRecords']);
-                $this->responder->set('totalRecords', $meta['totalRecords']);
+                $this->responder->set('draw', $draw);
+                $this->responder->set('recordsFiltered', $meta['recordsFiltered']);
+                $this->responder->set('recordsTotal', $meta['recordsTotal']);
             }
             return $this->responder->response();
         } catch(\Exception $e) {

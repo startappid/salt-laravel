@@ -874,7 +874,7 @@ on event *create* or *insert* new data, with detail type *role is user*
 * [ ] Timepicker
 
 ## BUGS
-* [ ] Api request from datatable only show 25 data
+* [X] Api request from datatable only show 25 data
 * [ ] Component type "select" not selected on default value
-* [ ] API Unauthorize response HTML login page
+* [X] API Unauthorize response HTML login page
 
