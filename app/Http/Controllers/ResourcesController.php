@@ -44,7 +44,6 @@ class ResourcesController extends Controller {
      * @return void
      */
     public function __construct(Request $request, Resources $model) {
-
         try {
             $this->segment = $request->segment(1);
             if(file_exists(app_path('Models/'.Str::studly($this->segment)).'.php')) {
