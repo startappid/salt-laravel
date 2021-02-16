@@ -20,7 +20,8 @@
     <option
       value="{{$option['value']}}"
       @if(in_array($option['value'], $field['options_disabled'])) disabled="disabled" @endif
-      @if(in_array($option['value'], [$field['default']])) selected @endif
+      @if(isset($field['value']) && $field['value'] && in_array($option['value'], [$field['value']])) selected
+      @elseif(in_array($option['value'], [$field['default']])) selected @endif
     >
     {{$option['label']}}
     </option>
