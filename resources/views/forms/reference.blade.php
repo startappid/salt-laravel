@@ -67,16 +67,20 @@ $(function() {
       cache: true
     },
     minimumInputLength: 0
-  })
-  .select2('val', 1);
+  });
 
   @if(isset($field['value']) && $field['value'])
-  $.get("{{url('/api/v1/'.$field['reference'])}}/{{$field['value']}}")
-    .done((response) => {
-      const { data } = response
-      const option = new Option(data[label], data[id], false, false);
-      $("#form-{{$field['name']}}").append(option).trigger('change');
-    })
+  $.ajax({
+    url: "{{url('/api/v1/'.$field['reference'])}}/{{$field['value']}}",
+    headers: {
+      'Authorization': 'Bearer {{session('bearer_token')}}'
+    },
+  })
+  .done((response) => {
+    const { data } = response
+    const option = new Option(data[label], data[id], false, false);
+    $("#form-{{$field['name']}}").append(option).trigger('change');
+  });
   @endif
 
 })
