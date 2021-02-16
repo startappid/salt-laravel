@@ -110,6 +110,13 @@ class ApiResourcesController extends Controller
                 $search_params = $request->get('search');
                 $search = $search_params['value'];
                 $draw = $request['draw'];
+                if(isset($request['order'])) {
+                    $orders = array();
+                    foreach ($request['order'] as $value) {
+                        $orders[$request['columns'][$value['column']]['data']] = $value['dir'];
+                    }
+                    $request->merge(['orderBy' => $orders]);
+                }
                 unset($request['search']);
                 unset($request['draw']);
                 unset($request['start']);
@@ -118,6 +125,7 @@ class ApiResourcesController extends Controller
                 unset($request['format']);
                 unset($request['_token']);
                 unset($request['_']);
+                unset($request['order']);
             }
             $search = $request->get('search', $search);
 
@@ -522,6 +530,13 @@ class ApiResourcesController extends Controller
                 $search_params = $request->get('search');
                 $search = $search_params['value'];
                 $draw = $request['draw'];
+                if(isset($request['order'])) {
+                    $orders = array();
+                    foreach ($request['order'] as $value) {
+                        $orders[$request['columns'][$value['column']]['data']] = $value['dir'];
+                    }
+                    $request->merge(['orderBy' => $orders]);
+                }
                 unset($request['search']);
                 unset($request['draw']);
                 unset($request['start']);
@@ -530,6 +545,7 @@ class ApiResourcesController extends Controller
                 unset($request['format']);
                 unset($request['_token']);
                 unset($request['_']);
+                unset($request['order']);
             }
             $search = $request->get('search', $search);
 
