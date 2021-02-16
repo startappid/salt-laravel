@@ -19,9 +19,7 @@
     @if($field['required']) required @endif
     @if(isset($readonly) && $readonly === true ) readonly @endif
     rows="$field['option']['rows']?: 3"
-    rows="$field['option']['cols']?: 3">
-  {{isset($field['value'])? $field['value']: @old($field['name'])}}
-  </textarea>
+    rows="$field['option']['cols']?: 3">{{isset($field['value'])? $field['value']: @old($field['name'])}}</textarea>
 
   @if(isset($field['note']) && $field['note'])
   <small id="form-help-{{$field['name']}}" class="form-text text-muted">{{$field['note']}}</small>
