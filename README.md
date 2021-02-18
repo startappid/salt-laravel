@@ -26,8 +26,6 @@ $ rm -rf .git
 ### Starting project
 `DO COPY .env.example > .env`
 
-See `.env` file example below, copy than paste to your `.env` file on your project
-
 ```bash
 $ composer install
 $ php artisan migrate
@@ -35,6 +33,8 @@ $ php artisan passport:install --uuids
 $ php artisan db:seed
 $ php artisan storage:link
 ```
+
+See `.env` file example below, copy than paste to your `.env` file on your project
 
 `.env configuration`
 ```
