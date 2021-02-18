@@ -859,7 +859,7 @@ on event *create* or *insert* new data, with detail type *role is user*
 * [X] Datetime
 * [X] File
 * [X] Hidden
-* [ ] Image
+* [X] Image
 * [X] Password
 * [X] Radio
 * [X] Range
@@ -867,14 +867,14 @@ on event *create* or *insert* new data, with detail type *role is user*
 * [X] Time
 * [X] Url
 * [X] Select
-* [ ] Reference (Select2)
+* [X] Reference (Select2)
 * [ ] Slider
-* [ ] Datepicker
-* [ ] Datetimepicker
-* [ ] Timepicker
+* [X] Datepicker
+* [X] Datetimepicker
+* [X] Timepicker
 
 ## BUGS
 * [X] Api request from datatable only show 25 data
-* [ ] Component type "select" not selected on default value
+* [X] Component type "select" not selected on default value
 * [X] API Unauthorize response HTML login page
 
