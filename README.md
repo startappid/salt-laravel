@@ -25,6 +25,7 @@ $ rm -rf .git
 
 ### Starting project
 `DO COPY .env.example > .env`
+
 See `.env` file example below, copy than paste to your `.env` file on your project
 
 ```bash
