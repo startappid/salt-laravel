@@ -46,7 +46,12 @@
       <label>File Browser</label>
       <div></div>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="form-files-input" />
+        <input
+          type="file"
+          class="custom-file-input"
+          id="form-files-input"
+          accept="{{isset($accept)? $accept: '*'}}"
+        />
         <label class="custom-file-label" for="form-files-input">Choose file</label>
       </div>
     </div>

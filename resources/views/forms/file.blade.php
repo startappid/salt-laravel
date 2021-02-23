@@ -21,6 +21,7 @@
       placeholder="{{$field['placeholder']? Str::title($field['placeholder']) : Str::title(str_replace('_', ' ', $field['name']))}}"
       @if($field['required']) required @endif
       @if(isset($readonly) && $readonly === true ) readonly @endif
+      accept="{{isset($field['accept'])? $field['accept']: '*'}}"
     >
     <label class="custom-file-label" for="form-{{$field['name']}}">{{$field['placeholder']? Str::title($field['placeholder']) : Str::title(str_replace('_', ' ', $field['name']))}}</label>
   </div>

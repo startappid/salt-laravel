@@ -582,6 +582,7 @@ class ModelName extends Resources {
             'nullable' => false,
             'note' => 'Help text run here',
             'placeholder' => 'pick your file',
+            'accept' => 'image/*,.pdf'
         ],
 
         // TYPE: Reference
