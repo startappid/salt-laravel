@@ -30,6 +30,61 @@ class Users extends Resources {
         'is_active' => 'integer|nullable'
     );
 
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'first_name'
+            ],
+            [
+                'class' => 'col-6',
+                'field' => 'last_name'
+            ],
+        ],
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'username'
+            ],
+            [
+                'class' => 'col-6',
+                'field' => 'email'
+            ],
+        ],
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'password'
+            ],
+            [
+                'class' => 'col-6',
+                'field' => 'password_confirmation'
+            ],
+        ],
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'photo'
+            ],
+        ],
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'gender'
+            ],
+            [
+                'class' => 'col-6',
+                'field' => 'phone'
+            ],
+        ],
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'is_active'
+            ],
+        ],
+    );
+
     protected $structures = array(
         "id" => [
             'name' => 'id',
@@ -47,68 +102,76 @@ class Users extends Resources {
             'note' => null
         ],
 
+        "first_name" => [
+            'name' => 'first_name',
+            'label' => 'Nama Depan',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string|max:50',
+                'update' => 'required|string|max:50',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => 'Nama Depan',
+        ],
+
+        "last_name" => [
+            'name' => 'last_name',
+            'label' => 'Nama Belakang',
+            'display' => true,
+            'validation' => [
+                'create' => 'required|string|max:50',
+                'update' => 'required|string|max:50',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => 'Last name',
+        ],
+
         "username" => [
             'name' => 'username',
             'label' => 'Username',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'required|string|max:255|unique:users,username',
                 'update' => 'required|string|max:255|unique:users,username,{id}',
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => true,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Username',
         ],
 
         "email" => [
             'name' => 'email',
             'label' => 'Email',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'required|string|email|max:255|unique:users,username',
                 'update' => 'required|string|email|max:255|unique:users,username,{id}',
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => true,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
-        ],
-
-        "first_name" => [
-            'name' => 'first_name',
-            'label' => 'First Name',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|string|max:50',
-                'update' => 'required|string|max:50',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
-        ],
-
-        "last_name" => [
-            'name' => 'last_name',
-            'label' => 'Last Name',
-            'display' => false,
-            'validation' => [
-                'create' => 'required|string|max:50',
-                'update' => 'required|string|max:50',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Email',
         ],
 
         "password" => [
@@ -116,15 +179,17 @@ class Users extends Resources {
             'label' => 'Password',
             'display' => false,
             'validation' => [
-                'create' => 'required|string|min:6|confirmed',
-                'update' => 'nullable|string|min:6|confirmed',
+                'create' => 'required|min:6',
+                'update' => 'required|min:6',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => true,
+            'type' => 'password',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Password',
         ],
 
         "password_confirmation" => [
@@ -132,47 +197,66 @@ class Users extends Resources {
             'label' => 'Password Confirmation',
             'display' => false,
             'validation' => [
-                'create' => 'required_with:password|same:password|min:6',
-                'update' => 'required_with:password|same:password|min:6',
+                'create' => 'required|same:password',
+                'update' => 'required|same:password',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => true,
+            'type' => 'password',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Password Confirmation',
         ],
 
         "gender" => [
             'name' => 'gender',
             'label' => 'Gender',
-            'display' => false,
+            'default' => null,
+            'display' => true,
             'validation' => [
                 'create' => 'integer|nullable',
                 'update' => 'integer|nullable',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => false,
+            'type' => 'radio',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
+            'inline' => true,
+            'options' => [
+                [
+                    'value' => 1,
+                    'label' => 'Pria'
+                ],
+                [
+                    'value' => 2,
+                    'label' => 'Wanita'
+                ],
+            ],
+            'options_disabled' => []
         ],
 
         "phone" => [
             'name' => 'phone',
-            'label' => 'Phone',
-            'display' => false,
+            'label' => 'No. Telp',
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string',
                 'update' => 'nullable|string',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => false,
+            'type' => 'tel',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'No. Telp',
         ],
 
         "photo" => [
@@ -185,14 +269,17 @@ class Users extends Resources {
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => false,
+            'type' => 'file',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => 'file format: jpeg, jpg, png',
+            'placeholder' => 'pick your file',
         ],
 
         "is_active" => [
             'name' => 'is_active',
+            'default' => 2,
             'label' => 'Active',
             'display' => false,
             'validation' => [
@@ -201,10 +288,24 @@ class Users extends Resources {
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'text',
+            'required' => false,
+            'type' => 'radio',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
+            'inline' => true,
+            'options' => [
+                [
+                    'value' => 1,
+                    'label' => 'Active'
+                ],
+                [
+                    'value' => 2,
+                    'label' => 'No Active'
+                ],
+            ],
+            'options_disabled' => []
         ],
 
         "created_at" => [
