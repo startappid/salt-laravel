@@ -25,10 +25,12 @@ require __DIR__.'/auth.php';
 
 // DEFAULT: RESOURCES
 // ->namespace($this->namespace)
-Route::namespace('App\Http\Controllers')->middleware(['auth'])->group(function () {
+Route::namespace('App\Http\Controllers')->group(function () {
     // Countries
     // Route::get("countries/{id}", 'CountriesController@show');
     // Route::get("countries/{id}/edit", 'CountriesController@edit');
+
+    Route::get('/roles/{id}/edit', 'RolesController@editRoles');
 
     Route::get("{collection}", 'ResourcesController@index');
     Route::get("{collection}/trash", 'ResourcesController@trash');

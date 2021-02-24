@@ -21,6 +21,7 @@ use ReflectionException;
 use Exception;
 use NotFoundHttpException;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\Auth;
 
 class ResourcesController extends Controller {
 
@@ -57,8 +58,9 @@ class ResourcesController extends Controller {
 
             if($this->model) {
                 $this->structures = $this->model->getStructure();
+                // SET default Authentication
+                $this->middleware('auth', ['only' => $this->model->getAuthenticatedRoutes()]);
             }
-            $this->registerPermissions($request);
             $this->table_name = $this->segment;
             $this->generateBreadcrumbs($request->segments());
             $this->segments = $request->segments();
@@ -86,6 +88,19 @@ class ResourcesController extends Controller {
         $this->middleware('permission:'.$this->segment.'.delete.*|'.$this->segment.'.*.*|*.delete.*|*.*.*', ['only' => ['destroy']]);
     }
 
+    private function checkPermissions($authenticatedRoute, $authorize) {
+        if(in_array($authenticatedRoute, $this->model->getAuthenticatedRoutes())) {
+            $table = $this->model->getTable();
+            $generatedPermissions = [$table.'.*.*', $table.'.'.$authorize.'.*'];
+            $defaultPermissions = $this->model->getPermissions($authorize);
+            $permissions = array_merge($generatedPermissions, $defaultPermissions);
+            $user = Auth::user();
+            if(!$user->hasAnyPermission($permissions)) {
+                abort(403);
+            }
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -94,6 +109,7 @@ class ResourcesController extends Controller {
     public function index(Request $request) {
 
         if(!$this->model) abort(404);
+        $this->checkPermissions('index', 'read');
 
         try {
             $references = [];
