@@ -18,7 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->group(function () {
+
+    Route::middleware(['auth:api'])->prefix('role_has_permission')->group(function () {
+        Route::post('{id}/revoke_permission', 'Api\ApiRoleAndPermissionController@revokePermission');
+        Route::post('{id}/give_permission', 'Api\ApiRoleAndPermissionController@givePermision');
+    });
 
     Route::group([
         'prefix' => 'user'
