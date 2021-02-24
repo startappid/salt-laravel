@@ -6,13 +6,13 @@
 @section('subheader-actions')
 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
 @foreach($breadcrumbs as $breadcrumb)
-    @if($breadcrumb['active'])
-    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-    @else
-    <li class="breadcrumb-item">
-        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
-    </li>
-    @endif
+  @if($breadcrumb['active'])
+  <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+  @else
+  <li class="breadcrumb-item">
+      <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+  </li>
+  @endif
 @endforeach
 </ul>
 @endsection
@@ -43,12 +43,16 @@
               @endforeach
               <div class="btn-group">
                 <a class="btn btn-round btn-light" href="{{url(Request::segment(1).'/'.Request::segment(2))}}" role="button"><i class="fa fa-close"></i> Cancel</a>
+                @can(Request::segment(1).'.destroy.*')
                 <button type="button" class="btn btn-round btn-danger">
                   <a href="#" class="text-light form-delete" data-id="{{Request::segment(2)}}">
                     <i class="fa fa-trash"></i> Delete
                   </a>
                 </button>
+                @endcan
+                @can(Request::segment(1).'.update.*')
                 <button type="submit" class="btn btn-round btn-success"><i class="fa fa-check"></i> Save</button>
+                @endcan
               </div>
             </form>
           </div>

@@ -9,10 +9,18 @@
 
 <!-- SUBHEADER::TOOLBAR -->
 @section('subheader-toolbar')
+@can(Request::segment(1).'.create.*')
 <a href="{{url(Request::segment(1))}}/create" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-plus"></i> New</a>
+@endcan
+@can(Request::segment(1).'.import.*')
 <a href="{{url(Request::segment(1))}}/import" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-download"></i> Import</a>
+@endcan
+@can(Request::segment(1).'.export.*')
 <a href="{{url(Request::segment(1))}}/export" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-upload"></i> Export</a>
+@endcan
+@can(Request::segment(1).'.trash.*')
 <a href="{{url(Request::segment(1))}}/trash" class="btn btn-clean btn-sm font-size-base mr-1 text-danger"><i class="fa fa-trash"></i> Trash</a>
+@endcan
 @endsection
 <!-- SUBHEADER::ACTIONS -->
 @section('subheader-actions')
@@ -154,6 +162,7 @@ $(document).ready(function() {
     createdRow: function ( row, data, index ) {
       $(row).find('td:last-child').addClass('float-right');
       $(row).find('td:last-child').append(`
+        @can(Request::segment(1).'.read.*')
         <a href="{{url(Request::segment(1))}}/${data['id']}" class="btn btn-sm btn-clean btn-icon mr-2" title="Show details">
             <span class="svg-icon svg-icon-md">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -169,6 +178,8 @@ $(document).ready(function() {
               </svg>
             </span>
         </a>
+        @endcan
+        @can(Request::segment(1).'.update.*')
         <a href="{{url(Request::segment(1))}}/${data['id']}/edit" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
             <span class="svg-icon svg-icon-md">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -183,6 +194,8 @@ $(document).ready(function() {
               </svg>
             </span>
         </a>
+        @endcan
+        @can(Request::segment(1).'.destroy.*')
         <a href="javascript:;" class="btn btn-sm btn-clean btn-icon form-delete" data-id="/${data['id']}" title="Delete">
             <span class="svg-icon svg-icon-md">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -194,6 +207,7 @@ $(document).ready(function() {
                 </svg>
             </span>
         </a>
+        @endcan
       `);
     },
     "columns": columns

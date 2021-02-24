@@ -10,8 +10,12 @@
 <!-- SUBHEADER::TOOLBAR -->
 @section('subheader-toolbar')
 <div class="btn-group">
+  @can(Request::segment(1).'.restore.*')
   <button class="btn btn-round"><a href="#" class="text-dark form-trash-restore"><i class="fa fa-trash-restore"></i> Restore All</a></button>
+  @endcan
+  @can(Request::segment(1).'.empty.*')
   <button class="btn btn-round"><a href="#" class="text-danger form-trash-empty"><i class="fa fa-trash"></i> Empty Trash</a></button>
+  @endcan
 </div>
 @endsection
 
@@ -210,6 +214,7 @@ $(document).ready(function() {
     createdRow: function ( row, data, index ) {
       $(row).find('td:last-child').addClass('float-right');
       $(row).find('td:last-child').append(`
+        @can(Request::segment(1).'.read.*')
         <a href="{{url(Request::segment(1))}}/${data['id']}/trashed" class="btn btn-sm btn-clean btn-icon mr-2" title="Show details">
             <span class="svg-icon svg-icon-md">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -225,6 +230,8 @@ $(document).ready(function() {
               </svg>
             </span>
         </a>
+        @endcan
+        @can(Request::segment(1).'.restore.*')
         <a href="#" class="btn btn-sm btn-clean btn-icon mr-2 form-restore" data-id="${data['id']}" title="Restore">
             <span class="svg-icon svg-icon-md">
               <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -253,6 +260,8 @@ $(document).ready(function() {
               </svg>
             </span>
         </a>
+        @endcan
+        @can(Request::segment(1).'.delete.*')
         <a href="javascript:;" class="btn btn-sm btn-clean btn-icon form-delete" data-id="/${data['id']}" title="Delete Permanent">
             <span class="svg-icon svg-icon-md">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -264,6 +273,7 @@ $(document).ready(function() {
                 </svg>
             </span>
         </a>
+        @endcan
       `);
     },
     "columns": columns

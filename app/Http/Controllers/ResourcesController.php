@@ -155,6 +155,7 @@ class ResourcesController extends Controller {
      */
     public function create(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('create', 'create');
         try {
             $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
 
@@ -181,6 +182,7 @@ class ResourcesController extends Controller {
     public function store(Request $request) {
 
         if(!$this->model) abort(404);
+        $this->checkPermissions('store', 'create');
 
         try {
 
@@ -208,6 +210,7 @@ class ResourcesController extends Controller {
      */
     public function show(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('show', 'read');
 
         try {
             $data = $this->model->findOrFail($id);
@@ -245,6 +248,7 @@ class ResourcesController extends Controller {
      */
     public function trashed(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('trashed', 'read');
         try {
             $data = $this->model->onlyTrashed()->findOrFail($id);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -278,6 +282,7 @@ class ResourcesController extends Controller {
      */
     public function edit(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('edit', 'update');
         try {
             $data = $this->model->findOrFail($id);
             $this->setTitle(Str::title(Str::singular($this->table_name)));
@@ -311,6 +316,7 @@ class ResourcesController extends Controller {
      */
     public function update(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('update', 'update');
         try {
             // Change rules of unique column
             $validator = $this->model->validator($request, 'update', $id);
@@ -337,6 +343,7 @@ class ResourcesController extends Controller {
      */
     public function destroy(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('destroy', 'destroy');
         try {
             $model = $this->model::findOrFail($id);
             $model->delete();
@@ -389,6 +396,7 @@ class ResourcesController extends Controller {
      */
     public function import(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('import', 'import');
         try {
             $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
             $this->view = view($this->table_name.'.import');
@@ -448,6 +456,7 @@ class ResourcesController extends Controller {
      */
     public function export(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('export', 'export');
 
         try {
             $this->setTitle(Str::title($this->title .' '.str_replace('_', ' ', Str::singular($this->table_name))));
@@ -514,6 +523,7 @@ class ResourcesController extends Controller {
      */
     public function trash(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('trash', 'trash');
         try {
 
             $references = [];
@@ -559,6 +569,7 @@ class ResourcesController extends Controller {
      */
     public function restore(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('restore', 'restore');
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);
             $model->restore();
@@ -577,6 +588,7 @@ class ResourcesController extends Controller {
      */
     public function putBack(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('putback', 'restore');
         try {
             $model = $this->model->onlyTrashed()->restore();
             return redirect($this->table_name)
@@ -593,6 +605,7 @@ class ResourcesController extends Controller {
      */
     public function delete(Request $request, $collection, $id = null) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('delete', 'delete');
         try {
             $model = $this->model->onlyTrashed()->findOrFail($id);
             $model->forceDelete();
@@ -610,6 +623,7 @@ class ResourcesController extends Controller {
      */
     public function empty(Request $request) {
         if(!$this->model) abort(404);
+        $this->checkPermissions('empty', 'empty');
         try {
             $model = $this->model->onlyTrashed()->forceDelete();
             return redirect($this->table_name)

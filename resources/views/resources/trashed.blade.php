@@ -6,21 +6,25 @@
 @section('subheader-actions')
 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
 @foreach($breadcrumbs as $breadcrumb)
-    @if($breadcrumb['active'])
-    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-    @else
-    <li class="breadcrumb-item">
-        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
-    </li>
-    @endif
+  @if($breadcrumb['active'])
+  <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+  @else
+  <li class="breadcrumb-item">
+      <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+  </li>
+  @endif
 @endforeach
 </ul>
 @endsection
 <!-- SUBHEADER::TOOLBAR -->
 @section('subheader-toolbar')
 <div class="btn-group">
+  @can(Request::segment(1).'.restore.*')
   <button class="btn btn-round"><a href="#" class="text-dark form-restore" data-id="{{Request::segment(2)}}"><i class="fa fa-trash-restore"></i> Restore</a></button>
+  @endcan
+  @can(Request::segment(1).'.delete.*')
   <button class="btn btn-round" class="text-danger"><a href="#" class="text-danger form-delete" data-id="{{Request::segment(2)}}"><i class="fa fa-trash"></i> Delete Forever</a></button>
+  @endcan
 </div>
 @endsection
 
@@ -47,6 +51,9 @@
                 @endforeach
               </div>
               @endforeach
+              <div class="btn-group">
+                <a class="btn btn-round btn-light" href="{{url($segments[0])}}/trash" role="button"><i class="fa fa-close"></i> Cancel</a>
+              </div>
             </form>
           </div>
         </div>

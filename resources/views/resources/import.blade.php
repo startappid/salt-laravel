@@ -6,13 +6,13 @@
 @section('subheader-actions')
 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
 @foreach($breadcrumbs as $breadcrumb)
-    @if($breadcrumb['active'])
-    <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
-    @else
-    <li class="breadcrumb-item">
-        <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
-    </li>
-    @endif
+  @if($breadcrumb['active'])
+  <li class="breadcrumb-item active">{{$breadcrumb['title']}}</li>
+  @else
+  <li class="breadcrumb-item">
+      <a href="{{url($breadcrumb['link'])}}" class="text-muted">{{$breadcrumb['title']}}</a>
+  </li>
+  @endif
 @endforeach
 </ul>
 @endsection
@@ -37,7 +37,9 @@
               <div class="row mt-6">
                 <div class="btn-group">
                   <a class="btn btn-round btn-light" href="{{url($segments[0])}}" role="button"><i class="fa fa-close"></i> Cancel</a>
+                  @can(Request::segment(1).'.import.*')
                   <button type="submit" class="btn btn-round btn-success"><i class="fa fa-download"></i> Import</button>
+                  @endcan
                 </div>
               </div>
             </form>
