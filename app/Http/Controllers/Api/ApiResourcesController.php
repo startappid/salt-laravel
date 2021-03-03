@@ -130,7 +130,7 @@ class ApiResourcesController extends Controller
             $search = $request->get('search', $search);
 
             // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
+            $fields = $request->except(['page', 'limit', 'relationship', 'search', 'withtrashed', 'orderBy']);
             if(count($fields)) {
                 foreach ($fields as $field => $value) {
                     $model->where($field, $value);
@@ -146,9 +146,8 @@ class ApiResourcesController extends Controller
                 });
             }
 
-            if($request->has('with') && $request->get('with')) {
-                $relations = explode(',', $request->get('with'));
-                // $model->with($relations);
+            if($request->has('relationship') && $request->get('relationship')) {
+                $relations = $request->get('relationship');
                 foreach ($relations as $relation) {
                     $model->with([$relation => function($query) use($request) {
                         if($request->has('withtrashed')) {
@@ -550,7 +549,7 @@ class ApiResourcesController extends Controller
             $search = $request->get('search', $search);
 
             // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
+            $fields = $request->except(['page', 'limit', 'relationship', 'search', 'withtrashed', 'orderBy']);
             if(count($fields)) {
                 foreach ($fields as $field => $value) {
                     $model->where($field, $value);
@@ -566,9 +565,8 @@ class ApiResourcesController extends Controller
                 });
             }
 
-            if($request->has('with') && $request->get('with')) {
-                $relations = explode(',', $request->get('with'));
-                // $model->with($relations);
+            if($request->has('relationship') && $request->get('relationship')) {
+                $relations = $request->get('relationship');
                 foreach ($relations as $relation) {
                     $model->with([$relation => function($query) use($request) {
                         if($request->has('withtrashed')) {
