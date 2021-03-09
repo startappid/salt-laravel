@@ -39,6 +39,17 @@ class Handler extends ExceptionHandler
         });
     }
 
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if($request->is('api/*')) {
+            $responder = resolve(\App\Services\ResponseService::class);
+            $responder->set('message', 'You do not have required authorization.');
+            $responder->setStatus(403, 'Forbidden');
+            return $responder->response();
+        }
+        redirect()->guest(route('login'));
+    }
+
     /**
      * Render an exception into an HTTP response.
      *
