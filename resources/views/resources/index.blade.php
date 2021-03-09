@@ -156,7 +156,7 @@ $(document).ready(function() {
       },
       "data": {
         "format": "datatable",
-        "with": "{{$reference}}"
+        "relationship": "{{$reference}}"
       }
     },
     createdRow: function ( row, data, index ) {
