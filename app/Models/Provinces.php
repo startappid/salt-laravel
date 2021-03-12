@@ -11,6 +11,21 @@ use Illuminate\Support\Facades\Schema;
 
 class Provinces extends Resources {
 
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        'limit',
+        'page',
+        'relationship',
+        'withtrashed',
+        'orderby',
+        // Fields table provinces
+        'id',
+        'name',
+        'country_id'
+    ];
+
     protected $rules = array(
         'country_id' => 'required|integer',
         'name' => 'required|string',
@@ -133,6 +148,7 @@ class Provinces extends Resources {
             'nullable' => false,
             'note' => null
         ],
+
         "updated_at" => [
             'name' => 'updated_at',
             'default' => null,
@@ -150,6 +166,7 @@ class Provinces extends Resources {
             'nullable' => false,
             'note' => null
         ],
+
         "deleted_at" => [
             'name' => 'deleted_at',
             'default' => null,
