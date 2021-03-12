@@ -148,7 +148,7 @@ class ApiResourcesController extends Controller
 
             if($request->has('relationship') && $request->get('relationship')) {
                 $relations = $request->get('relationship');
-                foreach ($relations as $relation) {
+                foreach ((array) $relations as $relation) {
                     $model->with([$relation => function($query) use($request) {
                         if($request->has('withtrashed')) {
                             $query->withTrashed();
