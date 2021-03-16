@@ -187,7 +187,7 @@ Pada template blade, role dapat digunakan untuk membatasi sebuah text, button, h
 1. @role(`'role'`)
   
 akan melakukan proses validasi user yang login dengan role yang akan dituju.  
-contoh:  
+contoh:
 * @role(`'admin'`)  
   
 Akan melakukan validasi user, apakah memiliki role admin.
@@ -195,32 +195,32 @@ Akan melakukan validasi user, apakah memiliki role admin.
 2. @hasrole(`'role'`)
 
 akan melakukan proses validasi user yang login dengan role yang akan dituju.  
-contoh:  
-* @hasrole(`'superadmin'`)  
+contoh:
+@hasrole(`'superadmin'`)  
   
 Akan melakukan validasi user, apakah memiliki role superadmin.
   
 3. @hasanyrole(`'anyrole|anyrole'`)
 
 akan melakukan proses validasi user yang login dengan salah satu role yang akan dituju.  
-contoh:  
-* @hasanyrole(`'admin|superadmin'`)  
+contoh:
+@hasanyrole(`'admin|superadmin'`)  
   
 Akan melakukan validasi user, apakah memiliki role admin atau superadmin.
   
 4. @hasallrole(`'anyrole|anyrole'`)
 
 akan melakukan proses validasi user yang login dengan seluruh role yang akan dituju.  
-contoh:  
-* @hasallrole(`'admin|superadmin'`)  
+contoh:
+@hasallrole(`'admin|superadmin'`)  
   
 Akan melakukan validasi user, apakah memiliki role admin dan superadmin.
   
 5. @unlessrole(`'role'`)
 
 akan melakukan proses validasi user yang login dengan salah satu role yang akan dituju, tetapi validasi sukses jika user yang login tidak memiliki role yang dituju.  
-contoh:  
-* @unlessrole(`'admin'`)  
+contoh:
+@unlessrole(`'admin'`)  
   
 Akan melakukan validasi user, apakah tidak memiliki role admin.
   
