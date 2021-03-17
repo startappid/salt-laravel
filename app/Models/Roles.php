@@ -128,5 +128,5 @@ class Roles extends Resources
         ]
     );
 
-    protected $searchable = array();
+    protected $searchable = array('name');
 }

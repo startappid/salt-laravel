@@ -26,6 +26,11 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
         Route::post('{id}/give_permission', 'Api\ApiRoleAndPermissionController@givePermision');
     });
 
+    Route::middleware(['auth:api'])->prefix('user_has_role')->group(function () {
+        Route::post('{id}/assign_role', 'Api\ApiRoleAndPermissionController@assignRole');
+        Route::post('{id}/remove_role', 'Api\ApiRoleAndPermissionController@removeRole');
+    });
+
     Route::group([
         'prefix' => 'user'
     ], function () {
@@ -35,7 +40,7 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
         Route::patch('password/reset', 'AuthController@resetPassword');
         Route::group([
             'middleware' => 'auth:api'
-        ], function() {
+        ], function () {
             Route::delete('logout', 'AuthController@logout');
             Route::get('profile', 'AuthController@profile');
             Route::get('checkin', 'AuthController@checkin');

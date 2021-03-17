@@ -31,6 +31,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // Route::get("countries/{id}/edit", 'CountriesController@edit');
 
     Route::get('/roles/{id}/edit', 'RolesController@editRoles');
+    Route::get('/users/{id}/role', 'UsersController@role');
 
     Route::get("{collection}", 'ResourcesController@index');
     Route::get("{collection}/trash", 'ResourcesController@trash');
