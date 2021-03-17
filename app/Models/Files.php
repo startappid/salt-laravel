@@ -7,8 +7,24 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\Traits\Fileable;
 
 class Files extends Resources {
+
+    use Fileable;
+    protected $selfFileable = true;
+    protected $fillable = [
+        'fullpath',
+        'path',
+        'filename',
+        'title',
+        'description',
+        'size',
+        'ext',
+        'type',
+        'foreign_table',
+        'foreign_id',
+    ];
 
     protected $rules = array(
         'file' => 'required|file',
@@ -21,6 +37,7 @@ class Files extends Resources {
         'ext' => 'nullable|string|max:20',
         'type' => 'required|string'
     );
+
     protected $forms = array(
         [
             [
@@ -43,6 +60,7 @@ class Files extends Resources {
             ]
         ]
     );
+
     protected $structures = array(
         "id" => [
             'name' => 'id',
