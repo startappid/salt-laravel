@@ -91,7 +91,8 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model->newQuery();
+            // $model = $this->model->newQuery();
+            return $this->model->filter()->get();
             $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
