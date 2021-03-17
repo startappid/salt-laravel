@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\Traits\Fileable;
 
 class Countries extends Resources {
+
+    use Fileable;
 
     protected $rules = array(
         'name' => 'required|string',
