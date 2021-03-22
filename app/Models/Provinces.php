@@ -42,10 +42,6 @@ class Provinces extends Resources {
                 'class' => 'col-6',
                 'field' => 'name'
             ],
-            [
-                'class' => 'col-2',
-                'field' => 'isocode'
-            ]
         ],
     );
 
@@ -85,24 +81,6 @@ class Provinces extends Resources {
             'nullable' => false,
             'note' => null,
             'placeholder' => 'Province',
-        ],
-        "isocode" => [
-            'name' => 'isocode',
-            'default' => null,
-            'label' => 'ISO Code',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|string|max:5|unique:provinces',
-                'update' => 'required|string|max:5|unique:provinces,isocode,{id}',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => 'ISO Code',
         ],
 
         "country_id" => [
