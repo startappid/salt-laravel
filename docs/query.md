@@ -7,7 +7,7 @@ Filter data in your request to API
 * page: `integer default(1) ― optional`
 * limit: `integer default(25) ― optional`
 * relationship: `array ― optional`
-* withTrashed: `array ― optional`
+* withTrashed: `boolean default(false) ― optional`
 * fieldname[where]: `array ― optional`
 * fieldname[orwhere]: `array ― optional`
 * fieldname[eq]: `string|integer ― optional`

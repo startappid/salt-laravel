@@ -11,7 +11,40 @@ use Illuminate\Support\Facades\Schema;
 
 class Cities extends Resources {
 
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        // 'limit',
+        // 'page',
+        'relationship',
+        'withtrashed',
+        'orderby',
+        // Fields table provinces
+        'id',
+        'name',
+        'country_id',
+        'province_id'
+    ];
+
     protected $rules = array();
+
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-2',
+                'field' => 'country_id'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'province_id'
+            ],
+            [
+                'class' => 'col',
+                'field' => 'name'
+            ],
+        ],
+    );
 
     protected $structures = array(
         "id" => [
@@ -32,47 +65,67 @@ class Cities extends Resources {
         "name" => [
             'name' => 'name',
             'label' => 'Name',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'required|string',
                 'update' => 'required|string',
                 'delete' => null,
             ],
             'primary' => false,
+            'required' => true,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
+            'placeholder' => 'Name',
             'note' => null
         ],
         "country_id" => [
             'name' => 'country_id',
             'label' => 'Country',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'required|integer',
                 'update' => 'required|integer',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'integer',
+            'required' => true,
+            'type' => 'reference',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Country',
+            // Options reference
+            'reference' => "countries", // Select2 API endpoint => /api/v1/countries
+            'relationship' => 'country', // relationship request datatable
+            'option' => [
+                'value' => 'id',
+                'label' => 'name'
+            ]
         ],
         "province_id" => [
             'name' => 'province_id',
             'label' => 'Province',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'required|integer',
                 'update' => 'required|integer',
                 'delete' => null,
             ],
             'primary' => false,
-            'type' => 'integer',
+            'required' => true,
+            'type' => 'reference',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => 'Country',
+            // Options reference
+            'reference' => "provinces", // Select2 API endpoint => /api/v1/countries
+            'relationship' => 'province', // relationship request datatable
+            'option' => [
+                'value' => 'id',
+                'label' => 'name'
+            ]
         ],
         // "province" => [
         //     'name' => 'province',

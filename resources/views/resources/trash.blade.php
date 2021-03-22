@@ -206,9 +206,28 @@ $(document).ready(function() {
       "headers": {
         'Authorization': 'Bearer {{session('bearer_token')}}'
       },
-      "data": {
-        "format": "datatable",
-        "relationship": "{{$reference}}"
+      "data":  function ( data ) {
+        data['format'] = "datatable";
+        @if(count($references))
+        data['relationship'] = <?=json_encode($references)?>;
+        @endif
+        const page = (data.start / data.length) + 1
+        const search = data.search.value
+
+        data.page = page
+        data.limit = data.length
+        data.search = search
+
+        const order = data.order
+        const orders = {}
+        for (const key in order) {
+          const column = data.columns[order[key]['column']]
+          orders[column['data']] = order[key]['dir']
+        }
+
+        if(Object.keys(orders).length) {
+          data['orderby'] = orders
+        }
       }
     },
     createdRow: function ( row, data, index ) {

@@ -9,10 +9,12 @@ use DB;
 use App\Observers\Observer as Observer;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use GrammaticalQuery\FilterQueryString\FilterQueryString;
 
 class Resources extends Model {
 
     use SoftDeletes;
+    use FilterQueryString;
 
     protected $guard_name = 'web';
     protected $limit_chars = 50;
@@ -27,6 +29,17 @@ class Resources extends Model {
         'size'    => 'The :attribute must be exactly :size.',
         'between' => 'The :attribute value :input is not between :min - :max.',
         'in'      => 'The :attribute must be one of the following types: :values',
+    ];
+
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        // 'limit',
+        // 'page',
+        'relationship',
+        'withtrashed',
+        'orderby',
     ];
 
     // NOTE: 'index' and 'show' set as default for public consumption

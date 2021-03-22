@@ -91,7 +91,9 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model->newQuery();
+            $count = $this->model->count();
+            $model = $this->model->filter();
+
             $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
@@ -102,77 +104,14 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            $search = null;
             if($format == 'datatable') {
-                $limit = intval($request->get('length', $limit));
-                $p = intval($request->get('start', 0)) / $limit;
-                $page = $p;
-                $search_params = $request->get('search');
-                $search = $search_params['value'];
                 $draw = $request['draw'];
-                if(isset($request['order'])) {
-                    $orders = array();
-                    foreach ($request['order'] as $value) {
-                        $orders[$request['columns'][$value['column']]['data']] = $value['dir'];
-                    }
-                    $request->merge(['orderBy' => $orders]);
-                }
-                unset($request['search']);
-                unset($request['draw']);
-                unset($request['start']);
-                unset($request['length']);
-                unset($request['columns']);
-                unset($request['format']);
-                unset($request['_token']);
-                unset($request['_']);
-                unset($request['order']);
-            }
-            $search = $request->get('search', $search);
-
-            // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'relationship', 'search', 'withtrashed', 'orderBy']);
-            if(count($fields)) {
-                foreach ($fields as $field => $value) {
-                    $model->where($field, $value);
-                }
-            }
-
-            if($search) {
-                $searchable = $this->model->getSearchable();
-                $model->where(function($query) use ($searchable, $search) {
-                    foreach ($searchable as $field) {
-                        $query->orWhere($field, 'LIKE', '%' . trim($search) . '%');
-                    }
-                });
-            }
-
-            if($request->has('relationship') && $request->get('relationship')) {
-                $relations = $request->get('relationship');
-                foreach ((array) $relations as $relation) {
-                    $model->with([$relation => function($query) use($request) {
-                        if($request->has('withtrashed')) {
-                            $query->withTrashed();
-                        }
-                    }]);
-                }
-            }
-
-            if($request->has('withtrashed')) {
-                $model->withTrashed();
-            }
-
-            if($request->has('orderBy')) {
-                $order = $request->get('orderBy');
-                foreach ($order as $key => $value) {
-                    $model->orderBy($key, $value);
-                }
             }
 
             $modelCount = clone $model;
-            $count = $modelCount->count();
             $meta = array(
-                'recordsTotal' => $this->model->count(),
-                'recordsFiltered' => $count
+                'recordsTotal' => $count,
+                'recordsFiltered' => $modelCount->count()
             );
 
             $data = $model
@@ -510,7 +449,10 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $model = $this->model->onlyTrashed();
+
+            $count = $this->model->count();
+            $model = $this->model->filter()->onlyTrashed();
+
             $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
@@ -521,77 +463,14 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            $search = null;
             if($format == 'datatable') {
-                $limit = intval($request->get('length', $limit));
-                $p = intval($request->get('start', 0)) / $limit;
-                $page = $p;
-                $search_params = $request->get('search');
-                $search = $search_params['value'];
                 $draw = $request['draw'];
-                if(isset($request['order'])) {
-                    $orders = array();
-                    foreach ($request['order'] as $value) {
-                        $orders[$request['columns'][$value['column']]['data']] = $value['dir'];
-                    }
-                    $request->merge(['orderBy' => $orders]);
-                }
-                unset($request['search']);
-                unset($request['draw']);
-                unset($request['start']);
-                unset($request['length']);
-                unset($request['columns']);
-                unset($request['format']);
-                unset($request['_token']);
-                unset($request['_']);
-                unset($request['order']);
-            }
-            $search = $request->get('search', $search);
-
-            // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'relationship', 'search', 'withtrashed', 'orderBy']);
-            if(count($fields)) {
-                foreach ($fields as $field => $value) {
-                    $model->where($field, $value);
-                }
-            }
-
-            if($search) {
-                $searchable = $this->model->getSearchable();
-                $model->where(function($query) use ($searchable, $search) {
-                    foreach ($searchable as $field) {
-                        $query->orWhere($field, 'LIKE', '%' . trim($search) . '%');
-                    }
-                });
-            }
-
-            if($request->has('relationship') && $request->get('relationship')) {
-                $relations = $request->get('relationship');
-                foreach ((array) $relations as $relation) {
-                    $model->with([$relation => function($query) use($request) {
-                        if($request->has('withtrashed')) {
-                            $query->withTrashed();
-                        }
-                    }]);
-                }
-            }
-
-            if($request->has('withtrashed')) {
-                $model->withTrashed();
-            }
-
-            if($request->has('orderBy')) {
-                $order = $request->get('orderBy');
-                foreach ($order as $key => $value) {
-                    $model->orderBy($key, $value);
-                }
             }
 
             $modelCount = clone $model;
-            $count = $modelCount->count();
             $meta = array(
-                'recordsTotal' => $this->model->count(),
-                'recordsFiltered' => $count
+                'recordsTotal' => $count,
+                'recordsFiltered' => $modelCount->count()
             );
 
             $data = $model
