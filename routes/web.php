@@ -49,8 +49,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
 
     Route::get("{collection}/{id}/trashed", 'ResourcesController@trashed');
+    Route::delete("{collection}/{id}/delete", 'ResourcesController@delete');
+    Route::delete("{collection}/trash/empty", 'ResourcesController@empty');
+    Route::put("{collection}/trash/restore", 'ResourcesController@putBack');
     Route::put("{collection}/{id}/restore", 'ResourcesController@restore');
-    Route::delete("{collection}/{id}/delete", 'ResourcesController@delete'); // hard delete item
-    Route::delete("{collection}/trash/empty", 'ResourcesController@empty'); // empty all trashed
-    Route::put("{collection}/trash/restore", 'ResourcesController@putBack'); // empty all trashed
 });
