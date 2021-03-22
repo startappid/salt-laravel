@@ -113,7 +113,6 @@ class ResourcesController extends Controller {
 
         try {
             $references = [];
-            $reference = '';
             $columns = array();
 
             foreach ($this->structures as $field) {
@@ -131,10 +130,6 @@ class ResourcesController extends Controller {
                 }
             }
 
-            if(count($references) > 0) {
-                $reference = implode(',', $references);
-            }
-
             if(file_exists(resource_path('views/'.$this->table_name.'/index.blade.php'))) {
                 $this->view = view($this->table_name.'.index');
             } else {
@@ -143,7 +138,7 @@ class ResourcesController extends Controller {
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
                                                 'columns' => $columns,
-                                                'reference' => $reference
+                                                'references' => $references
                                             )));
         } catch(Exception $e) { }
     }
@@ -527,7 +522,6 @@ class ResourcesController extends Controller {
         try {
 
             $references = [];
-            $reference = '';
             $columns = array();
 
             foreach ($this->structures as $field) {
@@ -545,10 +539,6 @@ class ResourcesController extends Controller {
                 }
             }
 
-            if(count($references) > 0) {
-                $reference = implode(',', $references);
-            }
-
             if(file_exists(resource_path('views/'.$this->table_name.'/trash.blade.php'))) {
                 $this->view = view($this->table_name.'.trash');
             } else {
@@ -557,7 +547,7 @@ class ResourcesController extends Controller {
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
                                                 'columns' => $columns,
-                                                'reference' => $reference
+                                                'references' => $references
                                             )));
         } catch(Exception $e) { }
     }
