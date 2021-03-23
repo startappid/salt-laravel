@@ -14,7 +14,7 @@ class UpdateFilesDirField extends Migration
     public function up()
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->string('directory')->nullable();
+            $table->string('directory')->default('files')->nullable();
         });
     }
 

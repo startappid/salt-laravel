@@ -11,6 +11,10 @@ trait Fileable
      * protected $fileableType = 'compress';
      * protected $selfFileable = false;
      * protected $fileableFields = ['file'];
+     * protected $fileableDirs = [
+     *     'file' => 'directory',
+     *     'file' => 'path/directory'
+     * ];
      * protected $fileableForeignTable = null;
      * protected $fileableForeignId = null;
      *
@@ -29,30 +33,39 @@ trait Fileable
             $selfFileable = isset($model->selfFileable)?: false;
             $fileableFields = isset($model->fileableFields)? $model->fileableFields: ['file'];
             $fileableType = isset($model->fileableType)? $model->fileableType: 'compress';
+            $fileableDirs = isset($model->fileableDirs)? $model->fileableDirs: ['file' => 'files'];
 
             foreach ($fileableFields as $field) {
+
+                if(!request()->hasFile($field)) continue;
+
                 $data = array();
                 // Check attributes if file type then stored to disk
-                if(request()->hasFile($field)) {
-                    $file = request()->file($field);
-                    $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $filename = $filename.'-'.time().'.'.$file->getClientOriginalExtension();
-                    $data['filename'] = $filename;
-                    $data['ext'] = $file->getClientOriginalExtension();
-                    $data['size'] = $file->getSize();
-                    if(env('FILESYSTEM_DRIVER', 'local') == 'gcs') {
-                        $disk = Storage::disk('gcs');
-                        $path = $disk->put($model->getTable(), $file);
-                        $imgurl = ['https://storage.googleapis.com', env('GOOGLE_CLOUD_STORAGE_BUCKET'), $path];
-                        $data['fullpath'] = implode('/', $imgurl);
-                        $data['path'] = $path;
-                    } else { // local
-                        $path = $file->storeAs('public/files', $filename);
-                        $data['fullpath'] = url(str_replace('public', 'storage', $path));
-                        $data['path'] = $path;
-                    }
-                    $data['type'] = $fileableType;
+                $dir = request()->get('directory', null);
+                if(is_null($dir)) {
+                    $dir = isset($fileableDirs[$field])? $fileableDirs[$field]: 'files';
                 }
+
+                $file = request()->file($field);
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = $filename.'-'.time().'.'.$file->getClientOriginalExtension();
+                $data['filename'] = $filename;
+                $data['ext'] = $file->getClientOriginalExtension();
+                $data['size'] = $file->getSize();
+                if(env('FILESYSTEM_DRIVER', 'local') == 'gcs') {
+                    $disk = Storage::disk('gcs');
+                    $path = $disk->put($model->getTable(), $file);
+                    $imgurl = ['https://storage.googleapis.com', env('GOOGLE_CLOUD_STORAGE_BUCKET'), $path];
+                    $data['fullpath'] = implode('/', $imgurl);
+                    $data['path'] = $path;
+                } else { // local
+                    $path = $file->storeAs("public/{$dir}", $filename);
+                    $data['fullpath'] = url(str_replace('public', 'storage', $path));
+                    $data['path'] = $path;
+                }
+                $data['directory'] = $dir;
+                $data['type'] = $fileableType;
+
                 request()->request->remove($field);
                 unset(request()[$field]);
                 unset($model[$field]);

@@ -21,6 +21,7 @@ class Files extends Resources {
         'description',
         'size',
         'ext',
+        'directory',
         'type',
         'foreign_table',
         'foreign_id',
