@@ -98,12 +98,28 @@
 		<script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
 		<script src="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
 		<script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
-        <script src="{{asset('assets/js/pages/features/miscellaneous/toastr.js')}}"></script>
-        <script src="{{asset('assets/js/pages/features/miscellaneous/sweetalert2.js')}}"></script>
+    <script src="{{asset('assets/js/pages/features/miscellaneous/toastr.js')}}"></script>
+    <script src="{{asset('assets/js/pages/features/miscellaneous/sweetalert2.js')}}"></script>
+    <script src="https://unpkg.com/jwt-decode@3.1.2/build/jwt-decode.js"></script>
 		<!--end::Global Theme Bundle-->
 		<!--begin::Javascript-->
         @yield('js')
 		<!--end::Javascript-->
+    <script>
+    @if(!empty(session('bearer_token')))
+    const token = jwt_decode('{{session('bearer_token')}}')
+    if (Date.now() >= (token.exp * 1000)) {
+      Swal.fire({
+        title: "Your token expired?",
+        text: "Please relogin to access the application?",
+        icon: "error",
+      })
+      .then((willDelete) => {
+        $('#form-logout').submit();
+      });
+    }
+    @endif
+    </script>
 	</body>
 	<!--end::Body-->
 </html>

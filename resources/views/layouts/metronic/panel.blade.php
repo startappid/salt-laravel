@@ -39,7 +39,7 @@
                             <span class="navi-text text-muted text-hover-primary">jm@softplus.com</span>
                         </span>
                     </a>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" id="form-logout">
                       @csrf
                       <a
                         href="route('logout')"
