@@ -17,15 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
 // DEFAULT: RESOURCES
 // ->namespace($this->namespace)
 Route::namespace('App\Http\Controllers')->group(function () {
+
+    Route::get('/dashboard','DashboardController@index')
+        ->middleware(['auth'])
+        ->name('dashboard');
+
     // Countries
     // Route::get("countries/{id}", 'CountriesController@show');
     // Route::get("countries/{id}/edit", 'CountriesController@edit');
