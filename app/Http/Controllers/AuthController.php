@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Services\ResponseService;
 use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Support\Facades\Password;
 use App\Events\UserCheck;
 use DB;
 use Curl;
@@ -255,11 +256,11 @@ class AuthController extends Controller {
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function resetPassword(Request $request) {
+    public function forgotPassword(Request $request) {
 
         try {
             $rules = [
-                'password' => 'required|string|confirmed',
+                'email' => 'required|email',
             ];
 
             $validator = Validator::make($request->all(), $rules, $this->messages);
@@ -270,15 +271,28 @@ class AuthController extends Controller {
                 return $this->responder->response();
             }
 
-            $user = Auth::user();
-            $user->password = bcrypt($request->password);
-            $user->save();
+            $request->validate([
+                'email' => 'required|email',
+            ]);
 
-            $this->responder->setStatus(200, 'Ok');
-            $this->responder->set('message', 'Password changed!');
-            $this->responder->set('data', null);
+            // We will send the password reset link to this user. Once we have attempted
+            // to send the link, we will examine the response then see the message we
+            // need to show to the user. Finally, we'll send out a proper response.
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
+
+            $status == Password::RESET_LINK_SENT? true: false;
+            if($status) {
+                $this->responder->setStatus(200, 'Ok');
+                $this->responder->set('message', 'Reset link sent!');
+                $this->responder->set('data', null);
+            } else {
+                $this->responder->setStatus(500);
+                $this->responder->set('message', 'Server cannot send link to your email!');
+                $this->responder->set('data', null);
+            }
             return $this->responder->response();
-
         } catch (\Exception $e) {
             $this->responder->set('message', $e->getMessage());
             $this->responder->setStatus(500, 'Internal server error.');

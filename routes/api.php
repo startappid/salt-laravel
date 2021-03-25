@@ -36,8 +36,7 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
     ], function () {
         Route::post('login', 'AuthController@login');
         Route::post('register', 'AuthController@signup');
-        // Route::post('forgot', 'Auth\ForgotPasswordController')->name('forgot.password');
-        Route::patch('password/reset', 'AuthController@resetPassword');
+        Route::post('forgot', 'AuthController@forgotPassword');
         Route::group([
             'middleware' => 'auth:api'
         ], function () {
