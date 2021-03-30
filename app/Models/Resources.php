@@ -217,6 +217,10 @@ class Resources extends Model {
         return $this->structures;
     }
 
+    public function getTableFields() {
+        return Schema::getColumnListing($this->getTable());
+    }
+
     public function getValidationOf($event = 'create', $id = null) {
         $rules = [];
         if($event == 'patch') $event = 'update';

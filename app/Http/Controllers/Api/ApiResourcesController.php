@@ -166,8 +166,8 @@ class ApiResourcesController extends Controller
                 $this->responder->setStatus(400, 'Bad Request.');
                 return $this->responder->response();
             }
-            foreach ($request->all() as $key => $value) {
-                if(Str::startsWith($key, '_')) continue;
+            $fields = $request->only($this->model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $this->model->setAttribute($key, $value);
             }
             $this->model->save();
@@ -274,11 +274,10 @@ class ApiResourcesController extends Controller
                 return $this->responder->response();
             }
 
-            foreach ($request->all() as $key => $value) {
-                if(Str::startsWith($key, '_')) continue;
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $model->setAttribute($key, $value);
             }
-
             $model->save();
 
             $this->responder->set('message', 'Data updated');
@@ -331,8 +330,8 @@ class ApiResourcesController extends Controller
                 return $this->responder->response();
             }
 
-            foreach ($request->all() as $key => $value) {
-                if(Str::startsWith($key, '_')) continue;
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $model->setAttribute($key, $value);
             }
 
@@ -557,6 +556,7 @@ class ApiResourcesController extends Controller
 
         try {
             $id = intval($id) > 0 ? intval($id): $id;
+            // FIXME: if condition depth only 2
             if(!is_int($id)) {
                 if($id == "selected") { // Delete all selected IDs
                     if($request->has('selected')) {
@@ -635,6 +635,7 @@ class ApiResourcesController extends Controller
 
         try {
             $id = intval($id) > 0 ? intval($id): $id;
+            // FIXME: if condition depth only 2
             if(!is_int($id)) {
                 if($id == "selected") { // Delete all selected IDs
                     if($request->has('selected')) {
