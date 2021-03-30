@@ -47,25 +47,7 @@ class Handler extends ExceptionHandler
             $responder->setStatus(403, 'Forbidden');
             return $responder->response();
         }
-        redirect()->guest(route('login'));
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Throwable $exception )
-    {
-        if ($exception instanceof AuthenticationException && request()->wantsJson()) {
-            $responder = resolve(\App\Services\ResponseService::class);
-            $responder->set('message', 'You do not have required authorization.');
-            $responder->setStatus(403, 'Forbidden');
-            return $responder->response();
-        }
-
-        return parent::render($request, $exception);
+        abort(403);
+        // redirect()->guest(route('login'));
     }
 }
