@@ -48,6 +48,13 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
         });
     });
 
+    Route::get("roles/{id}/permissions", 'Api\RolesResourcesController@getPermissions')->where('id', '[a-zA-Z0-9]+');
+    Route::put("roles/{id}/permissions", 'Api\RolesResourcesController@updatePermissions')->where('id', '[a-zA-Z0-9]+');
+
+    Route::get("users/{id}/roles", 'Api\UsersResourcesController@getRoles')->where('id', '[a-zA-Z0-9]+');
+    Route::put("users/{id}/roles", 'Api\UsersResourcesController@updateRoles')->where('id', '[a-zA-Z0-9]+');
+    Route::put("users/{id}/password", 'Api\UsersResourcesController@updatePassword')->where('id', '[a-zA-Z0-9]+'); // patch collection by ID
+
     // DEFAULT: API RESOURCES
     Route::get("{collection}", 'Api\ApiResourcesController@index'); // get entire collection
     Route::post("{collection}", 'Api\ApiResourcesController@store'); // create new collection

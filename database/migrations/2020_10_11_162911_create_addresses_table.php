@@ -15,6 +15,10 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+
+            $table->string('foreign_table')->nullable();
+            $table->integer('foreign_id')->nullable();
+
             $table->foreignId('country_id')->constrained('countries');
             $table->foreignId('province_id')->constrained('provinces');
             $table->foreignId('city_id')->constrained('cities');

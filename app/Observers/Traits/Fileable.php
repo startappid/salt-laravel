@@ -147,12 +147,12 @@ trait Fileable
                 $data['foreign_id'] = $model->id;
                 if($fileableCascade) {
                     Files::updateOrCreate(
-                        $data,
                         [
                             'foreign_table' => $data['foreign_table'],
                             'foreign_id' => $data['foreign_id'],
                             'directory' => $data['directory']
-                        ]
+                        ],
+                        $data
                     );
                 } else {
                     $file = Files::create($data);

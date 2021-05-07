@@ -205,20 +205,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            if($request->has('with') && $request->get('with')) {
-                $relations = explode(',', $request->get('with'));
-                if($request->has('withtrashed')) {
-                    $data = $this->model->with($relations)->withTrashed()->find($id);
-                } else {
-                    $data = $this->model->with($relations)->find($id);
-                }
-            } else {
-                if($request->has('withtrashed')) {
-                    $data = $this->model->withTrashed()->find($id);
-                } else {
-                    $data = $this->model->find($id);
-                }
-            }
+            $data = $this->model->filter()->find($id);
             if(is_null($data)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -259,7 +246,7 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model::find($id);
+            $model = $this->model->find($id);
             if(is_null($model)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -315,7 +302,7 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model::find($id);
+            $model = $this->model->find($id);
             if(is_null($model)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -408,7 +395,7 @@ class ApiResourcesController extends Controller
                 }
 
             } else { // Pointing to spesific data by ID
-                $model = $this->model::find($id);
+                $model = $this->model->find($id);
                 if(is_null($model)) {
                     $this->responder->set('message', 'Data not found');
                     $this->responder->setStatus(404, 'Not Found');

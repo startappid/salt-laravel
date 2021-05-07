@@ -11,13 +11,31 @@ use Illuminate\Support\Facades\Schema;
 class Addresses extends Resources {
 
     protected $rules = array(
+        'foreign_table' => 'nullable|string',
+        'foreign_id' => 'nullable|integer',
         'country_id' => 'required|integer',
         'province_id' => 'required|integer',
         'city_id' => 'required|integer',
-        'address' => 'required|string|max:255',
+        'address' => 'required|string|max:1024',
         'postalcode' => 'required|string|max:5',
         'latitude' => 'nullable|float',
-        'longitude' => 'nullable|float'
+        'longitude' => 'nullable|float',
+    );
+
+    protected $auths = array (
+        // 'index',
+        'store',
+        // 'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
     );
 
     protected $structures = array(
@@ -35,6 +53,40 @@ class Addresses extends Resources {
             'validated' => false,
             'nullable' => false,
             'note' => null
+        ],
+        "foreign_table" => [
+            'name' => 'foreign_table',
+            'label' => 'Table name',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
+                'delete' => null,
+            ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+        "foreign_id" => [
+            'name' => 'foreign_id',
+            'label' => 'Table field',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|integer',
+                'update' => 'nullable|integer',
+                'delete' => null,
+            ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
         ],
         "country_id" => [
             'name' => 'country_id',
@@ -188,7 +240,8 @@ class Addresses extends Resources {
         ]
     );
 
-    protected $searchable = array('country_id', 'province_id', 'city_id', 'address', 'postalcode', 'latitude', 'longitude');
+    protected $searchable = array('country_id', 'province_id', 'city_id', 'address', 'postalcode', 'latitude', 'longitude', 'foreign_table', 'foreign_id');
+    protected $fillable = array('country_id', 'province_id', 'city_id', 'address', 'postalcode', 'latitude', 'longitude', 'foreign_table', 'foreign_id');
 
     public function country() {
         return $this->belongsTo('App\Models\Countries', 'country_id', 'id');

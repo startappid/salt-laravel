@@ -27,6 +27,29 @@ class Files extends Resources {
         'foreign_id',
     ];
 
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        'relationship',
+        'withtrashed',
+        'orderby',
+        // Fields table
+        'id',
+        "file",
+        "directory",
+        "foreign_table",
+        "foreign_id",
+        "fullpath",
+        "path",
+        "filename",
+        "title",
+        "description",
+        "ext",
+        "size",
+        "type",
+    ];
+
     protected $rules = array(
         'file' => 'required|file',
         'fullpath' => 'nullable|string|max:255',
@@ -36,7 +59,26 @@ class Files extends Resources {
         'description' => 'nullable|string|max:255',
         'size' => 'nullable|integer',
         'ext' => 'nullable|string|max:20',
-        'type' => 'required|string'
+        'type' => 'required|string',
+        'directory' => 'nullable|string',
+        'foreign_table' => 'nullable|string',
+        'foreign_id' => 'nullable|integer',
+    );
+
+    protected $auths = array (
+        // 'index',
+        'store',
+        // 'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
     );
 
     protected $forms = array(
@@ -90,6 +132,23 @@ class Files extends Resources {
             'required' => true,
             'primary' => false,
             'type' => 'file',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+        "directory" => [
+            'name' => 'directory',
+            'label' => 'Directory',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
+                'delete' => null,
+            ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'text',
             'validated' => true,
             'nullable' => false,
             'note' => null,
@@ -335,5 +394,17 @@ class Files extends Resources {
         ]
     );
 
-    protected $searchable = array('filename', 'title', 'description', 'ext', 'size', 'type');
+    protected $searchable = array(
+        'fullpath',
+        'path',
+        'filename',
+        'title',
+        'description',
+        'size',
+        'ext',
+        'directory',
+        'type',
+        'foreign_table',
+        'foreign_id',
+    );
 }

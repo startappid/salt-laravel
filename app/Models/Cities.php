@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Observers\CitiesObserver as Observer;
 use Illuminate\Support\Facades\Schema;
 
 class Cities extends Resources {
@@ -28,6 +27,22 @@ class Cities extends Resources {
     ];
 
     protected $rules = array();
+
+    protected $auths = array (
+        // 'index',
+        'store',
+        // 'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
+    );
 
     protected $forms = array(
         [
@@ -189,17 +204,12 @@ class Cities extends Resources {
         ]
     );
 
-    protected $searchable = array('name');
+    protected $searchable = array('name', 'country_id', 'province_id');
+    protected $fillable = array('name', 'country_id', 'province_id');
     protected $casts = [
         'country' => 'array',
         'province' => 'array',
     ];
-
-    //  OBSERVER
-    protected static function boot() {
-        parent::boot();
-        static::observe(Observer::class);
-    }
 
     public function country() {
         return $this->belongsTo('App\Models\Countries', 'country_id', 'id')->withTrashed();

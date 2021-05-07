@@ -161,8 +161,8 @@ class Users extends Resources {
             'label' => 'Email',
             'display' => true,
             'validation' => [
-                'create' => 'required|string|email|max:255|unique:users,username',
-                'update' => 'required|string|email|max:255|unique:users,username,{id}',
+                'create' => 'required|string|email|max:255|unique:users,email',
+                'update' => 'required|string|email|max:255|unique:users,email,{id}',
                 'delete' => null,
             ],
             'primary' => false,
@@ -216,8 +216,8 @@ class Users extends Resources {
             'default' => null,
             'display' => true,
             'validation' => [
-                'create' => 'integer|nullable',
-                'update' => 'integer|nullable',
+                'create' => 'string|nullable',
+                'update' => 'string|nullable',
                 'delete' => null,
             ],
             'primary' => false,
@@ -230,12 +230,12 @@ class Users extends Resources {
             'inline' => true,
             'options' => [
                 [
-                    'value' => 1,
-                    'label' => 'Pria'
+                    'value' => 'male',
+                    'label' => 'Male'
                 ],
                 [
-                    'value' => 2,
-                    'label' => 'Wanita'
+                    'value' => 'female',
+                    'label' => 'Female'
                 ],
             ],
             'options_disabled' => []
@@ -259,28 +259,10 @@ class Users extends Resources {
             'placeholder' => 'No. Telp',
         ],
 
-        "photo" => [
-            'name' => 'photo',
-            'label' => 'Photo',
-            'display' => false,
-            'validation' => [
-                'create' => 'mimes:jpeg,jpg,png|max:1024|nullable',
-                'update' => 'mimes:jpeg,jpg,png|max:1024|nullable',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'file',
-            'validated' => true,
-            'nullable' => false,
-            'note' => 'file format: jpeg, jpg, png',
-            'placeholder' => 'pick your file',
-        ],
-
-        "is_active" => [
-            'name' => 'is_active',
-            'default' => 2,
-            'label' => 'Active',
+        "status" => [
+            'name' => 'status',
+            'default' => 'inactive',
+            'label' => 'Status',
             'display' => false,
             'validation' => [
                 'create' => 'integer|nullable',
@@ -297,11 +279,11 @@ class Users extends Resources {
             'inline' => true,
             'options' => [
                 [
-                    'value' => 1,
+                    'value' => 'active',
                     'label' => 'Active'
                 ],
                 [
-                    'value' => 2,
+                    'value' => 'inactive',
                     'label' => 'No Active'
                 ],
             ],
@@ -366,4 +348,11 @@ class Users extends Resources {
 
     protected $searchable = array('username',  'email', 'first_name', 'last_name', 'phone', 'status');
 
+    public function photo() {
+        return $this->belongsTo('App\Models\Files', 'foreign_id', 'id')->where('foreign_table', 'users');
+    }
+
+    public function address() {
+        return $this->belongsTo('App\Models\Addresses', 'foreign_id', 'id')->where('foreign_table', 'users');
+    }
 }

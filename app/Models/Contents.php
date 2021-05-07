@@ -9,13 +9,12 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
 
-class Countries extends Resources {
+class Contents extends Resources {
 
     use Fileable;
-    protected $fileableFields = ['flag', 'banner'];
+    protected $fileableFields = ['image'];
     protected $fileableDirs = [
-        'flag' => 'countries/flag',
-        'banner' => 'countries/banner',
+        'image' => 'partnerships/image',
     ];
 
     protected $filters = [
@@ -27,16 +26,13 @@ class Countries extends Resources {
         'orderby',
         // Fields table provinces
         'id',
-        'name',
-        'isocode',
-        'phonecode'
+        'title',
+        'category',
+        'content',
+        'type',
     ];
 
-    protected $rules = array(
-        'name' => 'required|string',
-        'isocode' => 'required|string|max:2|unique:countries',
-        'phonecode' => 'required|integer|unique:countries'
-    );
+    protected $rules = array();
 
     protected $auths = array (
         // 'index',
@@ -72,10 +68,10 @@ class Countries extends Resources {
             'nullable' => false,
             'note' => null
         ],
-        "name" => [
-            'name' => 'name',
+        "title" => [
+            'name' => 'title',
             'default' => null,
-            'label' => 'Name',
+            'label' => 'Title',
             'display' => true,
             'validation' => [
                 'create' => 'required|string',
@@ -88,16 +84,17 @@ class Countries extends Resources {
             'validated' => true,
             'nullable' => false,
             'note' => null,
-            'placeholder' => 'Placeholder...',
+            'placeholder' => null,
         ],
-        "isocode" => [
-            'name' => 'isocode',
+
+        "category" => [
+            'name' => 'category',
             'default' => null,
-            'label' => 'ISO Code',
+            'label' => 'Category',
             'display' => true,
             'validation' => [
-                'create' => 'required|string|max:2|unique:countries',
-                'update' => 'required|string|max:2|unique:countries,isocode,{id}',
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
                 'delete' => null,
             ],
             'primary' => false,
@@ -108,14 +105,15 @@ class Countries extends Resources {
             'note' => null,
             'placeholder' => null,
         ],
-        "phonecode" => [
-            'name' => 'phonecode',
+
+        "content" => [
+            'name' => 'content',
             'default' => null,
-            'label' => 'Phone Code',
+            'label' => 'Content',
             'display' => true,
             'validation' => [
-                'create' => 'required|integer|unique:countries',
-                'update' => 'required|integer|unique:countries,phonecode,{id}',
+                'create' => 'required|string',
+                'update' => 'required|string',
                 'delete' => null,
             ],
             'primary' => false,
@@ -126,6 +124,26 @@ class Countries extends Resources {
             'note' => null,
             'placeholder' => null,
         ],
+
+        "type" => [
+            'name' => 'type',
+            'default' => null,
+            'label' => 'Type',
+            'display' => true,
+            'validation' => [
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
+                'delete' => null,
+            ],
+            'primary' => false,
+            'required' => true,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+
         "created_at" => [
             'name' => 'created_at',
             'default' => null,
@@ -179,34 +197,13 @@ class Countries extends Resources {
         ]
     );
 
-    protected $forms = array(
-        [
-            [
-                'class' => 'col-6',
-                'field' => 'name'
-            ],
-            [
-                'class' => 'col-2',
-                'field' => 'isocode'
-            ],
-            [
-                'class' => 'col-2',
-                'field' => 'phonecode'
-            ]
-        ],
-    );
+    protected $forms = array();
+    protected $searchable = array('title', 'category', 'content', 'type');
+    protected $fillable = array('title', 'category', 'content', 'type');
 
-    protected $searchable = array('name', 'isocode', 'phonecode');
-
-    public function provinces() {
-        return $this->hasMany('App\Models\Provinces', 'country_id', 'id');
-    }
-
-    public function cities() {
-        return $this->hasMany('App\Models\Cities', 'country_id', 'id');
-    }
-
-    public function files() {
-        return $this->hasMany('App\Models\Files', 'foreign_id', 'id')->where('foreign_table', 'countries');
+    public function image() {
+        return $this->hasOne('App\Models\Files', 'foreign_id', 'id')
+                    ->where('foreign_table', 'contents')
+                    ->where('directory', 'contents/image');
     }
 }
