@@ -267,6 +267,16 @@ class ApiResourcesController extends Controller
             }
             $model->save();
 
+            if(!$model->isDirty()) {
+                $fields = $request->except($model->getTableFields());
+                $triggered = isset($model->fileableEnabled) && $model->fileableEnabled;
+                $triggered = $triggered || (isset($model->addressEnabled) && $model->addressEnabled);
+                if($triggered) {
+                    event('eloquent.updating: App\Models\\'.class_basename($model), $model);
+                    event('eloquent.updated: App\Models\\'.class_basename($model), $model);
+                }
+            }
+
             $this->responder->set('message', 'Data updated');
             $this->responder->set('data', $model);
             return $this->responder->response();

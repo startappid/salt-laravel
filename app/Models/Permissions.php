@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Schema;
 class Permissions extends Resources
 {
     protected $table = 'permissions';
-
-    protected $rules = array(
-        
-    );
+    protected $rules = array();
 
     protected $forms = array(
         [
@@ -127,6 +124,8 @@ class Permissions extends Resources
             'note' => null
         ]
     );
-    
-    protected $searchable = array();
+
+    protected $searchable = array('name', 'guard_name');
+    protected $fillable = array('name', 'guard_name');
+
 }

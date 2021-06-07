@@ -186,8 +186,8 @@ class ResourcesController extends Controller {
                 return redirect($this->table_name.'/create')->with('error', $validator->errors()->first());
             }
 
-            foreach ($request->all() as $key => $value) {
-                if(Str::startsWith($key, '_')) continue;
+            $fields = $request->only($this->model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $this->model->setAttribute($key, $value);
             }
             $this->model->save();
@@ -319,8 +319,8 @@ class ResourcesController extends Controller {
                 return redirect($this->table_name.'/'.$id.'/edit')->with('error', $validator->errors()->first());
             }
             $model = $this->model::find($id);
-            foreach ($request->all() as $key => $value) {
-                if(Str::startsWith($key, '_')) continue;
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $model->setAttribute($key, $value);
             }
             $model->save();

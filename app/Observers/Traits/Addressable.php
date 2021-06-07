@@ -10,6 +10,7 @@ trait Addressable
      * protected $addressFields = ['address'];
      * protected $addressCascade = false;
      */
+    public $addressEnabled = true;
 
     protected $addressData = [];
 

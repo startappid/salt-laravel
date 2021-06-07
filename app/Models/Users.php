@@ -64,23 +64,11 @@ class Users extends Resources {
         [
             [
                 'class' => 'col-6',
-                'field' => 'photo'
-            ],
-        ],
-        [
-            [
-                'class' => 'col-6',
                 'field' => 'gender'
             ],
             [
                 'class' => 'col-6',
                 'field' => 'phone'
-            ],
-        ],
-        [
-            [
-                'class' => 'col-6',
-                'field' => 'is_active'
             ],
         ],
     );
@@ -265,8 +253,8 @@ class Users extends Resources {
             'label' => 'Status',
             'display' => false,
             'validation' => [
-                'create' => 'integer|nullable',
-                'update' => 'integer|nullable',
+                'create' => 'string|nullable',
+                'update' => 'string|nullable',
                 'delete' => null,
             ],
             'primary' => false,

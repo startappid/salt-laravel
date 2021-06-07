@@ -39,8 +39,7 @@ class AuthController extends Controller {
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request) {
-
+    public function register(Request $request, Users $model) {
         try {
 
             $rules = [
@@ -61,28 +60,21 @@ class AuthController extends Controller {
                 $this->responder->set('message', $validator->errors()->first());
                 return $this->responder->response();
             }
-
-            $user = new User([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'gender' => $request->get('gender'),
-                'phone' => $request->get('phone'),
-                'password' => bcrypt($request->password),
-                'api_token' => Str::random(80),
-            ]);
-            $user->save();
-            if(!is_null($request->get('role'))) {
-                $user->assignRole($request->get('role'));
+            $request->merge(['channel' => 'registration']);
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
+                $model->setAttribute($key, $value);
             }
-
-            $this->responder->setStatus(201, 'Created');
-            $this->responder->set('message', 'Successfully created user!');
-            $this->responder->set('data', $user);
+            $model->save();
+            $this->responder->set('message', Str::title('You\'re registered!'));
+            $this->responder->set('data', $model);
+            $this->responder->setStatus(201, 'Created.');
             return $this->responder->response();
-
-        } catch (\Exception $err) {}
+        } catch (\Exception $e) {
+            $this->responder->set('message', $e->getMessage());
+            $this->responder->setStatus(500, 'Internal server error.');
+            return $this->responder->response();
+        }
     }
 
 
@@ -101,7 +93,7 @@ class AuthController extends Controller {
         try {
 
             $rules = [
-                'username' => 'required|string',
+                'email' => 'required|email',
                 'password' => 'required|string',
                 'remember_me' => 'boolean|nullable',
             ];
@@ -114,7 +106,7 @@ class AuthController extends Controller {
                 return $this->responder->response();
             }
 
-            $credentials = request(['username', 'password']);
+            $credentials = request(['email', 'password']);
             if(!Auth::attempt($credentials)) {
                 $this->responder->setStatus(401, 'Unauthorized');
                 $this->responder->set('message', 'You are not unauthorized');

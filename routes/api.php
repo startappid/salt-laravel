@@ -35,7 +35,8 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
         'prefix' => 'user'
     ], function () {
         Route::post('login', 'AuthController@login');
-        Route::post('register', 'AuthController@signup');
+        Route::post('register', 'AuthController@register');
+        // Route::post('forgot', 'Auth\ForgotPasswordController')->name('forgot.password');
         Route::post('forgot', 'AuthController@forgotPassword');
         Route::group([
             'middleware' => 'auth:api'

@@ -234,8 +234,8 @@ class Banners extends Resources {
     );
 
     protected $forms = array();
-    protected $searchable = array( 'title', 'description', 'status', 'type','videourl','order');
-    protected $fillable = array( 'title', 'description', 'status', 'type','videourl','order');
+    protected $searchable = array( 'title', 'description', 'status', 'type','videourl','order', 'link');
+    protected $fillable = array( 'title', 'description', 'status', 'type','videourl','order', 'link');
 
     public function banner() {
         return $this->hasOne('App\Models\Files', 'foreign_id', 'id')

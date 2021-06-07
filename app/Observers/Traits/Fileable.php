@@ -12,14 +12,21 @@ trait Fileable
      * protected $selfFileable = false;
      * protected $fileableFields = ['file'];
      * protected $fileableDirs = [
-     *     'file' => 'directory',
-     *     'file' => 'path/directory'
+     *     'thumbnail' => 'directory/thumbnail',
+     *     'gallery' => 'directory/gallery'
      * ];
      * protected $fileableForeignTable = null;
      * protected $fileableForeignId = null;
+     *
+     * NOTE: Casecade could be 2 forms, boolean and array
      * protected $fileableCascade = false;
+     * protected $fileableCascade = [
+     *     'thumbnail' => true,
+     *     'gallery' => false
+     * ];
      *
      */
+    public $fileableEnabled = true;
 
     protected $fileableFiles = [];
 
@@ -145,7 +152,11 @@ trait Fileable
             foreach ($model->fileableFiles as $data) {
                 $data['foreign_table'] = $model->getTable();
                 $data['foreign_id'] = $model->id;
-                if($fileableCascade) {
+                $isCascade = $fileableCascade;
+                if(!is_null($data['directory']) && isset($model->fileableCascade) && is_array($model->fileableCascade)) {
+                    $isCascade = $model->fileableCascade[$data['directory']];
+                }
+                if($isCascade) {
                     Files::updateOrCreate(
                         [
                             'foreign_table' => $data['foreign_table'],
