@@ -19,10 +19,14 @@ class CreateAddressesTable extends Migration
             $table->string('foreign_table')->nullable();
             $table->integer('foreign_id')->nullable();
 
+            $table->enum('type', ['primary', 'other'])->default('other');
+            $table->string('category')->nullable();
+
             $table->foreignId('country_id')->constrained('countries');
             $table->foreignId('province_id')->constrained('provinces');
             $table->foreignId('city_id')->constrained('cities');
-            $table->string('address', 255);
+
+            $table->string('address', 512);
             $table->string('postalcode', 5);
             $table->float('latitude', 11, 8)->nullable();
             $table->float('longitude', 11, 8)->nullable();
