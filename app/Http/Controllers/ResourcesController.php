@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 class ResourcesController extends Controller {
 
     protected $table_name = null;
+    protected $base_uri = null;
     protected $model = null;
     protected $structures = array();
     protected $segments = [];
@@ -138,7 +139,9 @@ class ResourcesController extends Controller {
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
                                                 'columns' => $columns,
-                                                'references' => $references
+                                                'references' => $references,
+                                                'collection' => $this->table_name,
+                                                'base_uri' => $this->table_name
                                             )));
         } catch(Exception $e) { }
     }
@@ -163,7 +166,9 @@ class ResourcesController extends Controller {
             $forms = $this->model->getForms();
 
             return $this->view->with($this->respondWithData(array(
-                'forms' => $forms
+                'forms' => $forms,
+                'collection' => $this->table_name,
+                'base_uri' => $this->table_name
             )));
         } catch (Exception $e) { }
     }
@@ -226,7 +231,9 @@ class ResourcesController extends Controller {
             $forms = $this->model->getForms();
             return $this->view->with($this->respondWithData(array(
                 'data' => $data,
-                'forms' => $forms
+                'forms' => $forms,
+                'collection' => $this->table_name,
+                'base_uri' => $this->table_name
             )));
         } catch (ModelNotFoundException $e) {
             abort(404);
@@ -262,7 +269,9 @@ class ResourcesController extends Controller {
             $forms = $this->model->getForms();
             return $this->view->with($this->respondWithData(array(
                 'data' => $data,
-                'forms' => $forms
+                'forms' => $forms,
+                'collection' => $this->table_name,
+                'base_uri' => $this->table_name
             )));
         } catch (ModelNotFoundException $e) {
             abort(404);
@@ -294,7 +303,9 @@ class ResourcesController extends Controller {
             $forms = $this->model->getForms();
             return $this->view->with($this->respondWithData(array(
                 'data' => $data,
-                'forms' => $forms
+                'forms' => $forms,
+                'collection' => $this->table_name,
+                'base_uri' => $this->table_name
             )));
 
         } catch (Exception $e) {
@@ -547,7 +558,9 @@ class ResourcesController extends Controller {
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
                                                 'columns' => $columns,
-                                                'references' => $references
+                                                'references' => $references,
+                                                'collection' => $this->table_name,
+                                                'base_uri' => $this->table_name
                                             )));
         } catch(Exception $e) { }
     }
