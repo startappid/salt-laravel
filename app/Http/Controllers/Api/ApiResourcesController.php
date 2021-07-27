@@ -55,7 +55,7 @@ class ApiResourcesController extends Controller
         }
     }
 
-    private function checkPermissions($authenticatedRoute, $authorize) {
+    protected function checkPermissions($authenticatedRoute, $authorize) {
         if(in_array($authenticatedRoute, $this->model->getAuthenticatedRoutes())) {
             $table = $this->model->getTable();
             $generatedPermissions = [$table.'.*.*', $table.'.'.$authorize.'.*'];
