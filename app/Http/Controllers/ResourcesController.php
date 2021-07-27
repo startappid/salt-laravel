@@ -89,7 +89,7 @@ class ResourcesController extends Controller {
         $this->middleware('permission:'.$this->segment.'.delete.*|'.$this->segment.'.*.*|*.delete.*|*.*.*', ['only' => ['destroy']]);
     }
 
-    private function checkPermissions($authenticatedRoute, $authorize) {
+    protected function checkPermissions($authenticatedRoute, $authorize) {
         if(in_array($authenticatedRoute, $this->model->getAuthenticatedRoutes())) {
             $table = $this->model->getTable();
             $generatedPermissions = [$table.'.*.*', $table.'.'.$authorize.'.*'];
