@@ -14,8 +14,7 @@ class Countries extends Resources {
     use Fileable;
     protected $fileableFields = ['flag', 'banner'];
     protected $fileableDirs = [
-        'flag' => 'countries/flag',
-        'banner' => 'countries/banner',
+        'flag' => 'countries/flag'
     ];
 
     protected $filters = [
