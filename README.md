@@ -2,7 +2,7 @@
 [Sagara Laravel - Framework](https://gitlab.com/sagara-xinix/framework/sagara-laravel)
 
 ## REQUIREMENT
-* PHP >= 7.3
+* PHP >= 7.4
 * BCMath PHP Extension
 * Ctype PHP Extension
 * Fileinfo PHP extension

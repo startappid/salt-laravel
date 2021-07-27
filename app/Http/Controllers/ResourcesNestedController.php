@@ -23,10 +23,11 @@ use NotFoundHttpException;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Auth;
 
-class ResourcesController extends Controller {
+class ResourcesNestedController extends Controller {
 
     protected $table_name = null;
     protected $base_uri = null;
+    protected $parent_id = null;
     protected $model = null;
     protected $structures = array();
     protected $segments = [];
@@ -47,7 +48,10 @@ class ResourcesController extends Controller {
      */
     public function __construct(Request $request, Resources $model) {
         try {
-            $this->segment = $request->segment(1);
+            $this->segment = $request->segment(3);
+            $this->parent_id = $request->segment(2);
+            $segments = array_slice($request->segments(), 0, 3);
+            $this->base_uri = implode('/', $segments);
             if(file_exists(app_path('Models/'.Str::studly($this->segment)).'.php')) {
                 $this->model = app("App\Models\\".Str::studly($this->segment));
             } else {
@@ -136,12 +140,17 @@ class ResourcesController extends Controller {
             } else {
                 $this->view = view('resources.index');
             }
+
+            $parent_collection = Str::singular($request->segment(1));
+            $params = [];
+            $params[$parent_collection.'_id'] = $this->parent_id;
+
             return $this->view->with($this->respondWithData(array(
                                                 'data' => array(),
                                                 'columns' => $columns,
                                                 'references' => $references,
                                                 'collection' => $this->table_name,
-                                                'base_uri' => $this->table_name
+                                                'params' => $params
                                             )));
         } catch(Exception $e) { }
     }
@@ -168,7 +177,7 @@ class ResourcesController extends Controller {
             return $this->view->with($this->respondWithData(array(
                 'forms' => $forms,
                 'collection' => $this->table_name,
-                'base_uri' => $this->table_name
+                'base_uri' => $this->base_uri
             )));
         } catch (Exception $e) { }
     }
@@ -233,7 +242,7 @@ class ResourcesController extends Controller {
                 'data' => $data,
                 'forms' => $forms,
                 'collection' => $this->table_name,
-                'base_uri' => $this->table_name
+                'base_uri' => $this->base_uri
             )));
         } catch (ModelNotFoundException $e) {
             abort(404);
@@ -271,7 +280,7 @@ class ResourcesController extends Controller {
                 'data' => $data,
                 'forms' => $forms,
                 'collection' => $this->table_name,
-                'base_uri' => $this->table_name
+                'base_uri' => $this->base_uri
             )));
         } catch (ModelNotFoundException $e) {
             abort(404);
@@ -305,7 +314,7 @@ class ResourcesController extends Controller {
                 'data' => $data,
                 'forms' => $forms,
                 'collection' => $this->table_name,
-                'base_uri' => $this->table_name
+                'base_uri' => $this->base_uri
             )));
 
         } catch (Exception $e) {
@@ -560,7 +569,7 @@ class ResourcesController extends Controller {
                                                 'columns' => $columns,
                                                 'references' => $references,
                                                 'collection' => $this->table_name,
-                                                'base_uri' => $this->table_name
+                                                'base_uri' => $this->base_uri
                                             )));
         } catch(Exception $e) { }
     }

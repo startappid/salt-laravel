@@ -9,16 +9,16 @@
 
 <!-- SUBHEADER::TOOLBAR -->
 @section('subheader-toolbar')
-@can(Request::segment(1).'.create.*')
+@can($collection.'.create.*')
 <a href="{{url(Request::segment(1))}}/create" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-plus"></i> New</a>
 @endcan
-@can(Request::segment(1).'.import.*')
+@can($collection.'.import.*')
 <a href="{{url(Request::segment(1))}}/import" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-download"></i> Import</a>
 @endcan
-@can(Request::segment(1).'.export.*')
+@can($collection.'.export.*')
 <a href="{{url(Request::segment(1))}}/export" class="btn btn-clean btn-sm font-size-base mr-1"><i class="fa fa-upload"></i> Export</a>
 @endcan
-@can(Request::segment(1).'.trash.*')
+@can($collection.'.trash.*')
 <a href="{{url(Request::segment(1))}}/trash" class="btn btn-clean btn-sm font-size-base mr-1 text-danger"><i class="fa fa-trash"></i> Trash</a>
 @endcan
 @endsection
@@ -90,7 +90,7 @@ $(document).ready(function() {
     .then((willDelete) => {
       if (willDelete.isConfirmed) {
         $.ajax({
-          url: "{{url('/api/v1/'.Request::segment(1))}}"+id,
+          url: "{{url('/api/v1/'.$collection)}}"+id,
           type: "POST",
           headers: {
             'Authorization': 'Bearer {{session('bearer_token')}}'
@@ -150,7 +150,7 @@ $(document).ready(function() {
     "processing": true,
     "serverSide": true,
     "ajax": {
-      "url": "{{url('/api/v1/'.Request::segment(1))}}",
+      "url": "{{url('/api/v1/'.$collection)}}",
       headers: {
         'Authorization': 'Bearer {{session('bearer_token')}}'
       },
@@ -159,6 +159,14 @@ $(document).ready(function() {
         @if(count($references))
         data['relationship'] = <?=json_encode($references)?>;
         @endif
+
+        @if(isset($params))
+        const params = <?=json_encode($params)?>;
+        for (const key in params) {
+          data[key] = params[key]
+        }
+        @endif
+
         const page = (data.start / data.length) + 1
         const search = data.search.value
 
@@ -181,7 +189,7 @@ $(document).ready(function() {
     createdRow: function ( row, data, index ) {
       $(row).find('td:last-child').addClass('float-right');
       $(row).find('td:last-child').append(`
-        @can(Request::segment(1).'.read.*')
+        @can($collection.'.read.*')
         <a href="{{url(Request::segment(1))}}/${data['id']}" class="btn btn-sm btn-clean btn-icon mr-2" title="Show details">
             <span class="svg-icon svg-icon-md">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -198,7 +206,7 @@ $(document).ready(function() {
             </span>
         </a>
         @endcan
-        @can(Request::segment(1).'.update.*')
+        @can($collection.'.update.*')
         <a href="{{url(Request::segment(1))}}/${data['id']}/edit" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
             <span class="svg-icon svg-icon-md">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -214,7 +222,7 @@ $(document).ready(function() {
             </span>
         </a>
         @endcan
-        @can(Request::segment(1).'.destroy.*')
+        @can($collection.'.destroy.*')
         <a href="javascript:;" class="btn btn-sm btn-clean btn-icon form-delete" data-id="/${data['id']}" title="Delete">
             <span class="svg-icon svg-icon-md">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
