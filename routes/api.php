@@ -43,8 +43,11 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
         ], function () {
             Route::delete('logout', 'AuthController@logout');
             Route::get('profile', 'AuthController@profile');
+            Route::get('photo', 'AuthController@photo');
             Route::get('checkin', 'AuthController@checkin');
-            Route::patch('password', 'AuthController@changePassword');
+            Route::get('permissions', 'AuthController@permissions');
+            Route::put('password', 'AuthController@changePassword');
+            Route::put('profile', 'AuthController@updateProfile');
             Route::post('fcm', 'AuthController@createUpdateFCM');
         });
     });
@@ -52,9 +55,44 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
     Route::get("roles/{id}/permissions", 'Api\RolesResourcesController@getPermissions')->where('id', '[a-zA-Z0-9]+');
     Route::put("roles/{id}/permissions", 'Api\RolesResourcesController@updatePermissions')->where('id', '[a-zA-Z0-9]+');
 
+    Route::get("users/{id}", 'Api\UsersResourcesController@show')->where('id', '[a-zA-Z0-9]+');
     Route::get("users/{id}/roles", 'Api\UsersResourcesController@getRoles')->where('id', '[a-zA-Z0-9]+');
     Route::put("users/{id}/roles", 'Api\UsersResourcesController@updateRoles')->where('id', '[a-zA-Z0-9]+');
     Route::put("users/{id}/password", 'Api\UsersResourcesController@updatePassword')->where('id', '[a-zA-Z0-9]+'); // patch collection by ID
+    Route::post("users/{id}/photo", 'Api\UsersResourcesController@updatePhoto')->where('id', '[a-zA-Z0-9]+');
+
+    Route::post("files/upcreate", 'Api\FilesResourcesController@upCreate');
+
+    Route::post("notifications", 'Api\NotificationsResourcesController@store');
+
+    // NOTIFICATIONS
+    Route::get("notifications/{id}", 'Api\NotificationsResourcesController@show'); // get collection by ID
+    Route::put("notifications/{id}/mark-as-read", 'Api\NotificationsResourcesController@markAsRead'); // get collection by ID
+    Route::put("notifications/{id}/mark-as-unread", 'Api\NotificationsResourcesController@markAsUnread'); // get collection by ID
+    Route::put("notifications/mark-all-read", 'Api\NotificationsResourcesController@markAllRead'); // get collection by ID
+
+    // CHATS
+    // Get all user's contacts
+    Route::get('/chats/contacts', 'Api\ChatsResourcesController@getContacts');
+    // Get all chats history of user
+    Route::get('/chats', 'Api\ChatsResourcesController@getChatsHistory');
+
+    // Create new session chat if not exists
+    // if session chat exist than use it
+    // @param type(enum|string): type of chat (private|group|channel) --default(private)
+    // @param participants(array): array of user id as participants
+    // @param message(string): message to send
+    Route::post('/chats', 'Api\ChatsResourcesController@createSession');
+
+    Route::get('/chats/{session_id}', 'Api\ChatsResourcesController@getMessagesBySession');
+    Route::post('/chats/{session_id}', 'Api\ChatsResourcesController@createMessageBySession');
+
+    Route::post('/chats/{session_id}/read/{chat_id}', 'Api\ChatsResourcesController@markChatsAsRead');
+    Route::post('/chats/{session_id}/unread/{chat_id}', 'Api\ChatsResourcesController@markChatsAsUnread');
+
+    // Route::post('/chats/{session_id}/clear', 'Api\ChatsResourcesController@clearChats');
+    // Route::post('/chats/{session_id}/block', 'Api\ChatsResourcesController@blockUser');
+    // Route::post('/chats/{session_id}/unblock', 'Api\ChatsResourcesController@unblockUser');
 
     // DEFAULT: API RESOURCES
     Route::get("{collection}", 'Api\ApiResourcesController@index'); // get entire collection
