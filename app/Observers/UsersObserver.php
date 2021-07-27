@@ -11,7 +11,7 @@ class UsersObserver extends Observer
 {
 
     public function creating($model) {
-        $model->setAttribute('password', $model->password);
+        $model['password'] = bcrypt($model->password);
     }
 
     public function updating($model) {
