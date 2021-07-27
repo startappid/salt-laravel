@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label for="form-{{$field['name']}}">{{Str::title(str_replace('_', ' ', $field['name']))}}
+  @if(!$field['required'])
+  <small class="text-muted">&mdash; Optional</small>
+  @endif
+  </label>
+  <input
+    type="text"
+    class="form-control"
+    value="{{isset($field['value'])? $field['value']: @old($field['name'])}}"
+    name="{{$field['name']}}"
+    id="form-{{$field['name']}}"
+    aria-describedby="form-help-{{$field['name']}}"
+    placeholder="{{Str::title(str_replace('_', ' ', $field['name']))}}"
+    @if(!$field['required']) required @endif
+    @if(isset($readonly) && $readonly === true ) readonly @endif
+  >
+  @if(isset($field['help_text']) && $field['help_text'])
+  <small id="form-help-{{$field['name']}}" class="form-text text-muted">{{$field['help_text']}}</small>
+  @endif
+  @if ($errors->has($field['name']))
+  <small id="form-error-{{$field['name']}}" class="form-text text-danger">
+    {{ $errors->first($field['name']) }}
+  </small>
+  @endif
+</div>

@@ -16,7 +16,6 @@ class CreateProvincesTable extends Migration
         Schema::create('provinces', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 255);
-            $table->string('isocode', 5)->nullable();
             $table->foreignId('country_id')->constrained('countries');
             $table->timestamps();
             $table->softDeletes();

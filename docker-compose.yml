@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  salt_laravel:
+    container_name: salt_laravel
+    build: .
+    environment:
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+    # networks:
+    #   - serv_default
+    # volumes:
+    #   - /static:/static
+    ports:
+      - 8000:8000
+
+# networks:
+#   serv_default:
+#     external: true

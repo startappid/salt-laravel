@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Countries' => 'App\Policies\CountriesPolicy',
         'App\Models\Provinces' => 'App\Policies\ProvincesPolicy',
         'App\Models\Cities' => 'App\Policies\CitiesPolicy',
+        'App\Models\Files' => 'App\Policies\FilesPolicy',
     ];
 
     /**

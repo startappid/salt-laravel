@@ -17,8 +17,8 @@ class ResponseService {
     public function __construct(Request $request) {
         $this->data = array(
             'app' => config('app.name'),
-            'version' => config('app.version', 1),
-            'api_version' => config('api.version', 1),
+            'version' => env('APP_VERSION', 'v1'),
+            'api_version' => env('API_VERSION', 'v1'),
             'status' => 'OK',
             'collection' => null,
             'code' => 200,

@@ -7,8 +7,48 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\Traits\Fileable;
 
 class Files extends Resources {
+
+    use Fileable;
+    protected $selfFileable = true;
+    protected $fillable = [
+        'fullpath',
+        'path',
+        'filename',
+        'title',
+        'description',
+        'size',
+        'ext',
+        'directory',
+        'type',
+        'foreign_table',
+        'foreign_id',
+    ];
+
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        'relationship',
+        'withtrashed',
+        'orderby',
+        // Fields table
+        'id',
+        "file",
+        "directory",
+        "foreign_table",
+        "foreign_id",
+        "fullpath",
+        "path",
+        "filename",
+        "title",
+        "description",
+        "ext",
+        "size",
+        "type",
+    ];
 
     protected $rules = array(
         'file' => 'required|file',
@@ -19,7 +59,49 @@ class Files extends Resources {
         'description' => 'nullable|string|max:255',
         'size' => 'nullable|integer',
         'ext' => 'nullable|string|max:20',
-        'type' => 'required|string'
+        'type' => 'required|string',
+        'directory' => 'nullable|string',
+        'foreign_table' => 'nullable|string',
+        'foreign_id' => 'nullable|integer',
+    );
+
+    protected $auths = array (
+        // 'index',
+        'store',
+        // 'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
+    );
+
+    protected $forms = array(
+        [
+            [
+                'class' => 'col-6',
+                'field' => 'file'
+            ],
+            [
+                'class' => 'col-2',
+                'field' => 'type'
+            ]
+        ],
+        [
+            [
+                'class' => 'col-4',
+                'field' => 'title'
+            ],
+            [
+                'class' => 'col-8',
+                'field' => 'description'
+            ]
+        ]
     );
 
     protected $structures = array(
@@ -40,18 +122,71 @@ class Files extends Resources {
         ],
         "file" => [
             'name' => 'file',
-            'label' => 'Image',
+            'label' => 'Pick your file',
             'display' => false,
             'validation' => [
                 'create' => 'required|file',
                 'update' => 'nullable|file',
                 'delete' => null,
             ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'file',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+        "directory" => [
+            'name' => 'directory',
+            'label' => 'Directory',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
+                'delete' => null,
+            ],
+            'required' => true,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
+        ],
+        "foreign_table" => [
+            'name' => 'foreign_table',
+            'label' => 'Table name',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|string',
+                'update' => 'nullable|string',
+                'delete' => null,
+            ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
+        ],
+        "foreign_id" => [
+            'name' => 'foreign_id',
+            'label' => 'Table field',
+            'display' => false,
+            'validation' => [
+                'create' => 'nullable|integer',
+                'update' => 'nullable|integer',
+                'delete' => null,
+            ],
+            'required' => true,
+            'primary' => false,
+            'type' => 'text',
+            'validated' => true,
+            'nullable' => false,
+            'note' => null,
+            'placeholder' => null,
         ],
         "fullpath" => [
             'name' => 'fullpath',
@@ -62,11 +197,13 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "path" => [
             'name' => 'path',
@@ -77,56 +214,64 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "filename" => [
             'name' => 'filename',
             'label' => 'Filename',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:255',
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "title" => [
             'name' => 'title',
             'label' => 'Title',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:255',
                 'update' => 'nullable|string|max:255',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "description" => [
             'name' => 'description',
             'label' => 'Description',
-            'display' => false,
+            'display' => true,
             'validation' => [
                 'create' => 'nullable|string|max:1024',
                 'update' => 'nullable|string|max:1024',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "ext" => [
             'name' => 'ext',
@@ -137,11 +282,13 @@ class Files extends Resources {
                 'update' => 'nullable|string|max:20',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "size" => [
             'name' => 'size',
@@ -152,26 +299,53 @@ class Files extends Resources {
                 'update' => 'nullable|integer',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
             'type' => 'text',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
         ],
         "type" => [
             'name' => 'type',
             'label' => 'Type',
-            'display' => false,
+            'display' => true,
             'validation' => [
-                'create' => 'required|string|max:100',
-                'update' => 'required|string',
+                'create' => 'nullable|string|max:100',
+                'update' => 'nullable|string',
                 'delete' => null,
             ],
+            'required' => false,
             'primary' => false,
-            'type' => 'text',
+            'type' => 'select',
             'validated' => true,
             'nullable' => false,
-            'note' => null
+            'note' => null,
+            'placeholder' => null,
+            // Options
+            'default' => 'image',
+            'inline' => false,
+            'options' => [
+                [
+                    'value' => 'compress',
+                    'label' => 'Compress'
+                ],
+                [
+                    'value' => 'document',
+                    'label' => 'Docs'
+                ],
+                [
+                    'value' => 'image',
+                    'label' => 'Image'
+                ],
+                [
+                    'value' => 'other',
+                    'label' => 'Other'
+                ],
+            ],
+            // Options disabled according to value
+            'options_disabled' => []
         ],
         "created_at" => [
             'name' => 'created_at',
@@ -220,5 +394,17 @@ class Files extends Resources {
         ]
     );
 
-    protected $searchable = array('filename', 'title', 'description', 'ext', 'size', 'type');
+    protected $searchable = array(
+        'fullpath',
+        'path',
+        'filename',
+        'title',
+        'description',
+        'size',
+        'ext',
+        'directory',
+        'type',
+        'foreign_table',
+        'foreign_id',
+    );
 }

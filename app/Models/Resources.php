@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use App\Observers\Observer as Observer;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use GrammaticalQuery\FilterQueryString\FilterQueryString;
 
 class Resources extends Model {
 
     use SoftDeletes;
+    use FilterQueryString;
 
     protected $guard_name = 'web';
     protected $limit_chars = 50;
@@ -28,23 +31,49 @@ class Resources extends Model {
         'in'      => 'The :attribute must be one of the following types: :values',
     ];
 
-    // NOTE: 'index' and 'show' set as default for public consumption
-    protected $auths = array ('edit','create','store','update','patch','destroy','import','export','report','trash','trashed','restore','delete','empty','restoreAll');
+    protected $filters = [
+        'default',
+        'search',
+        'fields',
+        // 'limit',
+        // 'page',
+        'relationship',
+        'withtrashed',
+        'orderby',
+    ];
 
-    protected $pemissions = array(
-        'create' => ['*', '*@create'],
-        'read' => ['*', '*@read'],
-        'update' => ['*', '*@update'],
-        'restore' => ['*', '*@restore'],
-        'destroy' => ['*', '*@destroy'],
-        'trash' => ['*', '*@trash'],
-        'delete' => ['*', '*@delete'],
-        'empty' => ['*', '*@empty'],
-        'import' => ['*', '*@import'],
-        'export' => ['*', '*@export'],
-        'report' => ['*', '*@report'],
+    // NOTE: 'index' and 'show' set as default for public consumption
+    protected $auths = array (
+        'index',
+        'store',
+        'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
     );
 
+    protected $pemissions = array(
+        'create' => ['*.*.*', '*.create.*'],
+        'read' => ['*.*.*', '*.read.*'],
+        'update' => ['*.*.*', '*.update.*'],
+        'restore' => ['*.*.*', '*.restore.*'],
+        'destroy' => ['*.*.*', '*.destroy.*'],
+        'trash' => ['*.*.*', '*.trash.*'],
+        'delete' => ['*.*.*', '*.delete.*'],
+        'empty' => ['*.*.*', '*.empty.*'],
+        'import' => ['*.*.*', '*.import.*'],
+        'export' => ['*.*.*', '*.export.*'],
+        'report' => ['*.*.*', '*.report.*'],
+    );
+
+    protected $forms = array();
     protected $structures = array(
         "id" => [
             'name' => 'id',
@@ -111,14 +140,15 @@ class Resources extends Model {
     //  OBSERVER
     protected static function boot() {
         parent::boot();
+
         $isApi = request()->segment(1);
-        if($isApi == 'api') {
-            $table = request()->segment(3);
-            if(file_exists(app_path('Observers/'.studly_case($table)).'Observer.php')) {
-                $observer = app("App\Observers\\".studly_case($table).'Observer');
-                static::observe($observer);
-                return;
-            }
+        if($isApi == 'api') $table = request()->segment(3);
+        else $table = request()->segment(1);
+
+        if(file_exists(app_path('Observers/'.Str::studly($table)).'Observer.php')) {
+            $observer = app("App\Observers\\".Str::studly($table).'Observer');
+            static::observe($observer);
+            return;
         }
         static::observe(Observer::class);
     }
@@ -147,6 +177,10 @@ class Resources extends Model {
         return $this->messages;
     }
 
+    public function getForms() {
+        return $this->forms;
+    }
+
     public function validator($request, $event = 'create', $id = null) {
         $rules = $this->getValidationOf($event, $id);
         if($event == 'patch') {
@@ -173,19 +207,18 @@ class Resources extends Model {
     public function getStructure() {
         $not_displayed = array_merge(array("id", "created_at", "updated_at", "deleted_at"), $this->getHidden());
         $structures = Schema::getColumnListing($this->getTable());
-
         $fields = array();
-        foreach ($structures as $col) {
-            $field = array();
-            $field['field'] = $col;
-            $field['null'] = null;
-            $field['key'] = null;
-            $field['default'] = null;
-            $field['extra'] = null;
-            $field['display'] = !in_array($col, $not_displayed);
-            $fields[] = $field;
+        foreach ($this->structures as $key => $field) {
+            // FIXME: how about field hide on show data and displayed on create/update
+            if(in_array($field['name'], $not_displayed)) {
+                $this->structures[$key]['display'] = false;
+            }
         }
-        return $fields;
+        return $this->structures;
+    }
+
+    public function getTableFields() {
+        return Schema::getColumnListing($this->getTable());
     }
 
     public function getValidationOf($event = 'create', $id = null) {

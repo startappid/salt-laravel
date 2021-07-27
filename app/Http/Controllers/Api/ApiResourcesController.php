@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Resources;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use App\Services\ResponseService;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ApiResourcesController extends Controller
 {
@@ -30,18 +32,17 @@ class ApiResourcesController extends Controller
         try {
             $this->responder = $responder;
             $this->segment = $request->segment(3);
-            if(file_exists(app_path('Models/'.studly_case($this->segment)).'.php')) {
-                $this->model = app("App\Models\\".studly_case($this->segment));
+            if(file_exists(app_path('Models/'.Str::studly($this->segment)).'.php')) {
+                $this->model = app("App\Models\\".Str::studly($this->segment));
             } else {
                 if($model->checkTableExists($this->segment)) {
                     $this->model = $model;
                     $this->model->setTable($this->segment);
                 }
             }
-
             if($this->model) {
                 $this->structures = $this->model->getStructure();
-                // SET default permissions
+                // SET default Authentication
                 $this->middleware('auth:api', ['only' => $this->model->getAuthenticatedRoutes()]);
             }
 
@@ -51,6 +52,19 @@ class ApiResourcesController extends Controller
             $this->responder->set('message', $e->getMessage());
             $this->responder->setStatus(500, 'Internal server error.');
             return $this->responder->response();
+        }
+    }
+
+    protected function checkPermissions($authenticatedRoute, $authorize) {
+        if(in_array($authenticatedRoute, $this->model->getAuthenticatedRoutes())) {
+            $table = $this->model->getTable();
+            $generatedPermissions = [$table.'.*.*', $table.'.'.$authorize.'.*'];
+            $defaultPermissions = $this->model->getPermissions($authorize);
+            $permissions = array_merge($generatedPermissions, $defaultPermissions);
+            $user = Auth::user();
+            if(!$user->hasAnyPermission($permissions)) {
+                throw new \Exception('You do not have authorization.');
+            }
         }
     }
 
@@ -68,7 +82,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('viewAny', $this->model);
+            $this->checkPermissions('index', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -77,7 +91,10 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model->newQuery();
+            $count = $this->model->count();
+            $model = $this->model->filter();
+
+            $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
             if($limit > 100) {
@@ -87,49 +104,14 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            if($request->get('search')) {
-                $searchable = $this->model->getSearchable();
-                foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($request->get('search')) . '%');
-                }
-            }
-
-            // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
-            if(count($fields)) {
-                foreach ($fields as $field => $value) {
-                    $model->where($field, $value);
-                }
-            }
-
-            if($request->has('with')) {
-                $relations = explode(',', $request->get('with'));
-                // $model->with($relations);
-                foreach ($relations as $relation) {
-                    $model->with([$relation => function($query) use($request) {
-                        if($request->has('withtrashed')) {
-                            $query->withTrashed();
-                        }
-                    }]);
-                }
-            }
-
-            if($request->has('withtrashed')) {
-                $model->withTrashed();
-            }
-
-            if($request->has('orderBy')) {
-                $order = $request->get('orderBy');
-                foreach ($order as $key => $value) {
-                    $model->orderBy($key, $value);
-                }
+            if($format == 'datatable') {
+                $draw = $request['draw'];
             }
 
             $modelCount = clone $model;
-            $count = $model->count();
             $meta = array(
-                'totalRecords' => $count,
-                'totalFilteredRecords' => $count
+                'recordsTotal' => $count,
+                'recordsFiltered' => $modelCount->count()
             );
 
             $data = $model
@@ -140,6 +122,11 @@ class ApiResourcesController extends Controller
             $this->responder->set('message', 'Data retrieved.');
             $this->responder->set('meta', $meta);
             $this->responder->set('data', $data);
+            if($format == 'datatable') {
+                $this->responder->set('draw', $draw);
+                $this->responder->set('recordsFiltered', $meta['recordsFiltered']);
+                $this->responder->set('recordsTotal', $meta['recordsTotal']);
+            }
             return $this->responder->response();
         } catch(\Exception $e) {
             $this->responder->set('message', $e->getMessage());
@@ -164,7 +151,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('create', $this->model);
+            $this->checkPermissions('store', 'create');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -179,12 +166,12 @@ class ApiResourcesController extends Controller
                 $this->responder->setStatus(400, 'Bad Request.');
                 return $this->responder->response();
             }
-            foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+            $fields = $request->only($this->model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $this->model->setAttribute($key, $value);
             }
             $this->model->save();
-            $this->responder->set('message', title_case(str_singular($this->table_name)).' created!');
+            $this->responder->set('message', Str::title(Str::singular($this->table_name)).' created!');
             $this->responder->set('data', $this->model);
             $this->responder->setStatus(201, 'Created.');
             return $this->responder->response();
@@ -210,7 +197,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('view', $this->model);
+            $this->checkPermissions('show', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -218,20 +205,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            if($request->has('with')) {
-                $relations = explode(',', $request->get('with'));
-                if($request->has('withtrashed')) {
-                    $data = $this->model->with($relations)->withTrashed()->find($id);
-                } else {
-                    $data = $this->model->with($relations)->find($id);
-                }
-            } else {
-                if($request->has('withtrashed')) {
-                    $data = $this->model->withTrashed()->find($id);
-                } else {
-                    $data = $this->model->find($id);
-                }
-            }
+            $data = $this->model->filter()->find($id);
             if(is_null($data)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -263,7 +237,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('update', $this->model);
+            $this->checkPermissions('update', 'update');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -272,7 +246,7 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model::find($id);
+            $model = $this->model->find($id);
             if(is_null($model)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -287,12 +261,21 @@ class ApiResourcesController extends Controller
                 return $this->responder->response();
             }
 
-            foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $model->setAttribute($key, $value);
             }
-
             $model->save();
+
+            if(!$model->isDirty()) {
+                $fields = $request->except($model->getTableFields());
+                $triggered = isset($model->fileableEnabled) && $model->fileableEnabled;
+                $triggered = $triggered || (isset($model->addressEnabled) && $model->addressEnabled);
+                if($triggered) {
+                    event('eloquent.updating: App\Models\\'.class_basename($model), $model);
+                    event('eloquent.updated: App\Models\\'.class_basename($model), $model);
+                }
+            }
 
             $this->responder->set('message', 'Data updated');
             $this->responder->set('data', $model);
@@ -320,7 +303,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('update', $this->model);
+            $this->checkPermissions('patch', 'update');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -329,7 +312,7 @@ class ApiResourcesController extends Controller
 
         try {
 
-            $model = $this->model::find($id);
+            $model = $this->model->find($id);
             if(is_null($model)) {
                 $this->responder->set('message', 'Data not found');
                 $this->responder->setStatus(404, 'Not Found');
@@ -344,8 +327,8 @@ class ApiResourcesController extends Controller
                 return $this->responder->response();
             }
 
-            foreach ($request->all() as $key => $value) {
-                if(starts_with($key, '_')) continue;
+            $fields = $request->only($model->getTableFields());
+            foreach ($fields as $key => $value) {
                 $model->setAttribute($key, $value);
             }
 
@@ -376,7 +359,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('destroy', 'destroy');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -422,7 +405,7 @@ class ApiResourcesController extends Controller
                 }
 
             } else { // Pointing to spesific data by ID
-                $model = $this->model::find($id);
+                $model = $this->model->find($id);
                 if(is_null($model)) {
                     $this->responder->set('message', 'Data not found');
                     $this->responder->setStatus(404, 'Not Found');
@@ -454,7 +437,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('trash', 'trash');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -462,7 +445,11 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $model = $this->model->onlyTrashed();
+
+            $count = $this->model->count();
+            $model = $this->model->filter()->onlyTrashed();
+
+            $format = $request->get('format', 'default');
 
             $limit = intval($request->get('limit', 25));
             if($limit > 100) {
@@ -472,49 +459,14 @@ class ApiResourcesController extends Controller
             $p = intval($request->get('page', 1));
             $page = ($p > 0 ? $p - 1: $p);
 
-            if($request->get('search')) {
-                $searchable = $this->model->getSearchable();
-                foreach ($searchable as $field) {
-                    $model->orWhere($field, 'LIKE', '%' . trim($request->get('search')) . '%');
-                }
-            }
-
-            // FIXME: this line below not running
-            $fields = $request->except(['page', 'limit', 'with', 'search', 'withtrashed', 'orderBy']);
-            if(count($fields)) {
-                foreach ($fields as $field => $value) {
-                    $model->where($field, $value);
-                }
-            }
-
-            if($request->has('with')) {
-                $relations = explode(',', $request->get('with'));
-                // $model->with($relations);
-                foreach ($relations as $relation) {
-                    $model->with([$relation => function($query) use($request) {
-                        if($request->has('withtrashed')) {
-                            $query->withTrashed();
-                        }
-                    }]);
-                }
-            }
-
-            if($request->has('withtrashed')) {
-                $model->withTrashed();
-            }
-
-            if($request->has('orderBy')) {
-                $order = $request->get('orderBy');
-                foreach ($order as $key => $value) {
-                    $model->orderBy($key, $value);
-                }
+            if($format == 'datatable') {
+                $draw = $request['draw'];
             }
 
             $modelCount = clone $model;
-            $count = $model->count();
             $meta = array(
-                'totalRecords' => $count,
-                'totalFilteredRecords' => $count
+                'recordsTotal' => $count,
+                'recordsFiltered' => $modelCount->count()
             );
 
             $data = $model
@@ -525,6 +477,11 @@ class ApiResourcesController extends Controller
             $this->responder->set('message', 'Data retrieved.');
             $this->responder->set('meta', $meta);
             $this->responder->set('data', $data);
+            if($format == 'datatable') {
+                $this->responder->set('draw', $draw);
+                $this->responder->set('recordsFiltered', $meta['recordsFiltered']);
+                $this->responder->set('recordsTotal', $meta['recordsTotal']);
+            }
             return $this->responder->response();
         } catch(\Exception $e) {
             $this->responder->set('message', $e->getMessage());
@@ -548,7 +505,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('trashed', 'read');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -587,7 +544,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('restore', $this->model);
+            $this->checkPermissions('restore', 'restore');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -596,6 +553,7 @@ class ApiResourcesController extends Controller
 
         try {
             $id = intval($id) > 0 ? intval($id): $id;
+            // FIXME: if condition depth only 2
             if(!is_int($id)) {
                 if($id == "selected") { // Delete all selected IDs
                     if($request->has('selected')) {
@@ -665,7 +623,7 @@ class ApiResourcesController extends Controller
         }
 
         try {
-            $this->authorize('delete', $this->model);
+            $this->checkPermissions('delete', 'delete');
         } catch (\Exception $e) {
             $this->responder->set('message', 'You do not have authorization.');
             $this->responder->setStatus(401, 'Unauthorized');
@@ -674,6 +632,7 @@ class ApiResourcesController extends Controller
 
         try {
             $id = intval($id) > 0 ? intval($id): $id;
+            // FIXME: if condition depth only 2
             if(!is_int($id)) {
                 if($id == "selected") { // Delete all selected IDs
                     if($request->has('selected')) {

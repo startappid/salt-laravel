@@ -15,6 +15,22 @@ class Contacts extends Resources {
         'type' => 'required|string'
     );
 
+    protected $auths = array (
+        // 'index',
+        'store',
+        // 'show',
+        'update',
+        'patch',
+        'destroy',
+        'trash',
+        'trashed',
+        'restore',
+        'delete',
+        'import',
+        'export',
+        'report'
+    );
+
     protected $structures = array(
         "id" => [
             'name' => 'id',
