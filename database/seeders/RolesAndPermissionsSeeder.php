@@ -46,6 +46,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => '*.import.*']);     // Import data to Database
         Permission::create(['name' => '*.export.*']);     // Export data to CSV, Excel, JSON, XML, PDF, etc
         Permission::create(['name' => '*.report.*']);     // Report
+        Permission::create(['name' => '*.page.*']);       // Page menu navigation
 
         foreach ($structures as $key => $table) {
             // create permissions
@@ -60,11 +61,26 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::create(['name' => $table.'.import.*']);
             Permission::create(['name' => $table.'.export.*']);
             Permission::create(['name' => $table.'.report.*']);
+
+            // NOTE: *.*.id should be their (user) own data
+            Permission::create(['name' => $table.'.create.id']);
+            Permission::create(['name' => $table.'.read.id']);
+            Permission::create(['name' => $table.'.update.id']);
+            Permission::create(['name' => $table.'.restore.id']);
+            Permission::create(['name' => $table.'.destroy.id']);
+            Permission::create(['name' => $table.'.delete.id']);
+            Permission::create(['name' => $table.'.trash.id']);
+            Permission::create(['name' => $table.'.empty.id']);
+            Permission::create(['name' => $table.'.import.id']);
+            Permission::create(['name' => $table.'.export.id']);
+            Permission::create(['name' => $table.'.report.id']);
+
+            Permission::create(['name' => $table.'.page.*']);
             Permission::create(['name' => $table.'.*.*']); // all permission only for this model
         }
 
-        Permission::create(['name' => 'users.activate']);
-        Permission::create(['name' => 'users.deactivate']);
+        Permission::create(['name' => 'users.account.activate']);
+        Permission::create(['name' => 'users.account.deactivate']);
 
         // create roles and assign created permissions
         $role = Role::create(['name' => 'superadmin']);
