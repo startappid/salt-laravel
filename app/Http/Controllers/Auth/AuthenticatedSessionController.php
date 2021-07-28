@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         $tokenResult = $user->createToken('Personal Access Token');
         session(['bearer_token' => $tokenResult->accessToken]);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
