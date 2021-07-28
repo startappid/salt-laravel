@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Observers\Observer as Observer;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use GrammaticalQuery\FilterQueryString\FilterQueryString;
@@ -145,23 +144,6 @@ class Resources extends Model {
             'note' => null
         ]
     );
-
-    //  OBSERVER
-    // FIXME: this approach is not best practice, change segment to ClassName called
-    protected static function boot() {
-        parent::boot();
-
-        $isApi = request()->segment(1);
-        if($isApi == 'api') $table = request()->segment(3);
-        else $table = request()->segment(1);
-
-        if(file_exists(app_path('Observers/'.Str::studly($table)).'Observer.php')) {
-            $observer = app("App\Observers\\".Str::studly($table).'Observer');
-            static::observe($observer);
-            return;
-        }
-        static::observe(Observer::class);
-    }
 
     function setRules($rules) {
         $this->rules = $rules;
