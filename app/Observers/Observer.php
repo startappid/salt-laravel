@@ -40,22 +40,7 @@ class Observer
     }
 
     public function saving($model) {
-    //   foreach ($model->getAttributes() as $key => $value) {
-    //     // Check attributes if file type then stored to disk
-    //     if(request()->hasFile($key)) {
-    //       $file = request()->file($key);
-    //       $filename = uniqid().'-'.time().'.'.$file->getClientOriginalExtension();
-    //       if(env('FILESYSTEM_DRIVER', 'local') == 'gcs') {
-    //         $disk = Storage::disk('gcs');
-    //         $path = $disk->put($model->getTable().'/'.$key, $file);
-    //         $imgurl = ['https://storage.googleapis.com', env('GOOGLE_CLOUD_STORAGE_BUCKET'), $path];
-    //         $model->setAttribute($key, implode('/', $imgurl));
-    //       } else { // local
-    //         $path = $file->storeAs($model->getTable().'/'.$key, $filename);
-    //         $model->setAttribute($key, url('storage/app/'.$path));
-    //       }
-    //     }
-    //   }
+
     }
 
     public function saved($model) {
