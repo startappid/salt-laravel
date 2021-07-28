@@ -39,14 +39,6 @@ class Resources extends Model {
     protected $dates = ['deleted_at'];
     protected $dateFormat = 'Y-m-d H:i:s';
     protected $searchable = array();
-    protected $messages = [
-        'required' => 'The :attribute field is required.',
-        'unique'  => 'The :attribute field is unique.',
-        'same'    => 'The :attribute and :other must match.',
-        'size'    => 'The :attribute must be exactly :size.',
-        'between' => 'The :attribute value :input is not between :min - :max.',
-        'in'      => 'The :attribute must be one of the following types: :values',
-    ];
 
     protected $filters = [
         'default',
@@ -189,10 +181,6 @@ class Resources extends Model {
 
     function getSearchable() {
         return $this->searchable;
-    }
-
-    public function getMessages() {
-        return $this->messages;
     }
 
     public function getForms() {
