@@ -15,7 +15,6 @@ class ApiResourcesController extends Controller
 {
     protected $table_name = null;
     protected $model = null;
-    protected $structures = array();
     protected $segments = [];
     protected $segment = null;
     protected $responder = null;
@@ -41,7 +40,6 @@ class ApiResourcesController extends Controller
                 }
             }
             if($this->model) {
-                $this->structures = $this->model->getStructure();
                 // SET default Authentication
                 $this->middleware('auth:api', ['only' => $this->model->getAuthenticatedRoutes()]);
             }
