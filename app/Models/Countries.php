@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
+use App\Traits\ObservableModel;
 
 class Countries extends Resources {
 
+    use ObservableModel;
     use Fileable;
+
     protected $fileableFields = ['flag'];
     protected $fileableDirs = [
         'flag' => 'countries/flag'
