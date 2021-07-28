@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Schema;
 use App\Traits\UuidModel;
 use Illuminate\Support\Arr;
 
-// use App\Models\ChatSessionUsers;
-
 class Chats extends Resources {
     use UuidModel;
 
@@ -36,7 +34,12 @@ class Chats extends Resources {
         'created_at'
     ];
 
-    protected $rules = array();
+    protected $rules = array(
+        "session_id" => 'required|string',
+        "message_id" => 'required|string',
+        "user_id" => 'required|integer',
+        "read_at" => 'nullable|datetime',
+    );
 
     protected $auths = array (
         'index',
@@ -64,149 +67,7 @@ class Chats extends Resources {
         'unblockUser',
     );
 
-    protected $structures = array(
-        "id" => [
-            'name' => 'id',
-            'default' => null,
-            'label' => 'ID',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => true,
-            'required' => true,
-            'type' => 'integer',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-        "session_id" => [
-            'name' => 'session_id',
-            'default' => null,
-            'label' => 'Session ID',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|string',
-                'update' => 'required|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-        "message_id" => [
-            'name' => 'message_id',
-            'default' => null,
-            'label' => 'Message ID',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|string',
-                'update' => 'required|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-        "user_id" => [
-            'name' => 'user_id',
-            'default' => null,
-            'label' => 'User ID',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|integer',
-                'update' => 'required|integer',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-        "read_at" => [
-            'name' => 'read_at',
-            'default' => null,
-            'label' => 'Read At',
-            'display' => true,
-            'validation' => [
-                'create' => 'nullable|datetime',
-                'update' => 'nullable|datetime',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-
-        "created_at" => [
-            'name' => 'created_at',
-            'default' => null,
-            'label' => 'Created At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-        "updated_at" => [
-            'name' => 'updated_at',
-            'default' => null,
-            'label' => 'Updated At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-        "deleted_at" => [
-            'name' => 'deleted_at',
-            'default' => null,
-            'label' => 'Deleted At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ]
-    );
+    protected $structures = array();
 
     protected $forms = array();
     protected $searchable = array('session_id', 'message_id', 'user_id', 'read_at');

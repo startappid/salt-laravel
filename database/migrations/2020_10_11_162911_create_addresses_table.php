@@ -19,7 +19,7 @@ class CreateAddressesTable extends Migration
             $table->string('foreign_table')->nullable();
             $table->integer('foreign_id')->nullable();
 
-            $table->enum('type', ['primary', 'other'])->default('other');
+            $table->enum('type', ['primary', 'office', 'home', 'other'])->default('primary');
             $table->string('category')->nullable();
 
             $table->foreignId('country_id')->constrained('countries');

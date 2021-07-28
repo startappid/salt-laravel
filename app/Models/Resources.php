@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use App\Observers\Observer as Observer;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use GrammaticalQuery\FilterQueryString\FilterQueryString;
@@ -18,18 +17,27 @@ class Resources extends Model {
 
     protected $guard_name = 'web';
     protected $limit_chars = 50;
+
+    /**
+     * Validation your request
+     * Example use single validations for create and update
+     * protected $rules = array(
+     *      'name' => 'required|unique:users',
+     * );
+     *
+     * Example use different validations for create and update
+     * protected $rules = array(
+     *      'name' => [
+     *          'create' => 'required|unique:users',
+     *          'update' => 'nullable|unique:users',
+     *      ],
+     * );
+     */
     protected $rules = array();
+
     protected $dates = ['deleted_at'];
     protected $dateFormat = 'Y-m-d H:i:s';
     protected $searchable = array();
-    protected $messages = [
-        'required' => 'The :attribute field is required.',
-        'unique'  => 'The :attribute field is unique.',
-        'same'    => 'The :attribute and :other must match.',
-        'size'    => 'The :attribute must be exactly :size.',
-        'between' => 'The :attribute value :input is not between :min - :max.',
-        'in'      => 'The :attribute must be one of the following types: :values',
-    ];
 
     protected $filters = [
         'default',
@@ -137,22 +145,6 @@ class Resources extends Model {
         ]
     );
 
-    //  OBSERVER
-    protected static function boot() {
-        parent::boot();
-
-        $isApi = request()->segment(1);
-        if($isApi == 'api') $table = request()->segment(3);
-        else $table = request()->segment(1);
-
-        if(file_exists(app_path('Observers/'.Str::studly($table)).'Observer.php')) {
-            $observer = app("App\Observers\\".Str::studly($table).'Observer');
-            static::observe($observer);
-            return;
-        }
-        static::observe(Observer::class);
-    }
-
     function setRules($rules) {
         $this->rules = $rules;
     }
@@ -173,10 +165,6 @@ class Resources extends Model {
         return $this->searchable;
     }
 
-    public function getMessages() {
-        return $this->messages;
-    }
-
     public function getForms() {
         return $this->forms;
     }
@@ -190,17 +178,7 @@ class Resources extends Model {
                 }
             }
         }
-
-        $messages = $this->messages;
-        $validator = Validator::make($request->all(), $rules, $messages);
-        // NOTE: add some custom validator below
-        // $validator->after(function ($validator) use ($request) {
-        //   if ($request->get('field_name')) {
-        //     if (true) {
-        //       $validator->errors()->add('field_name', 'Error goes here');
-        //     }
-        //   }
-        // });
+        $validator = Validator::make($request->all(), $rules);
         return $validator;
     }
 
@@ -224,18 +202,12 @@ class Resources extends Model {
     public function getValidationOf($event = 'create', $id = null) {
         $rules = [];
         if($event == 'patch') $event = 'update';
-        foreach ($this->structures as $key => $value) {
-            if($value['validated']) {
-                $validation = null;
-                if($event == 'create') {
-                    $validation = $value['validation'][$event];
-                } elseif($event == 'update' || $event == 'patch') {
-                    $validation = str_replace('{id}', $id, $value['validation'][$event]);
-                } else {
-                    $validation = $value['validation'][$event];
-                }
-                $rules[$key] = $validation;
+        foreach ($this->rules as $key => $validation) {
+            if(is_array($validation) && isset($validation[$event])) {
+                $rules[$key] = $validation[$event];
+                continue;
             }
+            $rules[$key] = $validation;
         }
         return $rules;
     }
