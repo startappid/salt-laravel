@@ -29,7 +29,11 @@ class ChatMessages extends Resources {
         'type'
     ];
 
-    protected $rules = array();
+    protected $rules = array(
+        "session_id" => 'required|string',
+        "content" => 'required|string',
+        "type" => 'nullable|string',
+    );
 
     protected $auths = array (
         'index',
@@ -47,132 +51,7 @@ class ChatMessages extends Resources {
         'report'
     );
 
-    protected $structures = array(
-        "id" => [
-            'name' => 'id',
-            'default' => null,
-            'label' => 'ID',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => true,
-            'required' => true,
-            'type' => 'integer',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-
-        "session_id" => [
-            'name' => 'session_id',
-            'default' => null,
-            'label' => 'Session ID',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|string',
-                'update' => 'required|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-        "content" => [
-            'name' => 'content',
-            'default' => null,
-            'label' => 'Content',
-            'display' => true,
-            'validation' => [
-                'create' => 'required|string',
-                'update' => 'required|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-        "type" => [
-            'name' => 'type',
-            'default' => null,
-            'label' => 'Type',
-            'display' => true,
-            'validation' => [
-                'create' => 'nullable|string',
-                'update' => 'nullable|string',
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => true,
-            'type' => 'text',
-            'validated' => true,
-            'nullable' => false,
-            'note' => null,
-            'placeholder' => null,
-        ],
-
-        "created_at" => [
-            'name' => 'created_at',
-            'default' => null,
-            'label' => 'Created At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-        "updated_at" => [
-            'name' => 'updated_at',
-            'default' => null,
-            'label' => 'Updated At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ],
-        "deleted_at" => [
-            'name' => 'deleted_at',
-            'default' => null,
-            'label' => 'Deleted At',
-            'display' => false,
-            'validation' => [
-                'create' => null,
-                'update' => null,
-                'delete' => null,
-            ],
-            'primary' => false,
-            'required' => false,
-            'type' => 'datetime',
-            'validated' => false,
-            'nullable' => false,
-            'note' => null
-        ]
-    );
+    protected $structures = array();
 
     protected $forms = array();
     protected $searchable = array('session_id', 'content', 'type');
