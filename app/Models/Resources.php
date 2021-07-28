@@ -18,7 +18,24 @@ class Resources extends Model {
 
     protected $guard_name = 'web';
     protected $limit_chars = 50;
+
+    /**
+     * Validation your request
+     * Example use single validations for create and update
+     * protected $rules = array(
+     *      'name' => 'required|unique:users',
+     * );
+     *
+     * Example use different validations for create and update
+     * protected $rules = array(
+     *      'name' => [
+     *          'create' => 'required|unique:users',
+     *          'update' => 'nullable|unique:users',
+     *      ],
+     * );
+     */
     protected $rules = array();
+
     protected $dates = ['deleted_at'];
     protected $dateFormat = 'Y-m-d H:i:s';
     protected $searchable = array();
@@ -138,6 +155,7 @@ class Resources extends Model {
     );
 
     //  OBSERVER
+    // FIXME: this approach is not best practice, change segment to ClassName called
     protected static function boot() {
         parent::boot();
 
@@ -190,17 +208,7 @@ class Resources extends Model {
                 }
             }
         }
-
-        $messages = $this->messages;
-        $validator = Validator::make($request->all(), $rules, $messages);
-        // NOTE: add some custom validator below
-        // $validator->after(function ($validator) use ($request) {
-        //   if ($request->get('field_name')) {
-        //     if (true) {
-        //       $validator->errors()->add('field_name', 'Error goes here');
-        //     }
-        //   }
-        // });
+        $validator = Validator::make($request->all(), $rules);
         return $validator;
     }
 
@@ -224,18 +232,12 @@ class Resources extends Model {
     public function getValidationOf($event = 'create', $id = null) {
         $rules = [];
         if($event == 'patch') $event = 'update';
-        foreach ($this->structures as $key => $value) {
-            if($value['validated']) {
-                $validation = null;
-                if($event == 'create') {
-                    $validation = $value['validation'][$event];
-                } elseif($event == 'update' || $event == 'patch') {
-                    $validation = str_replace('{id}', $id, $value['validation'][$event]);
-                } else {
-                    $validation = $value['validation'][$event];
-                }
-                $rules[$key] = $validation;
+        foreach ($this->rules as $key => $validation) {
+            if(is_array($validation) && isset($validation[$event])) {
+                $rules[$key] = $validation[$event];
+                continue;
             }
+            $rules[$key] = $validation;
         }
         return $rules;
     }
