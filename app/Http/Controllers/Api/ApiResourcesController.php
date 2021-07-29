@@ -40,6 +40,7 @@ class ApiResourcesController extends Controller
                 }
             }
             if($this->model) {
+                $this->responder->set('collection', $this->model->getTable());
                 // SET default Authentication
                 $this->middleware('auth:api', ['only' => $this->model->getAuthenticatedRoutes()]);
             }
