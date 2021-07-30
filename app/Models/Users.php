@@ -8,14 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\UsersObserver as Observer;
+use App\Traits\ObservableModel;
 
 class Users extends Resources {
 
-    //  OBSERVER
-    protected static function boot() {
-        parent::boot();
-        static::observe(Observer::class);
-    }
+    use ObservableModel;
 
     protected $rules = array(
         'username' => [
@@ -58,5 +55,18 @@ class Users extends Resources {
 
     public function address() {
         return $this->belongsTo('App\Models\Addresses', 'foreign_id', 'id')->where('foreign_table', 'users');
+    }
+
+    public function roles() {
+        return $this->hasMany('App\Models\ModelHasRoles', 'model_id', 'id')->where('model_type', 'App\Models\User');
+    }
+
+    public function role($query, $value = 'user') {
+        $roles = (array) $value;
+        return $query
+                    ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->whereIn('roles.name', $roles)
+                    ->select('users.*');
     }
 }
