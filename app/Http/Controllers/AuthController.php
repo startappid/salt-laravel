@@ -182,9 +182,14 @@ class AuthController extends Controller {
     public function profile(Request $request)
     {
         $user = Auth::user();
+        $permissions = $user->getAllPermissions();
+        $permissions = Arr::pluck($permissions, 'name');
+
+        $profile = Users::with(['address', 'photo', 'roles'])->find($user->id);
         $this->responder->set('collection', 'User');
         $this->responder->set('message', 'Data retrieved');
-        $this->responder->set('data', $user);
+        $this->responder->set('data', $profile);
+        $this->responder->set('permissions', $permissions);
         return $this->responder->response();
     }
 
