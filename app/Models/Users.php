@@ -27,8 +27,16 @@ class Users extends Resources {
         ],
         'first_name' => 'required|string|max:50',
         'last_name' => 'required|string|max:50',
-        'password' => 'required|string|min:6|confirmed',
-        'password_confirmation' => 'required_with:password|same:password|min:6',
+        'password' => [
+            'create' => 'required|string|min:6|confirmed',
+            'update' => null,
+            'delete' => null,
+        ],
+        'password_confirmation' => [
+            'create' => 'required_with:password|same:password|min:6',
+            'update' => null,
+            'delete' => null,
+        ],
         'gender' => 'required|string|in:male,female',
         'phone' => 'nullable|string',
         'photo' => 'mimes:jpeg,jpg,png|max:1024|nullable',
@@ -48,6 +56,7 @@ class Users extends Resources {
     ];
 
     protected $searchable = array('username',  'email', 'first_name', 'last_name', 'phone', 'status');
+    protected $hidden = array('password');
 
     public function photo() {
         return $this->belongsTo('App\Models\Files', 'foreign_id', 'id')->where('foreign_table', 'users');
