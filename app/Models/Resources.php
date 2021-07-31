@@ -203,11 +203,12 @@ class Resources extends Model {
         $rules = [];
         if($event == 'patch') $event = 'update';
         foreach ($this->rules as $key => $validation) {
+            $rule = $validation;
             if(is_array($validation) && isset($validation[$event])) {
-                $rules[$key] = $validation[$event];
-                continue;
+                $rule = $validation[$event];
             }
-            $rules[$key] = $validation;
+            $rule = str_replace('{id}', $id, $rule);
+            $rules[$key] = $rule;
         }
         return $rules;
     }
