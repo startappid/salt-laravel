@@ -320,10 +320,11 @@ class AuthController extends Controller {
         try {
 
             $rules = [
-                'password' => 'required|string|confirmed'
+                'password' => 'required|string|confirmed',
+                'password_confirmation' => 'required_with:password|same:password|min:6'
             ];
 
-            $validator = Validator::make($request->all(), $rules, $this->messages);
+            $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 $this->responder->set('errors', $validator->errors());
                 $this->responder->setStatus(400, 'Bad Request');
