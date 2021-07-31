@@ -117,5 +117,13 @@ class RolesAndPermissionsSeeder extends Seeder
         $user->assignRole('superadmin');
         $user = User::where('username', 'admin')->first();
         $user->assignRole('admin');
+        $user = User::where('email', 'hrd@startapp.id')->first();
+        $user->assignRole('hrd');
+        $user = User::where('email', 'manager@startapp.id')->first();
+        $user->assignRole('manager');
+        $user = User::where('email', 'reporter@startapp.id')->first();
+        $user->assignRole('reporter');
+        $user = User::where('email', 'operator@startapp.id')->first();
+        $user->assignRole('operator');
     }
 }
