@@ -18,7 +18,7 @@ class CreateContentsTable extends Migration
             $table->string('title', 1024);
             $table->string('category', 1024)->nullable();
             $table->longText('content');
-            $table->enum('type', ['faqs', 'page', 'post', 'partnership', 'terms', 'other'])->default('post');
+            $table->enum('type', ['faqs', 'page', 'post', 'terms', 'other'])->default('post');
             $table->timestamps();
             $table->softDeletes();
         });
