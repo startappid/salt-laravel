@@ -13,6 +13,7 @@ class Banners extends Resources {
 
     use Fileable;
     protected $fileableFields = ['video', 'banner'];
+    protected $fileableCascade = true;
     protected $fileableDirs = [
         'video' => 'banners/video',
         'banner' => 'banners/image',
