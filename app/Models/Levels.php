@@ -54,4 +54,8 @@ class Levels extends Resources {
         'degree_id' => 'required|integer',
         'level' => 'required|integer',
     );
+
+    public function degree() {
+        return $this->belongsTo('App\Models\Degrees', 'degree_id', 'id')->withTrashed();
+    }
 }
