@@ -17,8 +17,8 @@ class CreateClassesTable extends Migration
             $table->id();
             $table->foreignId('level_id')->constrained('levels');
             $table->foreignId('degree_id')->constrained('degrees');
-            $table->foreignId('major_id')->constrained('majors')->nullable();
-            $table->foreignId('field_id')->constrained('fields')->nullable();
+            $table->foreignId('major_id')->nullable()->constrained('majors');
+            $table->foreignId('field_id')->nullable()->constrained('fields');
             $table->string('class')->nullable(); // NOTE: {level} {degree} {major}. ex: XII SMA IPA
             $table->timestamps();
             $table->softDeletes();
