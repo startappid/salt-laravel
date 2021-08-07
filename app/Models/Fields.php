@@ -63,4 +63,12 @@ class Fields extends Resources {
         'title',
         'description'
     );
+
+    public function degree() {
+        return $this->belongsTo('App\Models\Degrees', 'degree_id', 'id')->withTrashed();
+    }
+
+    public function major() {
+        return $this->belongsTo('App\Models\Majors', 'major_id', 'id')->withTrashed();
+    }
 }
