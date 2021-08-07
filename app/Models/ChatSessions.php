@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\UuidModel;
+use App\Traits\ObservableModel;
 
 class ChatSessions extends Resources {
     use UuidModel;
+    use ObservableModel;
 
     protected $keyType = 'string';
     public $incrementing = false;

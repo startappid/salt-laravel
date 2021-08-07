@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
-
+use App\Traits\ObservableModel;
 class Provinces extends Resources {
-
+    use ObservableModel;
     protected $filters = [
         'default',
         'search',

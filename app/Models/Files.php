@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
+use App\Traits\ObservableModel;
 
 class Files extends Resources {
-
+    use ObservableModel;
     use Fileable;
     protected $selfFileable = true;
     protected $fillable = [

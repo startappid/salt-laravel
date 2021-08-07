@@ -9,9 +9,11 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\UuidModel;
 use Illuminate\Support\Arr;
+use App\Traits\ObservableModel;
 
 class Chats extends Resources {
     use UuidModel;
+    use ObservableModel;
 
     protected $keyType = 'string';
     public $incrementing = false;
