@@ -94,6 +94,8 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
     // Route::post('/chats/{session_id}/block', 'Api\ChatsResourcesController@blockUser');
     // Route::post('/chats/{session_id}/unblock', 'Api\ChatsResourcesController@unblockUser');
 
+    Route::get('/sysparams/groups', 'Api\SysparamsResourcesController@getGroupNames');
+
     // DEFAULT: API RESOURCES
     Route::get("{collection}", 'Api\ApiResourcesController@index'); // get entire collection
     Route::post("{collection}", 'Api\ApiResourcesController@store'); // create new collection

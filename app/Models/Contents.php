@@ -8,13 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
+use App\Traits\ObservableModel;
 
 class Contents extends Resources {
-
+    use ObservableModel;
     use Fileable;
-    protected $fileableFields = ['image'];
+    protected $fileableFields = ['image', 'thumbnail', 'banner'];
+    protected $fileableCascade = [
+        'thumbnail' => true,
+        'image' => true,
+        'banner' => true
+    ];
     protected $fileableDirs = [
-        'image' => 'partnerships/image',
+        'thumbnail' => 'posts/thumbnail',
+        'image' => 'posts/image',
+        'banner' => 'posts/banner',
     ];
 
     protected $filters = [
@@ -64,6 +72,19 @@ class Contents extends Resources {
     public function image() {
         return $this->hasOne('App\Models\Files', 'foreign_id', 'id')
                     ->where('foreign_table', 'contents')
-                    ->where('directory', 'contents/image');
+                    ->where('directory', 'posts/image');
     }
+
+    public function banner() {
+        return $this->hasOne('App\Models\Files', 'foreign_id', 'id')
+                    ->where('foreign_table', 'contents')
+                    ->where('directory', 'posts/banner');
+    }
+
+    public function thumbnail() {
+        return $this->hasOne('App\Models\Files', 'foreign_id', 'id')
+                    ->where('foreign_table', 'contents')
+                    ->where('directory', 'posts/thumbnail');
+    }
+
 }

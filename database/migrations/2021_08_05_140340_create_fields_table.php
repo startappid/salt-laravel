@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentsTable extends Migration
+class CreateFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contents', function (Blueprint $table) {
+        Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 1024);
-            $table->string('category', 1024)->nullable();
-            $table->longText('content');
-            $table->enum('type', ['faqs', 'page', 'post', 'terms', 'other'])->default('post');
+            $table->foreignId('degree_id')->constrained('degrees');
+            $table->foreignId('major_id')->constrained('majors');
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +31,6 @@ class CreateContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('fields');
     }
 }

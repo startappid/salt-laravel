@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
+use App\Traits\ObservableModel;
 
 class Addresses extends Resources {
-
+    use ObservableModel;
     protected $rules = [
         'foreign_table' => 'nullable|string',
         'foreign_id' => 'nullable|integer',

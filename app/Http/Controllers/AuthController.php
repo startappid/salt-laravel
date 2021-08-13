@@ -182,9 +182,14 @@ class AuthController extends Controller {
     public function profile(Request $request)
     {
         $user = Auth::user();
+        $permissions = $user->getAllPermissions();
+        $permissions = Arr::pluck($permissions, 'name');
+
+        $profile = Users::with(['address', 'photo', 'roles'])->find($user->id);
         $this->responder->set('collection', 'User');
         $this->responder->set('message', 'Data retrieved');
-        $this->responder->set('data', $user);
+        $this->responder->set('data', $profile);
+        $this->responder->set('permissions', $permissions);
         return $this->responder->response();
     }
 
@@ -315,10 +320,11 @@ class AuthController extends Controller {
         try {
 
             $rules = [
-                'password' => 'required|string|confirmed'
+                'password' => 'required|string|confirmed',
+                'password_confirmation' => 'required_with:password|same:password|min:6'
             ];
 
-            $validator = Validator::make($request->all(), $rules, $this->messages);
+            $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 $this->responder->set('errors', $validator->errors());
                 $this->responder->setStatus(400, 'Bad Request');

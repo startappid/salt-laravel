@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Traits\ObservableModel;
 
 class Notifications extends Resources {
-
+    use ObservableModel;
     protected $keyType = 'string';
 
     protected $filters = [

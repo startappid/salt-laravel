@@ -8,26 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\ObservableModel;
-class Provinces extends Resources {
+
+class Levels extends Resources {
     use ObservableModel;
     protected $filters = [
         'default',
         'search',
         'fields',
-        'limit',
-        'page',
         'relationship',
         'withtrashed',
         'orderby',
-        // Fields table provinces
+        // Fields table
         'id',
-        'name',
-        'country_id'
+        'degree_id',
+        'level'
     ];
 
     protected $rules = array(
-        'country_id' => 'required|integer',
-        'name' => 'required|string'
+        'degree_id' => 'required|integer',
+        'level' => 'required|integer',
     );
 
     protected $auths = array (
@@ -48,19 +47,16 @@ class Provinces extends Resources {
 
     protected $forms = array();
     protected $structures = array();
+    protected $fillable = array(
+        'degree_id' => 'required|integer',
+        'level' => 'required|integer',
+    );
+    protected $searchable = array(
+        'degree_id' => 'required|integer',
+        'level' => 'required|integer',
+    );
 
-    protected $searchable = array('name', 'country_id');
-    protected $fillable = array('name', 'country_id');
-    protected $casts = [
-        'country' => 'array',
-    ];
-
-    public function country() {
-        return $this->belongsTo('App\Models\Countries', 'country_id', 'id')->withTrashed();
+    public function degree() {
+        return $this->belongsTo('App\Models\Degrees', 'degree_id', 'id')->withTrashed();
     }
-
-    public function cities() {
-        return $this->hasMany('App\Models\Cities', 'province_id', 'id')->withTrashed();
-    }
-
 }

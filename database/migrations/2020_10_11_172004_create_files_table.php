@@ -21,8 +21,15 @@ class CreateFilesTable extends Migration
             $table->string('title', 255)->nullable();
             $table->string('description', 1024)->nullable();
             $table->unsignedInteger('size'); // in KB
-            $table->string('ext', 10); // zip, tar, targz, pdf
-            $table->enum('type', ['compress', 'document', 'image', 'other'])->default('other');
+            $table->string('ext', 10);
+            $table->enum('type', [
+                'compress', // zip, tar, tar.gz, etc
+                'document', // doc, excel, ppt, pdf, etc
+                'image', // jpeg, gif, png, etc
+                'video', // mp4, mov, etc
+                'audio', // bmp, wav, etc
+                'other'
+            ])->default('other');
             $table->timestamps();
             $table->softDeletes();
         });

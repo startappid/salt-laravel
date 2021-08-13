@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentsTable extends Migration
+class CreateSysparamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contents', function (Blueprint $table) {
+        Schema::create('sysparams', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 1024);
-            $table->string('category', 1024)->nullable();
-            $table->longText('content');
-            $table->enum('type', ['faqs', 'page', 'post', 'terms', 'other'])->default('post');
+            $table->string('group');
+            $table->string('key');
+            $table->string('value');
+            $table->json('data')->nullable();
+            $table->tinyInteger('order')->unsigned()->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +33,6 @@ class CreateContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('sysparams');
     }
 }
