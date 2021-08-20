@@ -113,6 +113,12 @@ class RolesAndPermissionsSeeder extends Seeder
         $role = Role::create(['name' => 'user']);
         $role->givePermissionTo(['users.read.*', 'users.update.*']);
 
+        $role = Role::create(['name' => 'student']);
+        $role->givePermissionTo(['users.read.*', 'users.update.*']);
+
+        $role = Role::create(['name' => 'treacher']);
+        $role->givePermissionTo(['users.read.*', 'users.update.*']);
+
         $user = User::where('username', 'superadmin')->first();
         $user->assignRole('superadmin');
         $user = User::where('username', 'admin')->first();

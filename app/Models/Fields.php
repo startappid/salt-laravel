@@ -7,27 +7,31 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Observers\Traits\Fileable;
 use App\Traits\ObservableModel;
-class Provinces extends Resources {
+
+class Fields extends Resources {
     use ObservableModel;
     protected $filters = [
         'default',
         'search',
         'fields',
-        'limit',
-        'page',
         'relationship',
         'withtrashed',
         'orderby',
-        // Fields table provinces
+        // Fields table
         'id',
-        'name',
-        'country_id'
+        'degree_id',
+        'major_id',
+        'title',
+        'description'
     ];
 
     protected $rules = array(
-        'country_id' => 'required|integer',
-        'name' => 'required|string'
+        'degree_id' => 'required|integer',
+        'major_id' => 'required|integer',
+        'title' => 'required|string',
+        'description' => 'nullable|string'
     );
 
     protected $auths = array (
@@ -48,19 +52,24 @@ class Provinces extends Resources {
 
     protected $forms = array();
     protected $structures = array();
+    protected $fillable = array(
+        'degree_id',
+        'major_id',
+        'title',
+        'description'
+    );
+    protected $searchable = array(
+        'degree_id',
+        'major_id',
+        'title',
+        'description'
+    );
 
-    protected $searchable = array('name', 'country_id');
-    protected $fillable = array('name', 'country_id');
-    protected $casts = [
-        'country' => 'array',
-    ];
-
-    public function country() {
-        return $this->belongsTo('App\Models\Countries', 'country_id', 'id')->withTrashed();
+    public function degree() {
+        return $this->belongsTo('App\Models\Degrees', 'degree_id', 'id')->withTrashed();
     }
 
-    public function cities() {
-        return $this->hasMany('App\Models\Cities', 'province_id', 'id')->withTrashed();
+    public function major() {
+        return $this->belongsTo('App\Models\Majors', 'major_id', 'id')->withTrashed();
     }
-
 }

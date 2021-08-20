@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
+use App\Traits\ObservableModel;
 
 class Files extends Resources {
-
+    use ObservableModel;
     use Fileable;
     protected $selfFileable = true;
     protected $fillable = [
@@ -59,7 +60,7 @@ class Files extends Resources {
         'description' => 'nullable|string|max:255',
         'size' => 'nullable|integer',
         'ext' => 'nullable|string|max:20',
-        'type' => 'required|string|in:compress,document,image,other',
+        'type' => 'required|string|in:compress,document,image,video,audio,other',
         'directory' => 'nullable|string',
         'foreign_table' => 'nullable|string',
         'foreign_id' => 'nullable|integer',
