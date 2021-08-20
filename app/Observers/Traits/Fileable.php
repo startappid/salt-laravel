@@ -154,7 +154,8 @@ trait Fileable
                 $data['foreign_id'] = $model->id;
                 $isCascade = $fileableCascade;
                 if(!is_null($data['directory']) && isset($model->fileableCascade) && is_array($model->fileableCascade)) {
-                    $isCascade = $model->fileableCascade[$data['directory']];
+                    $key = array_search($data['directory'], $model->fileableDirs);
+                    $isCascade = $model->fileableCascade[$key];
                 }
                 if($isCascade) {
                     Files::updateOrCreate(
