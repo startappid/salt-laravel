@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "398a7630b36611f6202f2f602f7a74f9",
+    "content-hash": "da5c69b3f57f2f2898f70538e0c4854b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1036,6 +1036,66 @@
                 "source": "https://github.com/faridlab/laravel-grammatical-query/tree/v2.0.1"
             },
             "time": "2021-07-15T18:23:37+00:00"
+        },
+        {
+            "name": "faridlab/salt-laravel-countries",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "/Users/utmostphere/Unicorns/startapp/frameworks/salt-laravel-countries",
+                "reference": "dedf452f50c12c03d62d11b0bb2f3bfeae5ab7ec"
+            },
+            "require": {
+                "laravel/framework": "^8.0",
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Faridlab\\SaltLaravelCountries\\Providers\\SaltLaravelCountriesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faridlab\\SaltLaravelCountries\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Faridlab\\SaltLaravelCountries\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit -c ./phpunit.xml --colors=always"
+                ],
+                "analysis": [
+                    "vendor/bin/phpstan analyse"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Farid Hidayat",
+                    "email": "e.faridhidayat@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/faridlab/salt-laravel-countries",
+            "keywords": [
+                "Laravel"
+            ],
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "fideloper/proxy",
@@ -9462,7 +9522,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "faridlab/salt-laravel-countries": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
