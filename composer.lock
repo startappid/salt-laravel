@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b6a2fc82c68d5a0ff79c80b65d52a8b",
+    "content-hash": "03225fd17cebfbc8bbb125f4150590ab",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -124,16 +124,16 @@
         },
         {
             "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.4",
+            "version": "1.11.99.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600"
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
-                "reference": "b174585d1fe49ceed21928a945138948cb394600",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b4f54f74ef3453349c24a845d22392cd31e65f1d",
+                "reference": "b4f54f74ef3453349c24a845d22392cd31e65f1d",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,7 @@
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
             "support": {
                 "issues": "https://github.com/composer/package-versions-deprecated/issues",
-                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.5"
             },
             "funding": [
                 {
@@ -193,7 +193,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-13T08:41:34+00:00"
+            "time": "2022-01-17T14:14:24+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -1041,7 +1041,7 @@
             "dist": {
                 "type": "path",
                 "url": "/Users/utmostphere/Unicorns/startapp/frameworks/salt-laravel-core",
-                "reference": "74d7065df1bafa9aca96ed36d9a954fb64fd8f3a"
+                "reference": "b2bf6685673cde6aa67fd10f7ff79223c9999c31"
             },
             "require": {
                 "laravel/framework": "^8.0",
@@ -1101,9 +1101,11 @@
             "dist": {
                 "type": "path",
                 "url": "/Users/utmostphere/Unicorns/startapp/frameworks/salt-laravel-countries",
-                "reference": "bd4e7e2f6ac58db427fa58bc45bf61c851e29c3e"
+                "reference": "e0145a3805ff9d570c16882db3600ee42a9f18c3"
             },
             "require": {
+                "faridlab/laravel-grammatical-query": "^2.0",
+                "faridlab/salt-laravel": "dev-main",
                 "laravel/framework": "^8.0",
                 "php": "^7.3"
             },
@@ -1116,18 +1118,18 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Faridlab\\SaltLaravelCountries\\Providers\\SaltLaravelCountriesServiceProvider"
+                        "SaltCountries\\Providers\\SaltCountriesServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Faridlab\\SaltLaravelCountries\\": "src/"
+                    "SaltCountries\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Faridlab\\SaltLaravelCountries\\Tests\\": "tests/"
+                    "SaltCountries\\Tests\\": "tests/"
                 }
             },
             "scripts": {
@@ -3268,16 +3270,16 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v2.4.0",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c"
+                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
-                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/9229e15f2e6ba772f0c55dd6986c563b937170a8",
+                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8",
                 "shasum": ""
             },
             "require": {
@@ -3331,7 +3333,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2020-12-06T15:14:20+00:00"
+            "time": "2022-01-17T05:32:27+00:00"
         },
         {
             "name": "paragonie/random_compat",
