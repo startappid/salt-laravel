@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
-use App\Observers\Traits\Fileable;
-use App\Traits\ObservableModel;
+
+use SaltLaravel\Models\Resources;
+use SaltLaravel\Observers\Traits\Fileable;
+use SaltLaravel\Traits\ObservableModel;
 
 class Countries extends Resources {
 
