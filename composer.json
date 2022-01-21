@@ -15,7 +15,8 @@
         "laravel/tinker": "^2.5",
         "spatie/laravel-permission": "^3.18",
         "faridlab/laravel-grammatical-query": "^2.0",
-        "faridlab/salt-laravel": "^0.1"
+        "faridlab/salt-laravel-contacts": "dev-main",
+        "faridlab/salt-laravel": "dev-main"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -62,5 +63,15 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/Unicorns/startapp/frameworks/salt-laravel-contacts"
+        },
+        {
+            "type": "path",
+            "url": "~/Unicorns/startapp/frameworks/salt-laravel-core"
+        }
+    ]
 }
