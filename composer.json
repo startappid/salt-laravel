@@ -14,9 +14,8 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "spatie/laravel-permission": "^3.18",
-        "faridlab/laravel-search-query": "dev-master",
-        "faridlab/salt-laravel-contacts": "dev-main",
-        "faridlab/salt-laravel": "dev-main"
+        "faridlab/laravel-search-query": "^2.2",
+        "faridlab/salt-laravel": "^0.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
@@ -63,23 +62,5 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "~/Unicorns/startapp/frameworks/salt-laravel-countries"
-        },
-        {
-            "type": "path",
-            "url": "~/Unicorns/startapp/frameworks/laravel-search-query"
-        },
-        {
-            "type": "path",
-            "url": "~/Unicorns/startapp/frameworks/salt-laravel-contacts"
-        },
-        {
-            "type": "path",
-            "url": "~/Unicorns/startapp/frameworks/salt-laravel-core"
-        }
-    ]
+    }
 }
