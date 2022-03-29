@@ -14,7 +14,7 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "spatie/laravel-permission": "^3.18",
-        "faridlab/laravel-grammatical-query": "^2.0",
+        "faridlab/laravel-search-query": "^2.2",
         "faridlab/salt-laravel": "^0.1"
     },
     "require-dev": {
