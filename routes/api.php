@@ -18,7 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->group(function () {
 
     Route::middleware(['auth:api'])->prefix('role_has_permission')->group(function () {
@@ -70,29 +69,6 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
     Route::put("notifications/{id}/mark-as-read", 'Api\NotificationsResourcesController@markAsRead'); // get collection by ID
     Route::put("notifications/{id}/mark-as-unread", 'Api\NotificationsResourcesController@markAsUnread'); // get collection by ID
     Route::put("notifications/mark-all-read", 'Api\NotificationsResourcesController@markAllRead'); // get collection by ID
-
-    // CHATS
-    // Get all user's contacts
-    Route::get('/chats/contacts', 'Api\ChatsResourcesController@getContacts');
-    // Get all chats history of user
-    Route::get('/chats', 'Api\ChatsResourcesController@getChatsHistory');
-
-    // Create new session chat if not exists
-    // if session chat exist than use it
-    // @param type(enum|string): type of chat (private|group|channel) --default(private)
-    // @param participants(array): array of user id as participants
-    // @param message(string): message to send
-    Route::post('/chats', 'Api\ChatsResourcesController@createSession');
-
-    Route::get('/chats/{session_id}', 'Api\ChatsResourcesController@getMessagesBySession');
-    Route::post('/chats/{session_id}', 'Api\ChatsResourcesController@createMessageBySession');
-
-    Route::post('/chats/{session_id}/read/{chat_id}', 'Api\ChatsResourcesController@markChatsAsRead');
-    Route::post('/chats/{session_id}/unread/{chat_id}', 'Api\ChatsResourcesController@markChatsAsUnread');
-
-    // Route::post('/chats/{session_id}/clear', 'Api\ChatsResourcesController@clearChats');
-    // Route::post('/chats/{session_id}/block', 'Api\ChatsResourcesController@blockUser');
-    // Route::post('/chats/{session_id}/unblock', 'Api\ChatsResourcesController@unblockUser');
 
     Route::get('/sysparams/groups', 'Api\SysparamsResourcesController@getGroupNames');
 
