@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('banners', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-
+            $table->string('title');
+            $table->text('description');
             $table->enum('status', ['active', 'inactive'])->default('inactive');
-            $table->rememberToken();
+            $table->enum('type', ['banner', 'video'])->default('banner');
+            $table->string('videourl', 512)->nullable();
+            $table->integer('order')->unsigned();
+            $table->string('link', 1024)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('banners');
     }
 };
