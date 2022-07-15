@@ -9,9 +9,11 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\UsersObserver as Observer;
 use App\Traits\ObservableModel;
+use App\Traits\Uuids;
 
 class Users extends Resources {
 
+    use Uuids;
     use ObservableModel;
 
     protected $rules = array(
