@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
+use App\Traits\Uuids;
 
 class Images extends Resources {
-
+    use Uuids;
     protected $rules = array(
         'file' => 'required|image',
         'fullpath' => 'nullable|string|max:255',

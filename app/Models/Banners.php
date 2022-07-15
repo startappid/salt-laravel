@@ -9,8 +9,10 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
 use App\Traits\ObservableModel;
+use App\Traits\Uuids;
 
 class Banners extends Resources {
+    use Uuids;
     use ObservableModel;
     use Fileable;
     protected $fileableFields = ['video', 'banner'];

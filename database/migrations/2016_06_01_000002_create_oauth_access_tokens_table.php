@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOauthAccessTokensTable extends Migration
+return new class extends Migration
 {
     /**
      * The database schema.
@@ -32,7 +32,7 @@ class CreateOauthAccessTokensTable extends Migration
     {
         $this->schema->create('oauth_access_tokens', function (Blueprint $table) {
             $table->string('id', 100)->primary();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
+            $table->uuid('user_id')->nullable()->index();
             $table->uuid('client_id');
             $table->string('name')->nullable();
             $table->text('scopes')->nullable();
@@ -61,4 +61,4 @@ class CreateOauthAccessTokensTable extends Migration
     {
         return config('passport.storage.database.connection');
     }
-}
+};

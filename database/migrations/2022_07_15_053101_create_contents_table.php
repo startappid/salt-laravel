@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChatsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateChatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chats', function (Blueprint $table) {
+        Schema::create('contents', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('session_id')->constrained('chat_sessions');
-            $table->foreignUuid('message_id')->constrained('chat_messages');
-            $table->foreignId('user_id')->constrained('users');
-            $table->dateTime('read_at')->nullable();
+            $table->string('title', 1024);
+            $table->string('slug', 1024);
+            $table->string('category', 1024)->nullable();
+            $table->longText('content');
+            $table->enum('type', ['faq', 'page', 'post', 'other'])->default('post');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +32,6 @@ class CreateChatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chats');
+        Schema::dropIfExists('contents');
     }
-}
+};

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,12 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->id();
-            $table->string('fullpath', 255);
-            $table->string('path', 255);
-            $table->string('filename', 255);
-            $table->string('title', 255)->nullable();
+            $table->uuid('id')->primary();
+            $table->string('directory')->default('files')->nullable();
+            $table->string('fullpath', 1024);
+            $table->string('path', 1024);
+            $table->string('filename', 1024);
+            $table->string('title', 1024)->nullable();
             $table->string('description', 1024)->nullable();
             $table->unsignedInteger('size'); // in KB
             $table->string('ext', 10);
@@ -30,6 +31,10 @@ class CreateFilesTable extends Migration
                 'audio', // bmp, wav, etc
                 'other'
             ])->default('other');
+
+            $table->string('foreign_table')->nullable();
+            $table->string('foreign_id')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -44,4 +49,4 @@ class CreateFilesTable extends Migration
     {
         Schema::dropIfExists('files');
     }
-}
+};

@@ -26,14 +26,14 @@ class ApiRoleAndPermissionController extends ApiResourcesController
     public function assignRole(Request $request, $id){
         $user = User::find($id);
         $user->assignRole($request['role']);
-        
+
         return response('roles inserted', 200);
     }
 
     public function removeRole(Request $request, $id){
         $user = User::find($id);
         $user->removeRole($request['role']);
-        
+
         return response('roles inserted', 200);
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ModelHasRoles extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     public function role() {
         return $this->belongsTo('App\Models\Roles', 'role_id', 'id');
