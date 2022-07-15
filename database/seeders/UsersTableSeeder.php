@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class UsersTableSeeder extends Seeder
         $users =
             [
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Super",
                     'last_name' => "Administrator",
                     'username' => 'superadmin',
@@ -27,6 +29,7 @@ class UsersTableSeeder extends Seeder
                     'email_verified_at' => date('Y-m-d H:i:s'),
                 ],
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Admin",
                     'last_name' => "Administrator",
                     'username' => 'admin',
@@ -36,6 +39,7 @@ class UsersTableSeeder extends Seeder
                     'email_verified_at' => date('Y-m-d H:i:s'),
                 ],
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Admin",
                     'last_name' => "Operator",
                     'username' => 'operator',
@@ -45,6 +49,7 @@ class UsersTableSeeder extends Seeder
                     'email_verified_at' => date('Y-m-d H:i:s'),
                 ],
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Admin",
                     'last_name' => "Reporter",
                     'username' => 'reporter',
@@ -54,6 +59,7 @@ class UsersTableSeeder extends Seeder
                     'email_verified_at' => date('Y-m-d H:i:s'),
                 ],
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Admin",
                     'last_name' => "Manager",
                     'username' => 'manager',
@@ -63,6 +69,7 @@ class UsersTableSeeder extends Seeder
                     'email_verified_at' => date('Y-m-d H:i:s'),
                 ],
                 [
+                    'id' => Str::uuid()->toString(),
                     'first_name' => "Admin",
                     'last_name' => "HRD",
                     'username' => 'hrd',
