@@ -9,9 +9,7 @@ trait Uuids
     /**
      * Boot function from Laravel.
      */
-    protected static function boot()
-    {
-        parent::boot();
+    public static function bootUuids() {
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
                 $model->{$model->getKeyName()} = Str::uuid()->toString();
