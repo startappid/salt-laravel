@@ -4,6 +4,12 @@
     "description": "The Laravel Project Skeleton.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Farid Hidayat",
+            "email": "farid@startapp.id"
+        }
+    ],
     "require": {
         "php": "^8.0.2",
         "doctrine/dbal": "^3.3",
