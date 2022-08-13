@@ -17,9 +17,8 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run()
     {
         // Reset cached roles and permissions
-        app()['cache']->forget('spatie.permission.cache');
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         $structures = DB::connection()->getDoctrineSchemaManager()->listTableNames();
-        $permissions = array();
         /**
          * NOTE:
          * Permissions Patterns
@@ -34,53 +33,59 @@ class RolesAndPermissionsSeeder extends Seeder
          * on event create or insert new data, with type role is user
         */
 
-        Permission::create(['name' => '*.*.*']);          // Superadministrator permissions
-        Permission::create(['name' => '*.create.*']);     // Create and Store data
-        Permission::create(['name' => '*.read.*']);       // Read List and Detail data
-        Permission::create(['name' => '*.update.*']);     // Update/Patch data
-        Permission::create(['name' => '*.restore.*']);    // Restore data from Trash
-        Permission::create(['name' => '*.destroy.*']);    // Soft Delete data
-        Permission::create(['name' => '*.trash.*']);      // Read Trashed data and detail
-        Permission::create(['name' => '*.delete.*']);     // Hard Delete from trash
-        Permission::create(['name' => '*.empty.*']);      // Empty all data in trash
-        Permission::create(['name' => '*.import.*']);     // Import data to Database
-        Permission::create(['name' => '*.export.*']);     // Export data to CSV, Excel, JSON, XML, PDF, etc
-        Permission::create(['name' => '*.report.*']);     // Report
-        Permission::create(['name' => '*.page.*']);       // Page menu navigation
+        $permissions = [
+            ['name' => '*.*.*'],          // Superadministrator permissions
+            ['name' => '*.create.*'],     // Create and Store data
+            ['name' => '*.read.*'],       // Read List and Detail data
+            ['name' => '*.update.*'],     // Update/Patch data
+            ['name' => '*.restore.*'],    // Restore data from Trash
+            ['name' => '*.destroy.*'],    // Soft Delete data
+            ['name' => '*.trash.*'],      // Read Trashed data and detail
+            ['name' => '*.delete.*'],     // Hard Delete from trash
+            ['name' => '*.empty.*'],      // Empty all data in trash
+            ['name' => '*.import.*'],     // Import data to Database
+            ['name' => '*.export.*'],     // Export data to CSV, Excel, JSON, XML, PDF, etc
+            ['name' => '*.report.*'],     // Report
+            ['name' => '*.page.*'],       // Page menu navigation
+        ];
 
         foreach ($structures as $key => $table) {
             // create permissions
-            Permission::create(['name' => $table.'.create.*']);
-            Permission::create(['name' => $table.'.read.*']);
-            Permission::create(['name' => $table.'.update.*']);
-            Permission::create(['name' => $table.'.restore.*']);
-            Permission::create(['name' => $table.'.destroy.*']);
-            Permission::create(['name' => $table.'.delete.*']);
-            Permission::create(['name' => $table.'.trash.*']);
-            Permission::create(['name' => $table.'.empty.*']);
-            Permission::create(['name' => $table.'.import.*']);
-            Permission::create(['name' => $table.'.export.*']);
-            Permission::create(['name' => $table.'.report.*']);
+            $permissions[] = ['name' => $table.'.create.*'];
+            $permissions[] = ['name' => $table.'.read.*'];
+            $permissions[] = ['name' => $table.'.update.*'];
+            $permissions[] = ['name' => $table.'.restore.*'];
+            $permissions[] = ['name' => $table.'.destroy.*'];
+            $permissions[] = ['name' => $table.'.delete.*'];
+            $permissions[] = ['name' => $table.'.trash.*'];
+            $permissions[] = ['name' => $table.'.empty.*'];
+            $permissions[] = ['name' => $table.'.import.*'];
+            $permissions[] = ['name' => $table.'.export.*'];
+            $permissions[] = ['name' => $table.'.report.*'];
 
             // NOTE: *.*.id should be their (user) own data
-            Permission::create(['name' => $table.'.create.id']);
-            Permission::create(['name' => $table.'.read.id']);
-            Permission::create(['name' => $table.'.update.id']);
-            Permission::create(['name' => $table.'.restore.id']);
-            Permission::create(['name' => $table.'.destroy.id']);
-            Permission::create(['name' => $table.'.delete.id']);
-            Permission::create(['name' => $table.'.trash.id']);
-            Permission::create(['name' => $table.'.empty.id']);
-            Permission::create(['name' => $table.'.import.id']);
-            Permission::create(['name' => $table.'.export.id']);
-            Permission::create(['name' => $table.'.report.id']);
+            $permissions[] = ['name' => $table.'.create.id'];
+            $permissions[] = ['name' => $table.'.read.id'];
+            $permissions[] = ['name' => $table.'.update.id'];
+            $permissions[] = ['name' => $table.'.restore.id'];
+            $permissions[] = ['name' => $table.'.destroy.id'];
+            $permissions[] = ['name' => $table.'.delete.id'];
+            $permissions[] = ['name' => $table.'.trash.id'];
+            $permissions[] = ['name' => $table.'.empty.id'];
+            $permissions[] = ['name' => $table.'.import.id'];
+            $permissions[] = ['name' => $table.'.export.id'];
+            $permissions[] = ['name' => $table.'.report.id'];
 
-            Permission::create(['name' => $table.'.page.*']);
-            Permission::create(['name' => $table.'.*.*']); // all permission only for this model
+            $permissions[] = ['name' => $table.'.page.*'];
+            $permissions[] = ['name' => $table.'.*.*']; // all permission only for this model
         }
 
-        Permission::create(['name' => 'users.account.activate']);
-        Permission::create(['name' => 'users.account.deactivate']);
+        $permissions[] = ['name' => 'users.account.activate'];
+        $permissions[] = ['name' => 'users.account.deactivate'];
+        $permissions = collect($permissions)->map(function ($permission) {
+            return array_merge($permission, ['guard_name' => 'web']);
+        });
+        Permission::insert($permissions->toArray());
 
         // create roles and assign created permissions
         $role = Role::create(['name' => 'superadmin']);
@@ -111,12 +116,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $role->givePermissionTo(['users.read.*', 'users.update.*']);
 
         $role = Role::create(['name' => 'user']);
-        $role->givePermissionTo(['users.read.*', 'users.update.*']);
-
-        $role = Role::create(['name' => 'student']);
-        $role->givePermissionTo(['users.read.*', 'users.update.*']);
-
-        $role = Role::create(['name' => 'treacher']);
         $role->givePermissionTo(['users.read.*', 'users.update.*']);
 
         $user = User::where('username', 'superadmin')->first();
