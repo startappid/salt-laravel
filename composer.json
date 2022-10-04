@@ -14,7 +14,7 @@
         "php": "^8.0.2",
         "doctrine/dbal": "^3.3",
         "faridlab/laravel-search-query": "^9.0",
-        "faridlab/salt-laravel": "^9.0.2",
+        "faridlab/salt-laravel": "^9.0.25",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/passport": "^10.4",
