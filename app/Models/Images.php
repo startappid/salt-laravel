@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
-use App\Traits\Uuids;
+use SaltLaravel\Traits\Uuids;
 
 class Images extends Resources {
     use Uuids;

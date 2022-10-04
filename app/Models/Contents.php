@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\Traits\Fileable;
-use App\Traits\ObservableModel;
-use App\Traits\Uuids;
+use SaltLaravel\Traits\ObservableModel;
+use SaltLaravel\Traits\Uuids;
 
 class Contents extends Resources {
     use Uuids;

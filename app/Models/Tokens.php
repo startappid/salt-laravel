@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
-use App\Traits\Uuids;
+use SaltLaravel\Traits\Uuids;
 
 class Tokens extends Resources
 {

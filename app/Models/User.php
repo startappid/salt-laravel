@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
-use App\Traits\Uuids;
+use SaltLaravel\Traits\Uuids;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -22,7 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'username', 'email', 'password', 'first_name', 'last_name', 'phone', 'status'
+        'name',
+        'email',
+        'password',
     ];
 
     /**
