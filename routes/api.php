@@ -60,8 +60,6 @@ Route::namespace('App\Http\Controllers')->middleware(['api'])->prefix('v1')->gro
     Route::put("users/{id}/password", 'Api\UsersResourcesController@updatePassword')->where('id', '[a-zA-Z0-9]+'); // patch collection by ID
     Route::post("users/{id}/photo", 'Api\UsersResourcesController@updatePhoto')->where('id', '[a-zA-Z0-9]+');
 
-    Route::post("files/upcreate", 'Api\FilesResourcesController@upCreate');
-
     Route::post("notifications", 'Api\NotificationsResourcesController@store');
 
     // NOTIFICATIONS
