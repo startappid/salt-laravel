@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Users;
 use App\Models\Addresses;
-use App\Models\Files;
+use SaltFile\Models\Files;
 use App\Models\UserFcmTokens;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -53,7 +53,7 @@ class AuthController extends Controller {
                 'username' => 'required|string|unique:users',
                 'email' => 'required|string|email|unique:users',
                 'password' => 'required|string|confirmed',
-                'gender' => 'nullable|integer',
+                'gender' => 'nullable|string|in:male,female',
                 'phone' => 'nullable|string',
                 'role' => 'nullable|string'
             ];
