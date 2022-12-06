@@ -41,6 +41,7 @@ class Users extends Resources {
         ],
         'gender' => 'required|string|in:male,female',
         'phone' => 'nullable|string',
+        'bod' => 'nullable|date',
         'photo' => 'mimes:jpeg,jpg,png|max:1024|nullable',
         'status' => 'required|string|in:inactive,active'
     );
@@ -54,18 +55,38 @@ class Users extends Resources {
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'first_name', 'last_name', 'api_token', 'phone', 'gender', 'driver_id', 'device_id', 'photo', 'is_active'
+      'username',
+      'email',
+      'password',
+      'password_confirmation',
+      'gender',
+      'phone',
+      'bod',
+      'status',
     ];
 
-    protected $searchable = array('username',  'email', 'first_name', 'last_name', 'phone', 'status');
-    protected $hidden = array('password');
+    protected $searchable = array(
+      'username',
+      'email',
+      'password',
+      'password_confirmation',
+      'gender',
+      'phone',
+      'bod',
+      'status',
+    );
+
+    protected $hidden = array('password', 'PIN');
 
     public function photo() {
-        return $this->belongsTo('App\Models\Files', 'foreign_id', 'id')->where('foreign_table', 'users');
+        return $this->belongsTo('SaltFile\Models\Files', 'id', 'foreign_id')
+                    ->where('foreign_table', 'users')
+                    ->where('directory', 'users/profile');
     }
 
     public function address() {
-        return $this->belongsTo('App\Models\Addresses', 'foreign_id', 'id')->where('foreign_table', 'users');
+        // FIXME: please fix this user address relation
+        return $this->belongsTo('SaltContacts\Models\ContactAddresses', 'contact_id', 'id');
     }
 
     public function roles() {
